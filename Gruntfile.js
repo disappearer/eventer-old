@@ -1,0 +1,89 @@
+module.exports = function (grunt) {
+    grunt.initConfig({
+
+        jshint: {
+            options: {
+                esversion: 6,
+            },
+            all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js']
+        },
+
+        env: {
+            test: {
+                SRC: __dirname + '/src'
+            }
+        },
+
+        jasmine_nodejs: {
+            options: {
+                useHelpers: true,
+                // global helpers, available to all task targets. accepts globs.. 
+                helpers: [],
+                random: false,
+                seed: null,
+                defaultTimeout: null, // defaults to 5000 
+                stopOnFailure: false,
+                traceFatal: true,
+                // configure one or more built-in reporters 
+                reporters: {
+                    console: {
+                        colors: true,        // (0|false)|(1|true)|2 
+                        cleanStack: 1,       // (0|false)|(1|true)|2|3 
+                        verbosity: 4,        // (0|false)|1|2|3|(4|true) 
+                        listStyle: "indent", // "flat"|"indent" 
+                        activity: false
+                    },
+                    // junit: { 
+                    //     savePath: "./reports", 
+                    //     filePrefix: "junit-report", 
+                    //     consolidate: true, 
+                    //     useDotNotation: true 
+                    // }, 
+                    // nunit: { 
+                    //     savePath: "./reports", 
+                    //     filename: "nunit-report.xml", 
+                    //     reportName: "Test Results" 
+                    // }, 
+                    // terminal: { 
+                    //     color: false, 
+                    //     showStack: false, 
+                    //     verbosity: 2 
+                    // }, 
+                    // teamcity: true, 
+                    // tap: true 
+                },
+                // add custom Jasmine reporter(s) 
+                customReporters: []
+            },
+
+            test: {
+                options: {
+                    useHelpers: true
+                },
+                specs: ['test/**/*.spec.js'],
+                helpers: [
+                    "test/helpers/**/*.helper.js"
+                ]
+            }
+        },
+        watch: {
+            all: {
+                files: ['test/**', 'src/**'],
+                tasks: ['jshint', 'env', 'jasmine_nodejs']
+            }
+        },
+        debug: {
+            options: {
+                fork: true
+            }
+        }
+    });
+
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-env');
+    grunt.loadNpmTasks('grunt-jasmine-nodejs');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+
+    grunt.registerTask('test', ['jshint', 'env', 'jasmine_nodejs']);
+    grunt.registerTask('default', ['jshint', 'env', 'jasmine_nodejs', 'watch']);
+};
