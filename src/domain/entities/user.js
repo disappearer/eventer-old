@@ -13,7 +13,6 @@ class User {
   joinEvent(event) {
     if (this.isJoined(event))
       return false;
-    event.guestCount++;
     this.eventsJoined.push(event);
     return true;
   }

@@ -1,5 +1,5 @@
-var User = require(process.env.SRC + '/domain/entities/user');
-var Event = require(process.env.SRC + '/domain/entities/event');
+const User = require(process.env.SRC + '/domain/entities/user');
+const Event = require(process.env.SRC + '/domain/entities/event');
 
 describe('User', function () {
   var user;
@@ -14,10 +14,6 @@ describe('User', function () {
 
   it('has a toString()', function () {
     expect(user.toString()).toBe('ID: 123 , Name: Aleksa , e-mail: aleksa47@gmail.com');
-  });
-
-  it('has a list of events joined', function () {
-    expect(user.eventsJoined).toEqual([]);
   });
 
   describe('Events', function () {
@@ -39,14 +35,6 @@ describe('User', function () {
       expect(user.joinEvent(event)).toBe(true);
       expect(user.joinEvent(event)).toBe(false);
       expect(user.eventsJoined).toEqual([event]);
-    });
-
-    it('increases guest count for event upon joining', function () {
-      user.joinEvent(event);
-      expect(event.guestCount).toBe(1);
-      const user2 = new User(123, 'Nada', 'nada.zelic@gmail.com');
-      user2.joinEvent(event);
-      expect(event.guestCount).toBe(2);
     });
 
   });
