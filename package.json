@@ -20,6 +20,7 @@
     "grunt-jasmine-nodejs": "^1.6.0"
   },
   "dependencies": {
-    "jasmine": "^2.8.0"
+    "jasmine": "^2.8.0",
+    "walk": "^2.3.9"
   }
 }
