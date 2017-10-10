@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 
         env: {
             test: {
-                SRC: __dirname + '/src'
+                SRC: __dirname + '\\src'
             }
         },
 
@@ -33,29 +33,9 @@ module.exports = function (grunt) {
                         listStyle: "indent", // "flat"|"indent" 
                         activity: false
                     },
-                    // junit: { 
-                    //     savePath: "./reports", 
-                    //     filePrefix: "junit-report", 
-                    //     consolidate: true, 
-                    //     useDotNotation: true 
-                    // }, 
-                    // nunit: { 
-                    //     savePath: "./reports", 
-                    //     filename: "nunit-report.xml", 
-                    //     reportName: "Test Results" 
-                    // }, 
-                    // terminal: { 
-                    //     color: false, 
-                    //     showStack: false, 
-                    //     verbosity: 2 
-                    // }, 
-                    // teamcity: true, 
-                    // tap: true 
                 },
-                // add custom Jasmine reporter(s) 
                 customReporters: []
             },
-
             test: {
                 options: {
                     useHelpers: true
@@ -66,15 +46,11 @@ module.exports = function (grunt) {
                 ]
             }
         },
+
         watch: {
             all: {
                 files: ['test/**', 'src/**'],
                 tasks: ['jshint', 'env', 'jasmine_nodejs']
-            }
-        },
-        debug: {
-            options: {
-                fork: true
             }
         }
     });
