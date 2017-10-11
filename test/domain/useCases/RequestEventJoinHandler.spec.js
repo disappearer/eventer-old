@@ -1,77 +1,54 @@
-describe('Request Event Join Handler', function () {
+describe('Request Event Join Handler', function() {
   var requestEventJoinHandler,
     userRepository,
     eventRepository,
     eventJoinRequestMessage;
 
-  beforeEach(function () {
+  beforeEach(function() {
     userRepository = new UserRepository();
     eventRepository = new EventRepository();
-    requestEventJoinHandler =
-      new RequestEventJoinHandler(authServiceSuccess, userRepository, eventRepository);
+    requestEventJoinHandler = new RequestEventJoinHandler(
+      authServiceSuccess,
+      userRepository,
+      eventRepository
+    );
     eventJoinRequestMessage = {
       userId: 123,
       eventId: 11
     };
   });
 
-  it('adds event to user\'s eventsJoined list', function () {
-    const eventJoinResponseMessage =
-      requestEventJoinHandler.handle(eventJoinRequestMessage);
-    expect(eventJoinResponseMessage).toEqual(
-      {
-        success: true,
-        message: 'User (id:123) joined event (id:11).'
-      }
+  it("adds event to user's eventsJoined list", function() {
+    const eventJoinResponseMessage = requestEventJoinHandler.handle(
+      eventJoinRequestMessage
     );
     const user = userRepository.getById(eventJoinRequestMessage.userId);
     const event = eventRepository.getById(eventJoinRequestMessage.eventId);
     expect(user.eventsJoined).toEqual([event]);
   });
 
-  it('adds user to event\'s guest list', function () {
+  it("adds user to event's guest list", function() {
     requestEventJoinHandler.handle(eventJoinRequestMessage);
     const user = userRepository.getById(eventJoinRequestMessage.userId);
     const event = eventRepository.getById(eventJoinRequestMessage.eventId);
     expect(event.guestList).toEqual([user]);
   });
 
-  it('returns error message if user already joined', function () {
-    requestEventJoinHandler.handle(eventJoinRequestMessage);
-    const eventJoinResponseMessage =
+  it('throws error if a repository getById() fails', function() {
+    spyOn(userRepository, 'getById').and.callFake(function() {
+      throw new Error('ProblemRetrievingEntityException');
+    });
+    expect(function() {
       requestEventJoinHandler.handle(eventJoinRequestMessage);
-    expect(eventJoinResponseMessage).toEqual(
-      {
-        success: false,
-        message: 'User (id:123) already joined event (id:11).'
-      }
-    );
+    }).toThrowError('ProblemRetrievingEntityException');
   });
 
-  it('fails if user not found', function () {
-    const requestEventJoinHandler = new RequestEventJoinHandler(authServiceSuccess,
-      emptyRepository, eventRepository);
-    const eventJoinResponseMessage =
+  it('throws error if a repository save() fails', function() {
+    spyOn(userRepository, 'save').and.callFake(function() {
+      throw new Error('ProblemPersistingEntityException');
+    });
+    expect(function() {
       requestEventJoinHandler.handle(eventJoinRequestMessage);
-    expect(eventJoinResponseMessage).toEqual(
-      {
-        success: false,
-        message: 'User (id:' + eventJoinRequestMessage.userId + ') not found.'
-      }
-    );
+    }).toThrowError('ProblemPersistingEntityException');
   });
-
-  it('fails if event not found', function () {
-    const requestEventJoinHandler = new RequestEventJoinHandler(authServiceSuccess,
-      userRepository, emptyRepository);
-    const eventJoinResponseMessage =
-      requestEventJoinHandler.handle(eventJoinRequestMessage);
-    expect(eventJoinResponseMessage).toEqual(
-      {
-        success: false,
-        message: 'Event (id:' + eventJoinRequestMessage.eventId + ') not found.'
-      }
-    );
-  });
-
 });

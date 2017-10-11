@@ -5,8 +5,7 @@ class MockRepository {
   }
 
   getById(id) {
-    if (id in this.entities)
-      return this.entities[id];
+    if (id in this.entities) return this.entities[id];
     const entity = this.createEntity(id);
     this.entities[id] = entity;
     return entity;
@@ -20,7 +19,7 @@ class MockRepository {
 
 class UserRepository extends MockRepository {
   constructor() {
-    super(function (id) {
+    super(function(id) {
       return new User(id, 'User' + id, 'user' + id + '@mail.com');
     });
   }
@@ -28,21 +27,18 @@ class UserRepository extends MockRepository {
 
 class EventRepository extends MockRepository {
   constructor() {
-    super(function (id) {
-      return new Event(id, 123 + id, 'Event' + id, 'Event with id: ' + id,
-        new Date(), id + ' Baker Street');
+    super(function(id) {
+      return new Event(
+        id,
+        123 + id,
+        'Event' + id,
+        'Event with id: ' + id,
+        new Date(),
+        id + ' Baker Street'
+      );
     });
   }
 }
 
 global.UserRepository = UserRepository;
 global.EventRepository = EventRepository;
-
-global.emptyRepository = {
-  getById: function () {
-    return null;
-  },
-  save: function () {
-    return null;
-  }
-};
