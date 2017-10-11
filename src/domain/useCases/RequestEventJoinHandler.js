@@ -6,11 +6,6 @@ class RequestEventJoinHandler {
   }
 
   handle(eventJoinRequestMessage) {
-    if (!this.authService.isAuthenticated())
-      return {
-        success: false,
-        message: 'User not authenticated.'
-      };
 
     const user = this.userRepository.getById(eventJoinRequestMessage.userId);
     if (!user)

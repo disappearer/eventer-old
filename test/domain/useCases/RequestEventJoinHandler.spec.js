@@ -48,19 +48,6 @@ describe('Request Event Join Handler', function () {
     );
   });
 
-  it('fails if user not authenticated', function () {
-    const requestEventJoinHandler =
-      new RequestEventJoinHandler(authServiceFail, userRepository, eventRepository);
-    const eventJoinResponseMessage =
-      requestEventJoinHandler.handle(eventJoinRequestMessage);
-    expect(eventJoinResponseMessage).toEqual(
-      {
-        success: false,
-        message: 'User not authenticated.'
-      }
-    );
-  });
-
   it('fails if user not found', function () {
     const requestEventJoinHandler = new RequestEventJoinHandler(authServiceSuccess,
       emptyRepository, eventRepository);
