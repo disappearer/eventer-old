@@ -7,18 +7,19 @@ class User {
   }
 
   toString() {
-    return 'ID: ' + this.id + ' , Name: ' + this.name + ' , e-mail: ' + this.email;
+    return (
+      'ID: ' + this.id + ' , Name: ' + this.name + ' , e-mail: ' + this.email
+    );
   }
 
   joinEvent(event) {
-    if (this.isJoined(event))
-      return false;
+    if (this.isJoined(event)) throw new Error('EventAlreadyJoinedException');
     this.eventsJoined.push(event);
     return true;
   }
 
   isJoined(event) {
-    return this.eventsJoined.find(function (joinedEvent) {
+    return this.eventsJoined.find(function(joinedEvent) {
       return joinedEvent.id == event.id;
     });
   }

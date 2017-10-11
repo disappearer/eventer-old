@@ -10,22 +10,32 @@ class Event {
   }
 
   addToGuestList(user) {
-    if (this.isInGuestList(user))
-      return false;
+    if (this.isInGuestList(user)) throw new Error('UserAlreadyAddedException');
     this.guestList.push(user);
     return true;
   }
 
   isInGuestList(user) {
-    return this.guestList.find(function (guestListUser) {
+    return this.guestList.find(function(guestListUser) {
       return guestListUser.id == user.id;
     });
   }
 
   toString() {
-    return 'ID: ' + this.id + ', CreatorID: ' + this.creatorId +
-      ', Title: ' + this.title + ', Description: ' + this.description +
-      ', Time: ' + this.date + ', Location: ' + this.location;
+    return (
+      'ID: ' +
+      this.id +
+      ', CreatorID: ' +
+      this.creatorId +
+      ', Title: ' +
+      this.title +
+      ', Description: ' +
+      this.description +
+      ', Time: ' +
+      this.date +
+      ', Location: ' +
+      this.location
+    );
   }
 }
 
