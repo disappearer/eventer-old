@@ -31,9 +31,10 @@ describe('User', function () {
     });
 
     it('can\'t be joined if already joined', function () {
-      const event = new Event(11, 123, 'Concert', 'ZooCore concert', new Date(), 'Zoo');
       expect(user.joinEvent(event)).toBe(true);
-      expect(user.joinEvent(event)).toBe(false);
+      const sameEventDifferentObject =
+        new Event(11, 123, 'Concert', 'ZooCore concert', new Date(), 'Zoo');
+      expect(user.joinEvent(sameEventDifferentObject)).toBe(false);
       expect(user.eventsJoined).toEqual([event]);
     });
 

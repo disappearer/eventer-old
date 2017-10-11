@@ -18,7 +18,9 @@ class User {
   }
 
   isJoined(event) {
-    return this.eventsJoined.indexOf(event) + 1;
+    return this.eventsJoined.find(function (joinedEvent) {
+      return joinedEvent.id == event.id;
+    });
   }
 }
 

@@ -17,7 +17,9 @@ class Event {
   }
 
   isInGuestList(user) {
-    return this.guestList.indexOf(user) + 1;
+    return this.guestList.find(function (guestListUser) {
+      return guestListUser.id == user.id;
+    });
   }
 
   toString() {

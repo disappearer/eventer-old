@@ -35,7 +35,8 @@ describe('Event', function () {
 
     it('can\'t be added if already added', function () {
       expect(event.addToGuestList(user)).toBe(true);
-      expect(event.addToGuestList(user)).toBe(false);
+      const sameUserDifferentObject = new User(123, 'Aleksa', 'aleksa47@gmail.com');
+      expect(event.addToGuestList(sameUserDifferentObject)).toBe(false);
       expect(event.guestList).toEqual([user]);
     });
 
