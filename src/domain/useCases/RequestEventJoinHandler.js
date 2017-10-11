@@ -6,25 +6,35 @@ class RequestEventJoinHandler {
   }
 
   handle(eventJoinRequestMessage) {
-
     if (!this.authService.isAuthenticated())
       return {
         success: false,
         message: 'User not authenticated.'
       };
 
-    var user = this.userRepository.getById(eventJoinRequestMessage.userId);
-    var event = this.eventRepository.getById(eventJoinRequestMessage.eventId);
-
-    if (this.join(user, event))
+    const user = this.userRepository.getById(eventJoinRequestMessage.userId);
+    if (!user)
       return {
-        success: true,
-        message: 'User (id:' + user.id + ') joined event (id:' + event.id + ').'
+        success: false,
+        message: 'User (id:' + eventJoinRequestMessage.userId + ') not found.'
+      };
+
+    const event = this.eventRepository.getById(eventJoinRequestMessage.eventId);
+    if (!event)
+      return {
+        success: false,
+        message: 'Event (id:' + eventJoinRequestMessage.eventId + ') not found.'
+      };
+
+    if (!this.join(user, event))
+      return {
+        success: false,
+        message: 'User (id:' + user.id + ') already joined event (id:' + event.id + ').'
       };
 
     return {
-      success: false,
-      message: 'User (id:' + user.id + ') already joined event (id:' + event.id + ').'
+      success: true,
+      message: 'User (id:' + user.id + ') joined event (id:' + event.id + ').'
     };
   }
 
@@ -32,7 +42,9 @@ class RequestEventJoinHandler {
     if (!user.joinEvent(event))
       return false;
 
-    event.addToGuestList(user);
+    if (!event.addToGuestList(user))
+      return false;
+
     this.userRepository.save(user);
     this.eventRepository.save(event);
     return true;

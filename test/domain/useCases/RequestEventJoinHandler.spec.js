@@ -1,4 +1,3 @@
-
 describe('Request Event Join Handler', function () {
   var requestEventJoinHandler,
     userRepository,
@@ -6,10 +5,10 @@ describe('Request Event Join Handler', function () {
     eventJoinRequestMessage;
 
   beforeEach(function () {
-    const authServiceSuccess = new MockAuthService(true);
-    userRepository = new MockUserRepository();
-    eventRepository = new MockEventRepository();
-    requestEventJoinHandler = new RequestEventJoinHandler(authServiceSuccess, userRepository, eventRepository);
+    userRepository = new UserRepository();
+    eventRepository = new EventRepository();
+    requestEventJoinHandler =
+      new RequestEventJoinHandler(authServiceSuccess, userRepository, eventRepository);
     eventJoinRequestMessage = {
       userId: 123,
       eventId: 11
@@ -17,7 +16,8 @@ describe('Request Event Join Handler', function () {
   });
 
   it('adds event to user\'s eventsJoined list', function () {
-    eventJoinResponseMessage = requestEventJoinHandler.handle(eventJoinRequestMessage);
+    const eventJoinResponseMessage =
+      requestEventJoinHandler.handle(eventJoinRequestMessage);
     expect(eventJoinResponseMessage).toEqual(
       {
         success: true,
@@ -38,7 +38,8 @@ describe('Request Event Join Handler', function () {
 
   it('returns error message if user already joined', function () {
     requestEventJoinHandler.handle(eventJoinRequestMessage);
-    const eventJoinResponseMessage = requestEventJoinHandler.handle(eventJoinRequestMessage);
+    const eventJoinResponseMessage =
+      requestEventJoinHandler.handle(eventJoinRequestMessage);
     expect(eventJoinResponseMessage).toEqual(
       {
         success: false,
@@ -48,13 +49,40 @@ describe('Request Event Join Handler', function () {
   });
 
   it('fails if user not authenticated', function () {
-    const authServiceFail = new MockAuthService(false);
-    const requestEventJoinHandler = new RequestEventJoinHandler(authServiceFail, userRepository, eventRepository);
-    const eventJoinResponseMessage = requestEventJoinHandler.handle(eventJoinRequestMessage);
+    const requestEventJoinHandler =
+      new RequestEventJoinHandler(authServiceFail, userRepository, eventRepository);
+    const eventJoinResponseMessage =
+      requestEventJoinHandler.handle(eventJoinRequestMessage);
     expect(eventJoinResponseMessage).toEqual(
       {
         success: false,
         message: 'User not authenticated.'
+      }
+    );
+  });
+
+  it('fails if user not found', function () {
+    const requestEventJoinHandler = new RequestEventJoinHandler(authServiceSuccess,
+      emptyRepository, eventRepository);
+    const eventJoinResponseMessage =
+      requestEventJoinHandler.handle(eventJoinRequestMessage);
+    expect(eventJoinResponseMessage).toEqual(
+      {
+        success: false,
+        message: 'User (id:' + eventJoinRequestMessage.userId + ') not found.'
+      }
+    );
+  });
+
+  it('fails if event not found', function () {
+    const requestEventJoinHandler = new RequestEventJoinHandler(authServiceSuccess,
+      userRepository, emptyRepository);
+    const eventJoinResponseMessage =
+      requestEventJoinHandler.handle(eventJoinRequestMessage);
+    expect(eventJoinResponseMessage).toEqual(
+      {
+        success: false,
+        message: 'Event (id:' + eventJoinRequestMessage.eventId + ') not found.'
       }
     );
   });

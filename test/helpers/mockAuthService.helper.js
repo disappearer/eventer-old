@@ -1,11 +1,5 @@
-class MockAuthService {
-  constructor(authenticated) {
-    this.authenticated = authenticated;
-  }
+const authServiceSuccess = { isAuthenticated: function () { return true; } };
+const authServiceFail = { isAuthenticated: function () { return false; } };
 
-  isAuthenticated() {
-    return this.authenticated;
-  }
-}
-
-global.MockAuthService = MockAuthService;
+global.authServiceSuccess = authServiceSuccess;
+global.authServiceFail = authServiceFail;

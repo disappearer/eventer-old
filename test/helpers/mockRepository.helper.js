@@ -1,31 +1,48 @@
-
-class MockUserRepository {
-  constructor() {
-    this.user = new User(123, 'Aleksa', 'aleksa47@gmail.com');
+class MockRepository {
+  constructor(createEntity) {
+    this.entities = {};
+    this.createEntity = createEntity;
   }
 
-  getById() {
-    return this.user;
+  getById(id) {
+    if (id in this.entities)
+      return this.entities[id];
+    const entity = this.createEntity(id);
+    this.entities[id] = entity;
+    return entity;
   }
 
-  save(user) {
-    this.user = user;
-  }
-}
-
-class MockEventRepository {
-  constructor() {
-    this.event = new Event(11, 123, 'Concert', 'ZooCore concert', new Date(), 'Zoo');
-  }
-
-  getById() {
-    return this.event;
-  }
-
-  save(event) {
-    this.event = event;
+  save(entity) {
+    this.entities[entity.id] = entity;
+    return entity;
   }
 }
 
-global.MockUserRepository = MockUserRepository;
-global.MockEventRepository = MockEventRepository;
+class UserRepository extends MockRepository {
+  constructor() {
+    super(function (id) {
+      return new User(id, 'User' + id, 'user' + id + '@mail.com');
+    });
+  }
+}
+
+class EventRepository extends MockRepository {
+  constructor() {
+    super(function (id) {
+      return new Event(id, 123 + id, 'Event' + id, 'Event with id: ' + id,
+        new Date(), id + ' Baker Street');
+    });
+  }
+}
+
+global.UserRepository = UserRepository;
+global.EventRepository = EventRepository;
+
+global.emptyRepository = {
+  getById: function () {
+    return null;
+  },
+  save: function () {
+    return null;
+  }
+};
