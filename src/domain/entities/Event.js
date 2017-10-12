@@ -20,23 +20,6 @@ class Event {
       return guestListUser.id == user.id;
     });
   }
-
-  toString() {
-    return (
-      'ID: ' +
-      this.id +
-      ', CreatorID: ' +
-      this.creatorId +
-      ', Title: ' +
-      this.title +
-      ', Description: ' +
-      this.description +
-      ', Time: ' +
-      this.date +
-      ', Location: ' +
-      this.location
-    );
-  }
 }
 
 module.exports = Event;

@@ -3,51 +3,31 @@ const User = require(process.env.SRC + '/domain/entities/user');
 
 describe('Event', function() {
   const date = new Date();
-  var event;
+  var event, user, user2;
 
   beforeEach(function() {
     event = new Event(11, 123, 'Concert', 'ZooCore concert', date, 'Zoo');
+    user = new User(123, 'Aleksa', 'aleksa47@gmail.com');
+    user2 = new User(246, 'Nada', 'nada.zelic@gmail.com');
   });
 
-  it('can be created', function() {
-    expect(event).toBeTruthy();
+  it('can add a user to the guest list', function() {
+    event.addToGuestList(user);
+    event.addToGuestList(user2);
+    expect(event.guestList).toEqual([user, user2]);
   });
 
-  it('has a toString', function() {
-    expect(event.toString()).toEqual(
-      'ID: 11, CreatorID: 123, Title: Concert, ' +
-        'Description: ZooCore concert, Time: ' +
-        date +
-        ', Location: Zoo'
+  it("throws error if trying to add user that's already in guest list", function() {
+    event.addToGuestList(user);
+    const sameUserDifferentObject = new User(
+      123,
+      'Aleksa',
+      'aleksa47@gmail.com'
     );
-  });
+    expect(function() {
+      event.addToGuestList(sameUserDifferentObject);
+    }).toThrowError('UserAlreadyAddedException');
 
-  describe('Users', function() {
-    var user, user2;
-
-    beforeEach(function() {
-      user = new User(123, 'Aleksa', 'aleksa47@gmail.com');
-      user2 = new User(246, 'Nada', 'nada.zelic@gmail.com');
-    });
-
-    it('can be added to the guest list', function() {
-      event.addToGuestList(user);
-      event.addToGuestList(user2);
-      expect(event.guestList).toEqual([user, user2]);
-    });
-
-    it('throws error if already added', function() {
-      event.addToGuestList(user);
-      const sameUserDifferentObject = new User(
-        123,
-        'Aleksa',
-        'aleksa47@gmail.com'
-      );
-      expect(function() {
-        event.addToGuestList(sameUserDifferentObject);
-      }).toThrowError('UserAlreadyAddedException');
-
-      expect(event.guestList).toEqual([user]);
-    });
+    expect(event.guestList).toEqual([user]);
   });
 });

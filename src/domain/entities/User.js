@@ -6,12 +6,6 @@ class User {
     this.eventsJoined = [];
   }
 
-  toString() {
-    return (
-      'ID: ' + this.id + ' , Name: ' + this.name + ' , e-mail: ' + this.email
-    );
-  }
-
   joinEvent(event) {
     if (this.isJoined(event)) throw new Error('EventAlreadyJoinedException');
     this.eventsJoined.push(event);
