@@ -1,6 +1,6 @@
 class MockRepository {
   constructor(createEntity) {
-    this.entities = {};
+    this.entities = [];
     this.createEntity = createEntity;
   }
 
@@ -11,9 +11,24 @@ class MockRepository {
     return entity;
   }
 
-  save(entity) {
+  add(entity) {
+    /* create a new instance as repository implementation
+       might return a different object altogether */
+    var returnEntity = Object.assign(Object.create(entity), entity);
+    returnEntity.id = this.entities.length;
+    this.entities.push(returnEntity);
+    return returnEntity;
+  }
+
+  update(entity) {
+    if (!(entity.id in this.entities))
+      throw new Error('UpdatingNonExistingEntityException, id:' + entity.id);
     this.entities[entity.id] = entity;
     return entity;
+  }
+
+  delete(entity) {
+    this.entities.splice(entity.id, 1);
   }
 }
 

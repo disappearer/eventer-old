@@ -14,8 +14,8 @@ class RequestEventJoinHandler {
   join(user, event) {
     user.joinEvent(event);
     event.addToGuestList(user);
-    this.userRepository.save(user);
-    this.eventRepository.save(event);
+    this.userRepository.update(user);
+    this.eventRepository.update(event);
   }
 }
 

@@ -43,8 +43,8 @@ describe('Request Event Join Handler', function() {
     }).toThrowError('ProblemRetrievingEntityException');
   });
 
-  it('throws error if a repository save() fails', function() {
-    spyOn(userRepository, 'save').and.callFake(function() {
+  it('throws error if a repository update() fails', function() {
+    spyOn(userRepository, 'update').and.callFake(function() {
       throw new Error('ProblemPersistingEntityException');
     });
     expect(function() {
