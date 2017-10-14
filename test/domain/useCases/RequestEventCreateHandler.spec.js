@@ -64,7 +64,7 @@ describe('Request Create Event Handler', function() {
       eventCreateRequestMessage
     );
     spyOn(userRepository, 'update').and.callFake(function() {
-      throw new Error('ProblemUpdatingEntityException');
+      throw new Error();
     });
     expect(function() {
       const returnedEvent2 = requestEventCreateHandler.handle(

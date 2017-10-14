@@ -7,7 +7,9 @@ class RequestEventJoinHandler {
 
   handle(eventJoinRequestMessage) {
     const user = this.userRepository.getById(eventJoinRequestMessage.userId);
+    if (!user) throw new Error('UserNotFoundException');
     const event = this.eventRepository.getById(eventJoinRequestMessage.eventId);
+    if (!event) throw new Error('EventNotFoundException');
     this.join(user, event);
   }
 

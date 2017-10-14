@@ -34,21 +34,21 @@ describe('Request Event Join Handler', function() {
     expect(event.guestList).toEqual([user]);
   });
 
-  it('throws error if a repository getById() fails', function() {
+  it('throws error if user not found', function() {
     spyOn(userRepository, 'getById').and.callFake(function() {
-      throw new Error('ProblemRetrievingEntityException');
+      return null;
     });
     expect(function() {
       requestEventJoinHandler.handle(eventJoinRequestMessage);
-    }).toThrowError('ProblemRetrievingEntityException');
+    }).toThrowError('UserNotFoundException');
   });
 
-  it('throws error if a repository update() fails', function() {
-    spyOn(userRepository, 'update').and.callFake(function() {
-      throw new Error('ProblemPersistingEntityException');
+  it('throws error if event not found', function() {
+    spyOn(eventRepository, 'getById').and.callFake(function() {
+      return null;
     });
     expect(function() {
       requestEventJoinHandler.handle(eventJoinRequestMessage);
-    }).toThrowError('ProblemPersistingEntityException');
+    }).toThrowError('EventNotFoundException');
   });
 });
