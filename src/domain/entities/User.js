@@ -1,9 +1,13 @@
+const randomstring = require('randomstring');
+
 class User {
-  constructor(id, displayName, email, password) {
+  constructor(id, displayName, email, password, verified) {
     this.id = id;
     this.email = email;
     this.password = password;
     this.displayName = displayName;
+    this.verified = verified;
+    if (!verified) this.verificationToken = randomstring.generate(13);
     this.eventsJoined = [];
   }
 

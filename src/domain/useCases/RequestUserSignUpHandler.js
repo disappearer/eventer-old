@@ -1,17 +1,37 @@
 class RequestUserSignUpHandler {
-  constructor(userRepository) {
+  constructor(userRepository, notificationService) {
     this.userRepository = userRepository;
+    this.notificationService = notificationService;
   }
 
   handle(requestMessage) {
-    const user = new User(
+    const user = this.createUser(requestMessage);
+    const savedUser = this.userRepository.add(user);
+    this.verifyEmailIfNotVerified(savedUser);
+    return user;
+  }
+
+  createUser(requestMessage) {
+    const user = this.userRepository.findOne({ email: requestMessage.email });
+    if (user) throw new Error('EmailInUseException');
+    return new User(
       0,
       requestMessage.name,
       requestMessage.email,
-      requestMessage.password
+      requestMessage.password,
+      requestMessage.verified
     );
-    const savedUser = this.userRepository.add(user);
-    return savedUser;
+  }
+
+  verifyEmailIfNotVerified(user) {
+    if (!user.verified) {
+      var content = this.createVerificationMessage(user);
+      this.notificationService.sendEmail(user.email, content);
+    }
+  }
+
+  createVerificationMessage(user) {
+    return user.id + ':' + user.verificationToken;
   }
 }
 

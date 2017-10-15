@@ -1,12 +1,20 @@
 describe('Request User Sign Up Handler', function() {
-  var userRepository, requestUserSignUpHandler, requestMessage;
+  var userRepository,
+    notificationService,
+    requestUserSignUpHandler,
+    requestMessage;
 
   beforeEach(function() {
     userRepository = new UserRepository();
-    requestUserSignUpHandler = new RequestUserSignUpHandler(userRepository);
+    notificationService = { sendEmail: function(emailAddress, content) {} };
+    requestUserSignUpHandler = new RequestUserSignUpHandler(
+      userRepository,
+      notificationService
+    );
     requestMessage = {
       name: 'Non-unique Display Name',
-      email: 'address@mail.com'
+      email: 'address@mail.com',
+      verified: true
     };
   });
 
@@ -30,5 +38,22 @@ describe('Request User Sign Up Handler', function() {
     const returnedUser = requestUserSignUpHandler.handle(requestMessage);
     const savedUser = userRepository.getById(returnedUser.id);
     expect(savedUser).toEqual(returnedUser);
+  });
+
+  it('throws if email already in repository', function() {
+    const returnedUser1 = requestUserSignUpHandler.handle(requestMessage);
+    expect(function() {
+      const returnedUser2 = requestUserSignUpHandler.handle(requestMessage);
+    }).toThrowError('EmailInUseException');
+  });
+
+  it('sends verification email if not verified (local sign-up)', function() {
+    requestMessage.verified = false;
+    spyOn(notificationService, 'sendEmail');
+    const returnedUser = requestUserSignUpHandler.handle(requestMessage);
+    expect(notificationService.sendEmail).toHaveBeenCalledWith(
+      returnedUser.email,
+      returnedUser.id + ':' + returnedUser.verificationToken
+    );
   });
 });

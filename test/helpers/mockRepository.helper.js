@@ -11,6 +11,12 @@ class MockRepository {
     return entity;
   }
 
+  findOne(query) {
+    return this.entities.find(entity => {
+      return entity.email == query.email;
+    });
+  }
+
   add(entity) {
     /* create a new instance as repository implementation
        might return a different object altogether */
@@ -37,6 +43,12 @@ class UserRepository extends MockRepository {
     super(function(id) {
       return new User(id, 'User' + id, 'user' + id + '@mail.com');
     });
+  }
+
+  add(newUser) {
+    if (this.entities.find(user => user.email == newUser.email))
+      throw new Error('EmailInUseException');
+    return super.add(newUser);
   }
 }
 
