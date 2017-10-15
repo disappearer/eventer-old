@@ -5,36 +5,41 @@ class MockRepository {
   }
 
   getById(id) {
-    if (id in this.entities) return this.entities[id];
+    if (id in this.entities) return this.cloneEntity(this.entities[id]);
     const entity = this.createEntity(id);
     this.entities[id] = entity;
-    return entity;
+    return this.cloneEntity(entity);
   }
 
   findOne(query) {
-    return this.entities.find(entity => {
+    const returnEntity = this.entities.find(entity => {
       return entity.email == query.email;
     });
+    return returnEntity && this.cloneEntity(returnEntity);
   }
 
   add(entity) {
     /* create a new instance as repository implementation
        might return a different object altogether */
-    var returnEntity = Object.assign(Object.create(entity), entity);
+    var returnEntity = this.cloneEntity(entity);
     returnEntity.id = this.entities.length;
     this.entities.push(returnEntity);
-    return returnEntity;
+    return this.cloneEntity(returnEntity);
   }
 
   update(entity) {
     if (!(entity.id in this.entities))
       throw new Error('UpdatingNonExistingEntityException, id:' + entity.id);
-    this.entities[entity.id] = entity;
+    this.entities[entity.id] = this.cloneEntity(entity);
     return entity;
   }
 
   delete(entity) {
     this.entities.splice(entity.id, 1);
+  }
+
+  cloneEntity(entity) {
+    return Object.assign(Object.create(entity), entity);
   }
 }
 
