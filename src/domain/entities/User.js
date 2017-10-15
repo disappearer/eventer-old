@@ -1,8 +1,9 @@
 class User {
-  constructor(id, name, email) {
+  constructor(id, displayName, email, password) {
     this.id = id;
-    this.name = name;
     this.email = email;
+    this.password = password;
+    this.displayName = displayName;
     this.eventsJoined = [];
   }
 

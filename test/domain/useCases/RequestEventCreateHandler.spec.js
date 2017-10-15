@@ -28,6 +28,7 @@ describe('Request Create Event Handler', function() {
     const returnedEvent = requestEventCreateHandler.handle(
       eventCreateRequestMessage
     );
+    expect(returnedEvent).toEqual(jasmine.any(Event));
     expect(eventInfo.title).toBe(returnedEvent.title);
     expect(eventInfo.description).toBe(returnedEvent.description);
     expect(eventInfo.date).toBe(returnedEvent.date);
