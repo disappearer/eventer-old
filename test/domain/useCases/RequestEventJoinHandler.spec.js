@@ -1,3 +1,6 @@
+const RequestEventJoinHandler = require(process.env.SRC +
+  '/domain/useCases/RequestEventJoinHandler');
+
 describe('Request Event Join Handler', function() {
   var requestEventJoinHandler,
     userRepository,

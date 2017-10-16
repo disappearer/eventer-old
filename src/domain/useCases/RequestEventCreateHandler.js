@@ -1,3 +1,5 @@
+const Event = require('../entities/Event');
+
 class RequestEventCreateHandler {
   constructor(eventRepository, userRepository) {
     this.eventRepository = eventRepository;

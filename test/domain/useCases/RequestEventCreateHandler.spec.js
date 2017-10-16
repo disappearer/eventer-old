@@ -1,3 +1,7 @@
+const RequestEventCreateHandler = require(process.env.SRC +
+  '/domain/useCases/RequestEventCreateHandler');
+const Event = require(process.env.SRC + '/domain/entities/Event');
+
 describe('Request Create Event Handler', function() {
   var requestEventCreateHandler,
     eventRepository,

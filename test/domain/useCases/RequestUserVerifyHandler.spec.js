@@ -1,3 +1,8 @@
+const RequestUserSignUpHandler = require(process.env.SRC +
+  '/domain/usecases/RequestUserSignUpHandler');
+const RequestUserVerifyHandler = require(process.env.SRC +
+  '/domain/usecases/RequestUserVerifyHandler');
+
 describe('Request User Verify Handler', function() {
   var userRepository, requestUserVerifyHandler, requestUserVerifyMessage;
 

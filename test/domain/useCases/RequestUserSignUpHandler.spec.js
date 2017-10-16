@@ -1,3 +1,7 @@
+const RequestUserSignUpHandler = require(process.env.SRC +
+  '/domain/useCases/RequestUserSignUpHandler');
+const User = require(process.env.SRC + '/domain/entities/User');
+
 describe('Request User Sign Up Handler', function() {
   var userRepository,
     notificationService,

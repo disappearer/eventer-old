@@ -1,3 +1,7 @@
+const User = require(process.env.SRC + '/domain/entities/User');
+const Event = require(process.env.SRC + '/domain/entities/Event');
+const dbData = require('./dbData.json');
+
 class MockRepository {
   constructor(createEntity) {
     this.entities = [];
@@ -74,3 +78,4 @@ class EventRepository extends MockRepository {
 
 global.UserRepository = UserRepository;
 global.EventRepository = EventRepository;
+global.testDbData = dbData;

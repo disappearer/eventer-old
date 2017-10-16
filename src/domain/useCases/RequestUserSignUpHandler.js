@@ -1,3 +1,5 @@
+const User = require('../entities/User');
+
 class RequestUserSignUpHandler {
   constructor(userRepository, notificationService) {
     this.userRepository = userRepository;
