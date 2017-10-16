@@ -22,9 +22,13 @@ class MockRepository {
     return returnEntity && this.cloneEntity(returnEntity);
   }
 
+  getAll() {
+    return this.entities.map(function(entity) {
+      return this.cloneEntity(entity);
+    }, this);
+  }
+
   add(entity) {
-    /* create a new instance as repository implementation
-       might return a different object altogether */
     var returnEntity = this.cloneEntity(entity);
     returnEntity.id = this.entities.length;
     this.entities.push(returnEntity);
@@ -72,6 +76,28 @@ class EventRepository extends MockRepository {
         new Date(),
         id + ' Baker Street'
       );
+    });
+  }
+
+  getAll() {
+    var eventList = this.entities.map(function(entity) {
+      return this.cloneEntity(entity);
+    }, this);
+    return eventList.sort(function(e1, e2) {
+      return e1.date - e2.date;
+    });
+  }
+
+  getFuture() {
+    var eventList = this.entities.map(function(entity) {
+      return this.cloneEntity(entity);
+    }, this);
+    eventList.sort(function(e1, e2) {
+      return e1.date - e2.date;
+    });
+    const now = new Date();
+    return eventList.filter(function(event) {
+      return event.date > now;
     });
   }
 }

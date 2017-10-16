@@ -5,7 +5,7 @@
       "eventInfo": {
         "title": "Some Event 1",
         "description": "Just an event.",
-        "date": "2017-10-15T20:00:00.000Z",
+        "date": "2017 10 15 20 00 00",
         "location": "Somewhere"
       }
     },
@@ -14,7 +14,7 @@
       "eventInfo": {
         "title": "Some Event 2",
         "description": "Just an event.",
-        "date": "2017-10-14T20:00:00.000Z",
+        "date": "2017 10 14 20 00 00",
         "location": "Somewhere"
       }
     },
@@ -23,7 +23,7 @@
       "eventInfo": {
         "title": "Some Event 3",
         "description": "Just an event.",
-        "date": "2017-10-18T18:00:00.000Z",
+        "date": "2017 10 18 18 00 00",
         "location": "Somewhere"
       }
     },
@@ -32,7 +32,7 @@
       "eventInfo": {
         "title": "Some Event 4",
         "description": "Just an event.",
-        "date": "2017-10-19T20:00:00.000Z",
+        "date": "2017 10 19 20 00 00",
         "location": "Somewhere"
       }
     },
@@ -41,7 +41,7 @@
       "eventInfo": {
         "title": "Some Event 5",
         "description": "Just an event.",
-        "date": "2017-10-18T20:00:00.000Z",
+        "date": "2017 10 18 20 00 00",
         "location": "Somewhere"
       }
     },
@@ -50,7 +50,7 @@
       "eventInfo": {
         "title": "Some Event 6",
         "description": "Just an event.",
-        "date": "2017-11-17T20:00:00.000Z",
+        "date": "2017 11 15 20 00 00",
         "location": "Somewhere"
       }
     }
