@@ -1,8 +1,8 @@
-const RequestEventJoinHandler = require(process.env.SRC +
-  '/domain/useCases/RequestEventJoinHandler');
+const EventJoinHandler = require(process.env.SRC +
+  '/domain/useCases/EventJoinHandler');
 
 describe('Request Event Join Handler', function() {
-  var requestEventJoinHandler,
+  var eventJoinHandler,
     userRepository,
     eventRepository,
     eventJoinRequestMessage;
@@ -10,7 +10,7 @@ describe('Request Event Join Handler', function() {
   beforeEach(function() {
     userRepository = new UserRepository();
     eventRepository = new EventRepository();
-    requestEventJoinHandler = new RequestEventJoinHandler(
+    eventJoinHandler = new EventJoinHandler(
       authServiceSuccess,
       userRepository,
       eventRepository
@@ -22,7 +22,7 @@ describe('Request Event Join Handler', function() {
   });
 
   it("adds event to user's eventsJoined list", function() {
-    const eventJoinResponseMessage = requestEventJoinHandler.handle(
+    const eventJoinResponseMessage = eventJoinHandler.handle(
       eventJoinRequestMessage
     );
     const user = userRepository.getById(eventJoinRequestMessage.userId);
@@ -31,7 +31,7 @@ describe('Request Event Join Handler', function() {
   });
 
   it("adds user to event's guest list", function() {
-    requestEventJoinHandler.handle(eventJoinRequestMessage);
+    eventJoinHandler.handle(eventJoinRequestMessage);
     const user = userRepository.getById(eventJoinRequestMessage.userId);
     const event = eventRepository.getById(eventJoinRequestMessage.eventId);
     expect(event.guestList).toEqual([user]);
@@ -42,7 +42,7 @@ describe('Request Event Join Handler', function() {
       return null;
     });
     expect(function() {
-      requestEventJoinHandler.handle(eventJoinRequestMessage);
+      eventJoinHandler.handle(eventJoinRequestMessage);
     }).toThrowError('UserNotFoundException');
   });
 
@@ -51,7 +51,7 @@ describe('Request Event Join Handler', function() {
       return null;
     });
     expect(function() {
-      requestEventJoinHandler.handle(eventJoinRequestMessage);
+      eventJoinHandler.handle(eventJoinRequestMessage);
     }).toThrowError('EventNotFoundException');
   });
 });

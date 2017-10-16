@@ -1,9 +1,9 @@
-const RequestEventCreateHandler = require(process.env.SRC +
-  '/domain/useCases/RequestEventCreateHandler');
+const EventCreateHandler = require(process.env.SRC +
+  '/domain/useCases/EventCreateHandler');
 const Event = require(process.env.SRC + '/domain/entities/Event');
 
 describe('Request Create Event Handler', function() {
-  var requestEventCreateHandler,
+  var eventCreateHandler,
     eventRepository,
     userRepository,
     eventCreateRequestMessage;
@@ -22,16 +22,14 @@ describe('Request Create Event Handler', function() {
       userId: 123,
       eventInfo: eventInfo
     };
-    requestEventCreateHandler = new RequestEventCreateHandler(
+    eventCreateHandler = new EventCreateHandler(
       eventRepository,
       userRepository
     );
   });
 
   it('creates a new event', function() {
-    const returnedEvent = requestEventCreateHandler.handle(
-      eventCreateRequestMessage
-    );
+    const returnedEvent = eventCreateHandler.handle(eventCreateRequestMessage);
     expect(returnedEvent).toEqual(jasmine.any(Event));
     expect(eventInfo.title).toBe(returnedEvent.title);
     expect(eventInfo.description).toBe(returnedEvent.description);
@@ -40,9 +38,7 @@ describe('Request Create Event Handler', function() {
   });
 
   it('adds the new event to repository', function() {
-    const returnedEvent = requestEventCreateHandler.handle(
-      eventCreateRequestMessage
-    );
+    const returnedEvent = eventCreateHandler.handle(eventCreateRequestMessage);
     const savedEvent = eventRepository.getById(returnedEvent.id);
     expect(returnedEvent).toEqual(savedEvent);
   });
@@ -51,10 +47,10 @@ describe('Request Create Event Handler', function() {
     "adds event to creator's list of joined events" +
       ' and persists the changes',
     function() {
-      const returnedEvent1 = requestEventCreateHandler.handle(
+      const returnedEvent1 = eventCreateHandler.handle(
         eventCreateRequestMessage
       );
-      const returnedEvent2 = requestEventCreateHandler.handle(
+      const returnedEvent2 = eventCreateHandler.handle(
         eventCreateRequestMessage
       );
       const savedEvent1 = eventRepository.getById(returnedEvent1.id);
@@ -65,14 +61,12 @@ describe('Request Create Event Handler', function() {
   );
 
   it('rolls back the event repo if creator update fails', function() {
-    const returnedEvent1 = requestEventCreateHandler.handle(
-      eventCreateRequestMessage
-    );
+    const returnedEvent1 = eventCreateHandler.handle(eventCreateRequestMessage);
     spyOn(userRepository, 'update').and.callFake(function() {
       throw new Error();
     });
     expect(function() {
-      const returnedEvent2 = requestEventCreateHandler.handle(
+      const returnedEvent2 = eventCreateHandler.handle(
         eventCreateRequestMessage
       );
     }).toThrowError();
@@ -84,7 +78,7 @@ describe('Request Create Event Handler', function() {
       return null;
     });
     expect(function() {
-      const returnedEvent = requestEventCreateHandler.handle(
+      const returnedEvent = eventCreateHandler.handle(
         eventCreateRequestMessage
       );
     }).toThrowError('EventCreatorNotFoundException');

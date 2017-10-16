@@ -1,4 +1,4 @@
-class RequestUserVerifyHandler {
+class UserVerifyHandler {
   constructor(userRepository) {
     this.userRepository = userRepository;
   }
@@ -18,4 +18,4 @@ class RequestUserVerifyHandler {
   }
 }
 
-module.exports = RequestUserVerifyHandler;
+module.exports = UserVerifyHandler;

@@ -1,4 +1,4 @@
-class RequestEventJoinHandler {
+class EventJoinHandler {
   constructor(authService, userRepository, eventRepository) {
     this.authService = authService;
     this.userRepository = userRepository;
@@ -21,4 +21,4 @@ class RequestEventJoinHandler {
   }
 }
 
-module.exports = RequestEventJoinHandler;
+module.exports = EventJoinHandler;

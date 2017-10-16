@@ -1,17 +1,17 @@
-const RequestUserSignUpHandler = require(process.env.SRC +
-  '/domain/usecases/RequestUserSignUpHandler');
-const RequestUserVerifyHandler = require(process.env.SRC +
-  '/domain/usecases/RequestUserVerifyHandler');
+const UserSignUpHandler = require(process.env.SRC +
+  '/domain/usecases/UserSignUpHandler');
+const UserVerifyHandler = require(process.env.SRC +
+  '/domain/usecases/UserVerifyHandler');
 
 describe('Request User Verify Handler', function() {
-  var userRepository, requestUserVerifyHandler, requestUserVerifyMessage;
+  var userRepository, userVerifyHandler, requestUserVerifyMessage;
 
   beforeEach(function() {
     userRepository = new UserRepository();
     const notificationService = {
       sendEmail: function(emailAddress, content) {}
     };
-    const requestUserSignUpHandler = new RequestUserSignUpHandler(
+    const userSignUpHandler = new UserSignUpHandler(
       userRepository,
       notificationService
     );
@@ -20,29 +20,29 @@ describe('Request User Verify Handler', function() {
       email: 'address@mail.com',
       verified: false
     };
-    const user = requestUserSignUpHandler.handle(requestSignUpMessage);
+    const user = userSignUpHandler.handle(requestSignUpMessage);
     requestUserVerifyMessage = {
       userId: user.id,
       verificationToken: user.verificationToken
     };
-    requestUserVerifyHandler = new RequestUserVerifyHandler(userRepository);
+    userVerifyHandler = new UserVerifyHandler(userRepository);
   });
 
   it('changes user\'s verified field to "true"', function() {
-    returnedUser = requestUserVerifyHandler.handle(requestUserVerifyMessage);
+    returnedUser = userVerifyHandler.handle(requestUserVerifyMessage);
     expect(returnedUser.verified).toBe(true);
   });
 
   it('persists the change', function() {
-    requestUserVerifyHandler.handle(requestUserVerifyMessage);
+    userVerifyHandler.handle(requestUserVerifyMessage);
     const savedUser = userRepository.getById(requestUserVerifyMessage.userId);
     expect(savedUser.verified).toBe(true);
   });
 
   it('throws error if user already verified', function() {
-    requestUserVerifyHandler.handle(requestUserVerifyMessage);
+    userVerifyHandler.handle(requestUserVerifyMessage);
     expect(function() {
-      requestUserVerifyHandler.handle(requestUserVerifyMessage);
+      userVerifyHandler.handle(requestUserVerifyMessage);
     }).toThrowError('UserAlreadyVerifiedException');
   });
 
@@ -51,7 +51,7 @@ describe('Request User Verify Handler', function() {
       return null;
     });
     expect(function() {
-      requestUserVerifyHandler.handle(requestUserVerifyMessage);
+      userVerifyHandler.handle(requestUserVerifyMessage);
     }).toThrowError('UserNotFoundException');
   });
 });

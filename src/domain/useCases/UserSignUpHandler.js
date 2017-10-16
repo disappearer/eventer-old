@@ -1,6 +1,6 @@
 const User = require('../entities/User');
 
-class RequestUserSignUpHandler {
+class UserSignUpHandler {
   constructor(userRepository, notificationService) {
     this.userRepository = userRepository;
     this.notificationService = notificationService;
@@ -37,4 +37,4 @@ class RequestUserSignUpHandler {
   }
 }
 
-module.exports = RequestUserSignUpHandler;
+module.exports = UserSignUpHandler;

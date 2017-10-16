@@ -1,17 +1,14 @@
-const RequestUserSignUpHandler = require(process.env.SRC +
-  '/domain/useCases/RequestUserSignUpHandler');
+const UserSignUpHandler = require(process.env.SRC +
+  '/domain/useCases/UserSignUpHandler');
 const User = require(process.env.SRC + '/domain/entities/User');
 
 describe('Request User Sign Up Handler', function() {
-  var userRepository,
-    notificationService,
-    requestUserSignUpHandler,
-    requestMessage;
+  var userRepository, notificationService, userSignUpHandler, requestMessage;
 
   beforeEach(function() {
     userRepository = new UserRepository();
     notificationService = { sendEmail: function(emailAddress, content) {} };
-    requestUserSignUpHandler = new RequestUserSignUpHandler(
+    userSignUpHandler = new UserSignUpHandler(
       userRepository,
       notificationService
     );
@@ -23,7 +20,7 @@ describe('Request User Sign Up Handler', function() {
   });
 
   it('creates a new user without password', function() {
-    const user = requestUserSignUpHandler.handle(requestMessage);
+    const user = userSignUpHandler.handle(requestMessage);
     expect(user).toEqual(jasmine.any(User));
     expect(user.displayName).toEqual(requestMessage.name);
     expect(user.email).toEqual(requestMessage.email);
@@ -31,7 +28,7 @@ describe('Request User Sign Up Handler', function() {
 
   it('creates a new user with password', function() {
     requestMessage.password = 'encrypted_pass';
-    const user = requestUserSignUpHandler.handle(requestMessage);
+    const user = userSignUpHandler.handle(requestMessage);
     expect(user).toEqual(jasmine.any(User));
     expect(user.displayName).toEqual(requestMessage.name);
     expect(user.email).toEqual(requestMessage.email);
@@ -39,22 +36,22 @@ describe('Request User Sign Up Handler', function() {
   });
 
   it('persists the new user', function() {
-    const returnedUser = requestUserSignUpHandler.handle(requestMessage);
+    const returnedUser = userSignUpHandler.handle(requestMessage);
     const savedUser = userRepository.getById(returnedUser.id);
     expect(savedUser).toEqual(returnedUser);
   });
 
   it('throws if email already in repository', function() {
-    const returnedUser1 = requestUserSignUpHandler.handle(requestMessage);
+    const returnedUser1 = userSignUpHandler.handle(requestMessage);
     expect(function() {
-      const returnedUser2 = requestUserSignUpHandler.handle(requestMessage);
+      const returnedUser2 = userSignUpHandler.handle(requestMessage);
     }).toThrowError('EmailInUseException');
   });
 
   it('sends verification email if not verified (local sign-up)', function() {
     requestMessage.verified = false;
     spyOn(notificationService, 'sendEmail');
-    const returnedUser = requestUserSignUpHandler.handle(requestMessage);
+    const returnedUser = userSignUpHandler.handle(requestMessage);
     expect(notificationService.sendEmail).toHaveBeenCalledWith(
       returnedUser.email,
       returnedUser.id + ':' + returnedUser.verificationToken

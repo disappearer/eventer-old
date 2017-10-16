@@ -1,6 +1,6 @@
 const Event = require('../entities/Event');
 
-class RequestEventCreateHandler {
+class EventCreateHandler {
   constructor(eventRepository, userRepository) {
     this.eventRepository = eventRepository;
     this.userRepository = userRepository;
@@ -50,4 +50,4 @@ class RequestEventCreateHandler {
   }
 }
 
-module.exports = RequestEventCreateHandler;
+module.exports = EventCreateHandler;
