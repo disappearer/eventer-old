@@ -6,15 +6,22 @@ class UserSignUpHandler {
     this.notificationService = notificationService;
   }
 
-  handle(requestMessage) {
-    const user = this.createUser(requestMessage);
+  async handle(requestMessage) {
+    var user;
+    try {
+      user = await this.createUser(requestMessage);
+    } catch (error) {
+      throw error;
+    }
     const savedUser = this.userRepository.add(user);
     this.verifyEmailIfNotVerified(savedUser);
     return user;
   }
 
-  createUser(requestMessage) {
-    const user = this.userRepository.findOne({ email: requestMessage.email });
+  async createUser(requestMessage) {
+    const user = await this.userRepository.findOne({
+      email: requestMessage.email
+    });
     if (user) throw new Error('EmailInUseException');
     return new User(
       0,

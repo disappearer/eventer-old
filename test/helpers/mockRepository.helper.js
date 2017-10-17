@@ -16,10 +16,12 @@ class MockRepository {
   }
 
   findOne(query) {
-    const returnEntity = this.entities.find(entity => {
-      return entity.email == query.email;
+    return new Promise(resolve => {
+      const returnEntity = this.entities.find(entity => {
+        return entity.email == query.email;
+      });
+      resolve(returnEntity && this.cloneEntity(returnEntity));
     });
-    return returnEntity && this.cloneEntity(returnEntity);
   }
 
   getAll() {
