@@ -22,9 +22,7 @@ describe('Request Event Join Handler', function() {
   });
 
   it("adds event to user's eventsJoined list", function() {
-    const eventJoinResponseMessage = eventJoinHandler.handle(
-      eventJoinRequestMessage
-    );
+    eventJoinHandler.handle(eventJoinRequestMessage);
     const user = userRepository.getById(eventJoinRequestMessage.userId);
     const event = eventRepository.getById(eventJoinRequestMessage.eventId);
     expect(user.eventsJoined).toEqual([event]);

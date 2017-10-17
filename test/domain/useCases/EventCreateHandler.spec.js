@@ -66,9 +66,7 @@ describe('Request Create Event Handler', function() {
       throw new Error();
     });
     expect(function() {
-      const returnedEvent2 = eventCreateHandler.handle(
-        eventCreateRequestMessage
-      );
+      eventCreateHandler.handle(eventCreateRequestMessage);
     }).toThrowError();
     expect(eventRepository.entities).toEqual([returnedEvent1]);
   });
@@ -78,9 +76,7 @@ describe('Request Create Event Handler', function() {
       return null;
     });
     expect(function() {
-      const returnedEvent = eventCreateHandler.handle(
-        eventCreateRequestMessage
-      );
+      eventCreateHandler.handle(eventCreateRequestMessage);
     }).toThrowError('EventCreatorNotFoundException');
   });
 });

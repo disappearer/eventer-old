@@ -15,11 +15,12 @@
     "grunt-contrib-jasmine": "^1.1.0",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-debug": "0.0.3",
     "grunt-env": "^0.4.4",
-    "grunt-jasmine-nodejs": "^1.6.0"
+    "grunt-jasmine-nodejs": "^1.6.0",
+    "gruntify-eslint": "^4.0.0"
   },
   "dependencies": {
+    "eslint": "^4.9.0",
     "jasmine": "^2.8.0",
     "randomstring": "^1.1.5",
     "walk": "^2.3.9"

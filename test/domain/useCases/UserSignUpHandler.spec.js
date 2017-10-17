@@ -7,7 +7,12 @@ describe('Request User Sign Up Handler', function() {
 
   beforeEach(function() {
     userRepository = new UserRepository();
-    notificationService = { sendEmail: function(emailAddress, content) {} };
+    notificationService = {
+      sendEmail: function(emailAddress, content) {
+        emailAddress;
+        content;
+      }
+    };
     userSignUpHandler = new UserSignUpHandler(
       userRepository,
       notificationService
@@ -42,9 +47,9 @@ describe('Request User Sign Up Handler', function() {
   });
 
   it('throws if email already in repository', function() {
-    const returnedUser1 = userSignUpHandler.handle(requestMessage);
+    userSignUpHandler.handle(requestMessage);
     expect(function() {
-      const returnedUser2 = userSignUpHandler.handle(requestMessage);
+      userSignUpHandler.handle(requestMessage);
     }).toThrowError('EmailInUseException');
   });
 

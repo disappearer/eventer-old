@@ -9,7 +9,10 @@ describe('Request User Verify Handler', function() {
   beforeEach(function() {
     userRepository = new UserRepository();
     const notificationService = {
-      sendEmail: function(emailAddress, content) {}
+      sendEmail: function(emailAddress, content) {
+        emailAddress;
+        content;
+      }
     };
     const userSignUpHandler = new UserSignUpHandler(
       userRepository,
@@ -29,7 +32,7 @@ describe('Request User Verify Handler', function() {
   });
 
   it('changes user\'s verified field to "true"', function() {
-    returnedUser = userVerifyHandler.handle(requestUserVerifyMessage);
+    const returnedUser = userVerifyHandler.handle(requestUserVerifyMessage);
     expect(returnedUser.verified).toBe(true);
   });
 
