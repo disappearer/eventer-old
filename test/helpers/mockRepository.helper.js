@@ -46,10 +46,16 @@ class MockRepository {
   }
 
   update(entity) {
-    if (!(entity.id in this.entities))
-      throw new Error('UpdatingNonExistingEntityException, id:' + entity.id);
-    this.entities[entity.id] = this.cloneEntity(entity);
-    return entity;
+    return new Promise((resolve, reject) => {
+      if (!(entity.id in this.entities)) {
+        reject(
+          new UpdateError('UpdatingNonExistingEntityException', entity.id)
+        );
+      }
+
+      this.entities[entity.id] = this.cloneEntity(entity);
+      resolve(entity);
+    });
   }
 
   delete(entity) {
@@ -119,6 +125,14 @@ class EventRepository extends MockRepository {
   }
 }
 
+class UpdateError extends Error {
+  constructor(name, entityId) {
+    super(name);
+    this.entityId = entityId;
+  }
+}
+
 global.UserRepository = UserRepository;
 global.EventRepository = EventRepository;
 global.testDbData = dbData;
+global.UpdateError = UpdateError;

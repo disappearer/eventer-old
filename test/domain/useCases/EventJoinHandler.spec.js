@@ -1,7 +1,7 @@
 const EventJoinHandler = require(process.env.SRC +
   '/domain/useCases/EventJoinHandler');
 
-describe('Request Event Join Handler', () => {
+describe('Event Join Handler', () => {
   var eventJoinHandler,
     userRepository,
     eventRepository,

@@ -12,7 +12,7 @@ class EventCreateHandler {
       creator,
       requestMessage.eventInfo
     );
-    this.updateCreator(creator, returnedEvent);
+    await this.updateCreator(creator, returnedEvent);
     return returnedEvent;
   }
 
@@ -39,10 +39,10 @@ class EventCreateHandler {
     return creator;
   }
 
-  updateCreator(user, event) {
+  async updateCreator(user, event) {
     user.joinEvent(event);
     try {
-      this.userRepository.update(user);
+      await this.userRepository.update(user);
     } catch (e) {
       this.eventRepository.delete(event);
       throw e;

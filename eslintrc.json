@@ -3,7 +3,8 @@
     "EventRepository": true,
     "UserRepository": true,
     "authServiceSuccess": true,
-    "testDbData": true
+    "testDbData": true,
+    "UpdateError": true
   },
   "parserOptions": {
     "ecmaVersion": 8
