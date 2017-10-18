@@ -2,7 +2,7 @@ const EventCreateHandler = require(process.env.SRC +
   '/domain/useCases/EventCreateHandler');
 const Event = require(process.env.SRC + '/domain/entities/Event');
 
-describe('Create Event Handler', () => {
+describe('Event Create Handler', () => {
   var eventCreateHandler, eventRepository, userRepository, requestMessage;
 
   const eventInfo = {
@@ -75,11 +75,17 @@ describe('Create Event Handler', () => {
   );
 
   it('rolls back the event repo if creator update fails', done => {
-    var entityId;
+    var entityId, entityType;
     spyOn(userRepository, 'update').and.callFake(entity => {
       entityId = entity.id;
+      entityType = entity.constructor.name;
+      console.log(entityType);
       return Promise.reject(
-        new UpdateError('UpdatingNonExistingEntityException', entity.id)
+        new RepositoryError(
+          'UpdatingNonExistingEntityException',
+          entity.id,
+          entity.constructor.name
+        )
       );
     });
     eventCreateHandler
@@ -89,7 +95,11 @@ describe('Create Event Handler', () => {
       })
       .catch(error => {
         expect(error).toEqual(
-          new UpdateError('UpdatingNonExistingEntityException', entityId)
+          new RepositoryError(
+            'UpdatingNonExistingEntityException',
+            entityId,
+            entityType
+          )
         );
         expect(eventRepository.entities).toEqual([]);
         done();

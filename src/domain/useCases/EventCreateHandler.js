@@ -44,7 +44,7 @@ class EventCreateHandler {
     try {
       await this.userRepository.update(user);
     } catch (e) {
-      this.eventRepository.delete(event);
+      await this.eventRepository.delete(event);
       throw e;
     }
   }

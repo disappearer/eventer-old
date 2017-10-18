@@ -49,7 +49,11 @@ class MockRepository {
     return new Promise((resolve, reject) => {
       if (!(entity.id in this.entities)) {
         reject(
-          new UpdateError('UpdatingNonExistingEntityException', entity.id)
+          new RepositoryError(
+            'UpdatingNonExistingEntityException',
+            entity.id,
+            entity.constructor.name
+          )
         );
       }
 
@@ -59,7 +63,18 @@ class MockRepository {
   }
 
   delete(entity) {
-    this.entities.splice(entity.id, 1);
+    return new Promise((resolve, reject) => {
+      if (!(entity.id in this.entities))
+        reject(
+          new RepositoryError(
+            'DeletingNonExistingEntityException',
+            entity.id,
+            entity.constructor.name
+          )
+        );
+      this.entities.splice(entity.id, 1);
+      resolve();
+    });
   }
 
   cloneEntity(entity) {
@@ -74,10 +89,10 @@ class UserRepository extends MockRepository {
     });
   }
 
-  add(newUser) {
+  async add(newUser) {
     if (this.entities.find(user => user.email == newUser.email))
       throw new Error('EmailInUseException');
-    return super.add(newUser);
+    return await super.add(newUser);
   }
 }
 
@@ -125,14 +140,15 @@ class EventRepository extends MockRepository {
   }
 }
 
-class UpdateError extends Error {
-  constructor(name, entityId) {
+class RepositoryError extends Error {
+  constructor(name, entityId, entityType) {
     super(name);
     this.entityId = entityId;
+    this.entityType = entityType;
   }
 }
 
 global.UserRepository = UserRepository;
 global.EventRepository = EventRepository;
 global.testDbData = dbData;
-global.UpdateError = UpdateError;
+global.RepositoryError = RepositoryError;

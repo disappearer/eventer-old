@@ -4,7 +4,7 @@
     "UserRepository": true,
     "authServiceSuccess": true,
     "testDbData": true,
-    "UpdateError": true
+    "RepositoryError": true
   },
   "parserOptions": {
     "ecmaVersion": 8
