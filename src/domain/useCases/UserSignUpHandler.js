@@ -13,7 +13,7 @@ class UserSignUpHandler {
     } catch (error) {
       throw error;
     }
-    const savedUser = this.userRepository.add(user);
+    const savedUser = await this.userRepository.add(user);
     this.verifyEmailIfNotVerified(savedUser);
     return user;
   }

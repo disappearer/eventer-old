@@ -37,10 +37,12 @@ class MockRepository {
   }
 
   add(entity) {
-    var returnEntity = this.cloneEntity(entity);
-    returnEntity.id = this.entities.length;
-    this.entities.push(returnEntity);
-    return this.cloneEntity(returnEntity);
+    return new Promise(resolve => {
+      var returnEntity = this.cloneEntity(entity);
+      returnEntity.id = this.entities.length;
+      this.entities.push(returnEntity);
+      resolve(this.cloneEntity(returnEntity));
+    });
   }
 
   update(entity) {

@@ -8,7 +8,7 @@ class EventCreateHandler {
 
   async handle(requestMessage) {
     const creator = await this.getCreator(requestMessage.userId);
-    const returnedEvent = this.addEventToRepository(
+    const returnedEvent = await this.addEventToRepository(
       creator,
       requestMessage.eventInfo
     );
@@ -16,10 +16,10 @@ class EventCreateHandler {
     return returnedEvent;
   }
 
-  addEventToRepository(creator, info) {
+  async addEventToRepository(creator, info) {
     const event = this.createEvent(creator.id, info);
     event.addToGuestList(creator);
-    return this.eventRepository.add(event);
+    return await this.eventRepository.add(event);
   }
 
   createEvent(creatorId, info) {

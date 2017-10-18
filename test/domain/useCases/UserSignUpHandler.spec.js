@@ -2,7 +2,7 @@ const UserSignUpHandler = require(process.env.SRC +
   '/domain/useCases/UserSignUpHandler');
 const User = require(process.env.SRC + '/domain/entities/User');
 
-describe('Request User Sign Up Handler', () => {
+describe('User Sign Up Handler', () => {
   var userRepository, notificationService, userSignUpHandler, requestMessage;
 
   beforeEach(() => {
