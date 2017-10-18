@@ -79,7 +79,6 @@ describe('Event Create Handler', () => {
     spyOn(userRepository, 'update').and.callFake(entity => {
       entityId = entity.id;
       entityType = entity.constructor.name;
-      console.log(entityType);
       return Promise.reject(
         new RepositoryError(
           'UpdatingNonExistingEntityException',
