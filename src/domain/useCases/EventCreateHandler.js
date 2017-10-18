@@ -6,8 +6,8 @@ class EventCreateHandler {
     this.userRepository = userRepository;
   }
 
-  handle(requestMessage) {
-    const creator = this.getCreator(requestMessage.userId);
+  async handle(requestMessage) {
+    const creator = await this.getCreator(requestMessage.userId);
     const returnedEvent = this.addEventToRepository(
       creator,
       requestMessage.eventInfo
@@ -33,8 +33,8 @@ class EventCreateHandler {
     );
   }
 
-  getCreator(userId) {
-    const creator = this.userRepository.getById(userId);
+  async getCreator(userId) {
+    const creator = await this.userRepository.getById(userId);
     if (!creator) throw new Error('EventCreatorNotFoundException');
     return creator;
   }

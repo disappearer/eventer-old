@@ -9,10 +9,12 @@ class MockRepository {
   }
 
   getById(id) {
-    if (id in this.entities) return this.cloneEntity(this.entities[id]);
-    const entity = this.createEntity(id);
-    this.entities[id] = entity;
-    return this.cloneEntity(entity);
+    return new Promise(resolve => {
+      if (id in this.entities) resolve(this.cloneEntity(this.entities[id]));
+      const entity = this.createEntity(id);
+      this.entities[id] = entity;
+      resolve(this.cloneEntity(entity));
+    });
   }
 
   findOne(query) {
@@ -25,9 +27,13 @@ class MockRepository {
   }
 
   getAll() {
-    return this.entities.map(function(entity) {
-      return this.cloneEntity(entity);
-    }, this);
+    return new Promise(resolve => {
+      resolve(
+        this.entities.map(function(entity) {
+          return this.cloneEntity(entity);
+        }, this)
+      );
+    });
   }
 
   add(entity) {
@@ -82,24 +88,31 @@ class EventRepository extends MockRepository {
   }
 
   getAll() {
-    var eventList = this.entities.map(function(entity) {
-      return this.cloneEntity(entity);
-    }, this);
-    return eventList.sort(function(e1, e2) {
-      return e1.date - e2.date;
+    return new Promise(resolve => {
+      var eventList = this.entities.map(entity => {
+        return this.cloneEntity(entity);
+      }, this);
+      eventList.sort((e1, e2) => {
+        return e1.date - e2.date;
+      });
+      resolve(eventList);
     });
   }
 
   getFuture() {
-    var eventList = this.entities.map(function(entity) {
-      return this.cloneEntity(entity);
-    }, this);
-    eventList.sort(function(e1, e2) {
-      return e1.date - e2.date;
-    });
-    const now = new Date();
-    return eventList.filter(function(event) {
-      return event.date > now;
+    return new Promise(resolve => {
+      var eventList = this.entities.map(entity => {
+        return this.cloneEntity(entity);
+      }, this);
+      eventList.sort((e1, e2) => {
+        return e1.date - e2.date;
+      });
+      const now = new Date();
+      resolve(
+        eventList.filter(event => {
+          return event.date > now;
+        })
+      );
     });
   }
 }

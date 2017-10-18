@@ -5,7 +5,7 @@ const User = require(process.env.SRC + '/domain/entities/User');
 describe('Request User Sign Up Handler', () => {
   var userRepository, notificationService, userSignUpHandler, requestMessage;
 
-  beforeEach(function() {
+  beforeEach(() => {
     userRepository = new UserRepository();
     notificationService = {
       sendEmail: (emailAddress, content) => {
@@ -46,9 +46,10 @@ describe('Request User Sign Up Handler', () => {
 
   it('persists the new user', done => {
     userSignUpHandler.handle(requestMessage).then(returnedUser => {
-      const savedUser = userRepository.getById(returnedUser.id);
-      expect(savedUser).toEqual(returnedUser);
-      done();
+      userRepository.getById(returnedUser.id).then(savedUser => {
+        expect(savedUser).toEqual(returnedUser);
+        done();
+      });
     });
   });
 

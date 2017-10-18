@@ -3,15 +3,15 @@ class UserVerifyHandler {
     this.userRepository = userRepository;
   }
 
-  handle(requestMessage) {
-    var user = this.getUser(requestMessage.userId);
+  async handle(requestMessage) {
+    var user = await this.getUser(requestMessage.userId);
     user.verified = true;
     user = this.userRepository.update(user);
     return user;
   }
 
-  getUser(userId) {
-    const user = this.userRepository.getById(userId);
+  async getUser(userId) {
+    const user = await this.userRepository.getById(userId);
     if (!user) throw new Error('UserNotFoundException');
     if (user.verified) throw new Error('UserAlreadyVerifiedException');
     return user;

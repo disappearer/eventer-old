@@ -1,13 +1,13 @@
 const EventJoinHandler = require(process.env.SRC +
   '/domain/useCases/EventJoinHandler');
 
-describe('Request Event Join Handler', function() {
+describe('Request Event Join Handler', () => {
   var eventJoinHandler,
     userRepository,
     eventRepository,
     eventJoinRequestMessage;
 
-  beforeEach(function() {
+  beforeEach(() => {
     userRepository = new UserRepository();
     eventRepository = new EventRepository();
     eventJoinHandler = new EventJoinHandler(
@@ -21,35 +21,49 @@ describe('Request Event Join Handler', function() {
     };
   });
 
-  it("adds event to user's eventsJoined list", function() {
-    eventJoinHandler.handle(eventJoinRequestMessage);
-    const user = userRepository.getById(eventJoinRequestMessage.userId);
-    const event = eventRepository.getById(eventJoinRequestMessage.eventId);
-    expect(user.eventsJoined).toEqual([event]);
+  it("adds event to user's eventsJoined list", done => {
+    eventJoinHandler.handle(eventJoinRequestMessage).then(() => {
+      const whenUser = userRepository.getById(eventJoinRequestMessage.userId);
+      const whenEvent = eventRepository.getById(
+        eventJoinRequestMessage.eventId
+      );
+      Promise.all([whenUser, whenEvent]).then(([user, event]) => {
+        expect(user.eventsJoined).toEqual([event]);
+        done();
+      });
+    });
   });
 
-  it("adds user to event's guest list", function() {
-    eventJoinHandler.handle(eventJoinRequestMessage);
-    const user = userRepository.getById(eventJoinRequestMessage.userId);
-    const event = eventRepository.getById(eventJoinRequestMessage.eventId);
-    expect(event.guestList).toEqual([user]);
+  it("adds user to event's guest list", done => {
+    eventJoinHandler.handle(eventJoinRequestMessage).then(() => {
+      const whenUser = userRepository.getById(eventJoinRequestMessage.userId);
+      const whenEvent = eventRepository.getById(
+        eventJoinRequestMessage.eventId
+      );
+      Promise.all([whenUser, whenEvent]).then(([user, event]) => {
+        expect(event.guestList).toEqual([user]);
+        done();
+      });
+    });
   });
 
-  it('throws error if user not found', function() {
+  it('throws error if user not found', done => {
     spyOn(userRepository, 'getById').and.callFake(function() {
-      return null;
+      return Promise.resolve(null);
     });
-    expect(function() {
-      eventJoinHandler.handle(eventJoinRequestMessage);
-    }).toThrowError('UserNotFoundException');
+    eventJoinHandler.handle(eventJoinRequestMessage).catch(error => {
+      expect(error).toEqual(new Error('UserNotFoundException'));
+      done();
+    });
   });
 
-  it('throws error if event not found', function() {
+  it('throws error if event not found', done => {
     spyOn(eventRepository, 'getById').and.callFake(function() {
-      return null;
+      return Promise.resolve(null);
     });
-    expect(function() {
-      eventJoinHandler.handle(eventJoinRequestMessage);
-    }).toThrowError('EventNotFoundException');
+    eventJoinHandler.handle(eventJoinRequestMessage).catch(error => {
+      expect(error).toEqual(new Error('EventNotFoundException'));
+      done();
+    });
   });
 });
