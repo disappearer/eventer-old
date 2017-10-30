@@ -1,35 +1,37 @@
-const EventCreateHandler = require(process.env.SRC +
-  '/domain/useCases/EventCreateHandler');
-const ListEventsHandler = require(process.env.SRC +
-  '/domain/useCases/ListEventsHandler');
+import EventCreateHandler from '../../../src/domain/useCases/EventCreateHandler';
+import ListEventsHandler from '../../../src/domain/useCases/ListEventsHandler';
+import InMemoryEventRepository from '../../../src/db/InMemoryEventRepository';
+import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
+import Event from '../../../src/domain/entities/Event';
+const testDbData = require('./dbData.json');
 
 describe('List Events Handler', () => {
-  var repoEvents, listEventsHandler;
+  var repoEvents: Array<Event>, listEventsHandler: ListEventsHandler;
 
   beforeAll(done => {
-    function getDate(dateString) {
+    function getDate(dateString: string) {
       var date = dateString.split(' ');
       return new Date(
-        Date.UTC(date[0], date[1] - 1, date[2], date[3], date[4], date[5])
+        Date.UTC(+date[0], +date[1] - 1, +date[2], +date[3], +date[4], +date[5])
       );
     }
 
-    const eventRepository = new EventRepository();
-    const userRepository = new UserRepository();
+    const eventRepository = new InMemoryEventRepository();
+    const userRepository = new InMemoryUserRepository();
     const eventCreateHandler = new EventCreateHandler(
       eventRepository,
       userRepository
     );
 
     const whenRepoEvents = testDbData.requestEventCreateMessages.map(
-      requestMessage => {
+      (requestMessage: any) => {
         requestMessage.eventInfo.date = getDate(requestMessage.eventInfo.date);
         return eventCreateHandler.handle(requestMessage);
       }
     );
-    Promise.all(whenRepoEvents).then(returnedEvents => {
-      returnedEvents.sort((a, b) => {
-        return a.date - b.date;
+    Promise.all(whenRepoEvents).then((returnedEvents: any) => {
+      returnedEvents.sort((a: Event, b: Event) => {
+        return a.date.getTime() - b.date.getTime();
       });
       repoEvents = returnedEvents;
       done();

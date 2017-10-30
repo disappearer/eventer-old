@@ -1,11 +1,19 @@
-class EventJoinHandler {
-  constructor(authService, userRepository, eventRepository) {
-    this.authService = authService;
+import Event from '../entities/Event';
+import User from '../entities/User';
+import Repository from '../repositories/Repository';
+
+export default class EventJoinHandler {
+  userRepository: Repository<User>;
+  eventRepository: Repository<Event>;
+  constructor(
+    userRepository: Repository<User>,
+    eventRepository: Repository<Event>
+  ) {
     this.userRepository = userRepository;
     this.eventRepository = eventRepository;
   }
 
-  async handle(eventJoinRequestMessage) {
+  async handle(eventJoinRequestMessage: any) {
     const user = await this.userRepository.getById(
       eventJoinRequestMessage.userId
     );
@@ -17,12 +25,10 @@ class EventJoinHandler {
     this.join(user, event);
   }
 
-  join(user, event) {
+  join(user: User, event: Event) {
     user.joinEvent(event);
     event.addToGuestList(user);
     this.userRepository.update(user);
     this.eventRepository.update(event);
   }
 }
-
-module.exports = EventJoinHandler;

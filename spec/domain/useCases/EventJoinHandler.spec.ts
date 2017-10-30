@@ -1,20 +1,17 @@
-const EventJoinHandler = require(process.env.SRC +
-  '/domain/useCases/EventJoinHandler');
+import EventJoinHandler from '../../../src/domain/useCases/EventJoinHandler';
+import InMemoryEventRepository from '../../../src/db/InMemoryEventRepository';
+import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
 
 describe('Event Join Handler', () => {
-  var eventJoinHandler,
-    userRepository,
-    eventRepository,
-    eventJoinRequestMessage;
+  var eventJoinHandler: EventJoinHandler,
+    userRepository: InMemoryUserRepository,
+    eventRepository: InMemoryEventRepository,
+    eventJoinRequestMessage: any;
 
   beforeEach(() => {
-    userRepository = new UserRepository();
-    eventRepository = new EventRepository();
-    eventJoinHandler = new EventJoinHandler(
-      authServiceSuccess,
-      userRepository,
-      eventRepository
-    );
+    userRepository = new InMemoryUserRepository();
+    eventRepository = new InMemoryEventRepository();
+    eventJoinHandler = new EventJoinHandler(userRepository, eventRepository);
     eventJoinRequestMessage = {
       userId: 123,
       eventId: 11

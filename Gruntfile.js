@@ -7,56 +7,29 @@ module.exports = function(grunt) {
       all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js']
     },
 
-    env: {
-      test: {
-        SRC: __dirname + '\\src'
-      }
+    exec: {
+      jasmine_ts: 'npm test'
     },
 
-    jasmine_nodejs: {
-      options: {
-        useHelpers: true,
-        // global helpers, available to all task targets. accepts globs..
-        helpers: [],
-        random: false,
-        seed: null,
-        defaultTimeout: null, // defaults to 5000
-        stopOnFailure: false,
-        traceFatal: true,
-        // configure one or more built-in reporters
-        reporters: {
-          console: {
-            colors: true, // (0|false)|(1|true)|2
-            cleanStack: 1, // (0|false)|(1|true)|2|3
-            verbosity: 4, // (0|false)|1|2|3|(4|true)
-            listStyle: 'indent', // "flat"|"indent"
-            activity: false
-          }
-        },
-        customReporters: []
-      },
-      test: {
+    express: {
+      dev: {
         options: {
-          useHelpers: true
-        },
-        specs: ['test/**/*.spec.js'],
-        helpers: ['test/helpers/**/*.helper.js']
+          script: './bin/www'
+        }
       }
     },
 
     watch: {
-      all: {
-        files: ['test/**', 'src/**'],
-        tasks: ['eslint', 'env', 'jasmine_nodejs']
+      domain: {
+        files: ['spec/**', 'src/**'],
+        tasks: ['exec:jasmine_ts']
       }
     }
   });
 
   grunt.loadNpmTasks('gruntify-eslint');
-  grunt.loadNpmTasks('grunt-env');
-  grunt.loadNpmTasks('grunt-jasmine-nodejs');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('test', ['eslint', 'env', 'jasmine_nodejs']);
-  grunt.registerTask('default', ['watch']);
+  grunt.registerTask('default', ['watch:domain']);
 };

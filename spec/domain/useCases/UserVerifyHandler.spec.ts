@@ -1,15 +1,16 @@
-const UserSignUpHandler = require(process.env.SRC +
-  '/domain/usecases/UserSignUpHandler');
-const UserVerifyHandler = require(process.env.SRC +
-  '/domain/usecases/UserVerifyHandler');
+import UserSignUpHandler from '../../../src/domain/useCases/UserSignUpHandler';
+import UserVerifyHandler from '../../../src/domain/useCases/UserVerifyHandler';
+import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
 
 describe('User Verify Handler', () => {
-  var userRepository, userVerifyHandler, requestUserVerifyMessage;
+  var userRepository: InMemoryUserRepository,
+    userVerifyHandler: UserVerifyHandler,
+    requestUserVerifyMessage: any;
 
   beforeEach(done => {
-    userRepository = new UserRepository();
+    userRepository = new InMemoryUserRepository();
     const notificationService = {
-      sendEmail: (emailAddress, content) => {
+      sendEmail: (emailAddress: string, content: string) => {
         emailAddress;
         content;
       }
@@ -19,8 +20,11 @@ describe('User Verify Handler', () => {
       notificationService
     );
     const requestSignUpMessage = {
+      id: 10,
+      provider: 'local',
       name: 'Non-unique Display Name',
       email: 'address@mail.com',
+      password: 'password',
       verified: false
     };
     const whenUser = userSignUpHandler.handle(requestSignUpMessage);

@@ -1,9 +1,14 @@
-const EventCreateHandler = require(process.env.SRC +
-  '/domain/useCases/EventCreateHandler');
-const Event = require(process.env.SRC + '/domain/entities/Event');
+import EventCreateHandler from '../../../src/domain/useCases/EventCreateHandler';
+import Event from '../../../src/domain/entities/Event';
+import InMemoryEventRepository from '../../../src/db/InMemoryEventRepository';
+import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
+import RepositoryError from '../../../src/domain/repositories/RepositoryError';
 
 describe('Event Create Handler', () => {
-  var eventCreateHandler, eventRepository, userRepository, requestMessage;
+  var eventCreateHandler: EventCreateHandler,
+    eventRepository: InMemoryEventRepository,
+    userRepository: InMemoryUserRepository,
+    requestMessage: any;
 
   const eventInfo = {
     title: 'Some Event',
@@ -13,8 +18,8 @@ describe('Event Create Handler', () => {
   };
 
   beforeEach(() => {
-    eventRepository = new EventRepository();
-    userRepository = new UserRepository();
+    eventRepository = new InMemoryEventRepository();
+    userRepository = new InMemoryUserRepository();
     requestMessage = {
       userId: 123,
       eventInfo: eventInfo
@@ -75,8 +80,8 @@ describe('Event Create Handler', () => {
   );
 
   it('rolls back the event repo if creator update fails', done => {
-    var entityId, entityType;
-    spyOn(userRepository, 'update').and.callFake(entity => {
+    var entityId: number, entityType: string;
+    spyOn(userRepository, 'update').and.callFake((entity: any) => {
       entityId = entity.id;
       entityType = entity.constructor.name;
       return Promise.reject(
@@ -89,7 +94,8 @@ describe('Event Create Handler', () => {
     });
     eventCreateHandler
       .handle(requestMessage)
-      .then(() => {
+      .then(event => {
+        console.log(event);
         done();
       })
       .catch(error => {
@@ -100,9 +106,8 @@ describe('Event Create Handler', () => {
             entityType
           )
         );
-        expect(eventRepository.entities).toEqual([]);
+        expect(eventRepository.events).toEqual([]);
         done();
-        error;
       });
   });
 
