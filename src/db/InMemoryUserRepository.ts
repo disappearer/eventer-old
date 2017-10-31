@@ -3,7 +3,7 @@ import RepositoryError from '../domain/repositories/RepositoryError';
 import User from '../domain/entities/User';
 
 export default class InMemoryUserRepository implements UserRepository {
-  users: Array<any>;
+  users: Array<User>;
 
   constructor() {
     this.users = [];
@@ -29,11 +29,14 @@ export default class InMemoryUserRepository implements UserRepository {
     });
   }
 
-  getByEmail(email: string): Promise<User> {
+  getByAuthProviderId(provider: string, id: number): Promise<User> {
     return new Promise(resolve => {
-      const user = this.users.find(
-        user => (user ? user.email == email : false)
-      );
+      const user = this.users.find(user => {
+        const authInfo = user.authenticationInfo.find(authInfo => {
+          return authInfo.provider == provider && authInfo.id == id;
+        });
+        if (authInfo) return true;
+      });
       resolve(user);
     });
   }
