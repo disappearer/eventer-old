@@ -1,4 +1,4 @@
-import UserSignUpHandler from '../../../src/domain/useCases/UserSignUpHandler';
+import UserLocalSignUpHandler from '../../../src/domain/useCases/UserLocalSignUpHandler';
 import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
 import User from '../../../src/domain/entities/User';
 import AuthLocalInfo from '../../../src/domain/contracts/AuthLocalInfo';
@@ -6,7 +6,7 @@ import AuthLocalInfo from '../../../src/domain/contracts/AuthLocalInfo';
 describe('User Sign Up Handler (local authentication provider)', () => {
   var userRepository: InMemoryUserRepository,
     notificationService: any,
-    userSignUpHandler: UserSignUpHandler,
+    userSignUpHandler: UserLocalSignUpHandler,
     requestMessage: AuthLocalInfo;
 
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe('User Sign Up Handler (local authentication provider)', () => {
         content;
       }
     };
-    userSignUpHandler = new UserSignUpHandler(
+    userSignUpHandler = new UserLocalSignUpHandler(
       userRepository,
       notificationService
     );

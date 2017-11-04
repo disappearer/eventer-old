@@ -1,4 +1,4 @@
-import UserSignUpHandler from '../../../src/domain/useCases/UserSignUpHandler';
+import UserLocalSignUpHandler from '../../../src/domain/useCases/UserLocalSignUpHandler';
 import UserVerifyHandler from '../../../src/domain/useCases/UserVerifyHandler';
 import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
 
@@ -15,7 +15,7 @@ describe('User Verify Handler', () => {
         content;
       }
     };
-    const userSignUpHandler = new UserSignUpHandler(
+    const userSignUpHandler = new UserLocalSignUpHandler(
       userRepository,
       notificationService
     );

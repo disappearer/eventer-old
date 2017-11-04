@@ -2,7 +2,7 @@ import UserRepository from '../repositories/UserRepository';
 import User from '../entities/User';
 import AuthLocalInfo from '../../domain/contracts/AuthLocalInfo';
 
-export default class UserSignUpHandler {
+export default class UserLocalSignUpHandler {
   userRepository: UserRepository;
   notificationService: any;
 
