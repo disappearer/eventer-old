@@ -3,7 +3,8 @@ import ListEventsHandler from '../../../src/domain/useCases/ListEventsHandler';
 import InMemoryEventRepository from '../../../src/db/InMemoryEventRepository';
 import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
 import Event from '../../../src/domain/entities/Event';
-const testDbData = require('./dbData.json');
+const requestEventCreateMessages = require('./requestEventCreateMessages.json')
+  .requestEventCreateMessages;
 
 describe('List Events Handler', () => {
   var repoEvents: Array<Event>, listEventsHandler: ListEventsHandler;
@@ -23,7 +24,7 @@ describe('List Events Handler', () => {
       userRepository
     );
 
-    const whenRepoEvents = testDbData.requestEventCreateMessages.map(
+    const whenRepoEvents = requestEventCreateMessages.map(
       (requestMessage: any) => {
         requestMessage.eventInfo.date = getDate(requestMessage.eventInfo.date);
         return eventCreateHandler.handle(requestMessage);
