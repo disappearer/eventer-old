@@ -107,3 +107,6 @@ export default class InMemoryUserRepository implements UserRepository {
     });
   }
 }
+
+const userRepository = new InMemoryUserRepository();
+export { userRepository };
