@@ -1,5 +1,6 @@
 import * as passport from 'passport';
+import { googlePassportStrategy } from './passportStrategies/passport.google';
 
-/* configure passport here later */
+passport.use(googlePassportStrategy);
 
 export default passport;

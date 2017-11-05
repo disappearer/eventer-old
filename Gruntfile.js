@@ -7,6 +7,12 @@ module.exports = function(grunt) {
       all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js']
     },
 
+    env: {
+      dev: {
+        GOOGLE_CLIENT_ID: 'x'
+      }
+    },
+
     exec: {
       jasmine_ts: 'npm test'
     },
@@ -22,14 +28,15 @@ module.exports = function(grunt) {
     watch: {
       domain: {
         files: ['spec/**', 'src/**'],
-        tasks: ['exec:jasmine_ts']
+        tasks: ['env', 'exec:jasmine_ts']
       }
     }
   });
 
   grunt.loadNpmTasks('gruntify-eslint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('default', ['watch:domain']);
+  grunt.registerTask('default', ['env', 'watch:domain']);
 };

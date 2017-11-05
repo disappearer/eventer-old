@@ -7,7 +7,7 @@ export default class ListEventsHandler {
     this.eventRepository = eventRepository;
   }
 
-  handle(requestMessage: any) {
+  handle(requestMessage: { future: boolean }) {
     if (requestMessage.future) return this.eventRepository.getFuture();
     return this.eventRepository.getAll();
   }

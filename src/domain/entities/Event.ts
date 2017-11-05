@@ -23,16 +23,17 @@ export default class Event {
     this.description = description;
     this.date = date;
     this.location = location;
-    this.guestList = [];
   }
 
   addToGuestList(user: User) {
     if (this.isInGuestList(user)) throw new Error('UserAlreadyAddedException');
+    if (!this.guestList) this.guestList = [];
     this.guestList.push(user);
     return true;
   }
 
   isInGuestList(user: User) {
+    if (!this.guestList) return false;
     return this.guestList.find(function(guestListUser) {
       return guestListUser.id == user.id;
     });

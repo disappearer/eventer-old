@@ -3,7 +3,7 @@ import RepositoryError from '../domain/repositories/RepositoryError';
 import Event from '../domain/entities/Event';
 
 export default class InMemoryEventRepository implements EventRepository {
-  events: Array<any>;
+  events: Array<Event>;
 
   constructor() {
     this.events = [];
@@ -32,7 +32,7 @@ export default class InMemoryEventRepository implements EventRepository {
   findOne(query: any): Promise<Event> {
     return new Promise(resolve => {
       const returnEvent = this.events.find(event => {
-        return event.email == query.email;
+        return false;
       });
       resolve(returnEvent && this.cloneEvent(returnEvent));
     });
@@ -117,25 +117,11 @@ export default class InMemoryEventRepository implements EventRepository {
  * An instance with preloaded data from event.json for testing purposes.
  */
 
-/* json date string => new Date() */
-function getDate(dateString: string) {
-  var date = dateString.split(' ');
-  return new Date(
-    Date.UTC(+date[0], +date[1] - 1, +date[2], +date[3], +date[4], +date[5])
-  );
-}
-
 /* exported singleton */
 const eventRepository = new InMemoryEventRepository();
 
 /* read json and create Date fields */
 var jsonEvents = require('./events.json').events;
-jsonEvents = jsonEvents.map((event: any) => {
-  event.date = getDate(event.date);
-  return event;
-});
-
-/* load data to repository */
 eventRepository.events = jsonEvents.map((event: any) => {
   return Object.assign(new Event(0, 0, '', '', new Date(), ''), event);
 });

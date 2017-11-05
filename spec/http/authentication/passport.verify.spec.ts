@@ -2,7 +2,7 @@ import verify from '../../../src/http/authentication/passport.verify';
 import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
 import User from '../../../src/domain/entities/User';
 
-fdescribe('Function verify()', () => {
+describe('Function verify()', () => {
   var callback: Function, userRepo: InMemoryUserRepository;
   const profile = {
     provider: 'google',

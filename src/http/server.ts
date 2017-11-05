@@ -10,6 +10,7 @@ import errorHandler = require('errorhandler'); // dev
 import methodOverride = require('method-override');
 import UserRepository from '../domain/repositories/UserRepository';
 import { userRepository } from '../db/InMemoryUserRepository';
+import { router as eventsRouter } from './events/events.routes';
 
 export default class Server {
   public app: express.Application;
@@ -63,6 +64,7 @@ export default class Server {
 
   public routes() {
     this.app.use(passportRouter);
+    this.app.use(eventsRouter);
   }
 
   public setPassportStrategy(strategy: passport.Strategy) {
