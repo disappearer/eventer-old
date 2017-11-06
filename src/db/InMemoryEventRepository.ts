@@ -118,12 +118,12 @@ export default class InMemoryEventRepository implements EventRepository {
  */
 
 /* exported singleton */
-const eventRepository = new InMemoryEventRepository();
+export const eventRepository = new InMemoryEventRepository();
 
 /* read json and create Date fields */
 var jsonEvents = require('./events.json').events;
 eventRepository.events = jsonEvents.map((event: any) => {
-  return Object.assign(new Event(0, 0, '', '', new Date(), ''), event);
+  const eventCopy = Object.assign(Object.create(event), event);
+  eventCopy.date = new Date(event.date);
+  return eventCopy;
 });
-
-export { eventRepository };

@@ -9,12 +9,12 @@ import * as path from 'path';
 import errorHandler = require('errorhandler'); // dev
 import methodOverride = require('method-override');
 import UserRepository from '../domain/repositories/UserRepository';
-import { userRepository } from '../db/InMemoryUserRepository';
+import EventRepository from '../domain/repositories/EventRepository';
 import { router as eventsRouter } from './events/events.routes';
 
 export default class Server {
   public app: express.Application;
-  public userRepository: UserRepository;
+  public eventRepository: EventRepository;
 
   public static bootstrap(): Server {
     return new Server();
@@ -23,8 +23,6 @@ export default class Server {
   constructor() {
     //create expressjs application
     this.app = express();
-
-    this.userRepository = userRepository;
 
     //configure application
     this.config();
@@ -41,7 +39,7 @@ export default class Server {
   }
 
   public config() {
-    this.app.use(logger('dev'));
+    // this.app.use(logger('dev'));
 
     this.app.use(bodyParser.json());
 
@@ -71,3 +69,5 @@ export default class Server {
     passport.use(strategy);
   }
 }
+
+export const server = Server.bootstrap();

@@ -54,9 +54,7 @@ describe('List Events Handler', () => {
 
     jasmine.clock().mockDate(new Date(Date.UTC(2017, 9, 16, 18, 0)));
     const now = new Date();
-    const futureEvents = repoEvents.filter(function(event) {
-      return event.date > now;
-    });
+    const futureEvents = repoEvents.filter(event => event.date > now);
 
     listEventsHandler
       .handle(requestMessage)
