@@ -1,5 +1,6 @@
 import ListEventsHandler from '../../../src/domain/useCases/ListEventsHandler';
 import EventCreateHandler from '../../../src/domain/useCases/EventCreateHandler';
+import EventJoinHandler from '../../../src/domain/useCases/EventJoinHandler';
 import * as express from 'express';
 import { server } from '../server';
 
@@ -35,4 +36,16 @@ export function create(req: express.Request, res: express.Response) {
   eventCreateHandler.handle(requestMessage).then(event => {
     res.status(200).json({ event: event });
   });
+}
+
+export function join(req: express.Request, res: express.Response) {
+  const eventJoinHandler = new EventJoinHandler(
+    server.userRepository,
+    server.eventRepository
+  );
+  eventJoinHandler
+    .handle({ userId: req.user.id, eventId: req.params.id })
+    .then(result => {
+      res.status(200).json(result);
+    });
 }
