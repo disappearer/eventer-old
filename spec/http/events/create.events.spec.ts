@@ -5,8 +5,6 @@ import Event from '../../../src/domain/entities/Event';
 import { server } from '../../../src/http/server';
 import MockPassportStrategy from '../authentication/MockPassportStrategy';
 
-var jsonEvents = require('../../../src/db/events.json').events;
-
 describe('POST /events', () => {
   var agent = request.agent(server.app);
   var failStrategy: any, passStrategy: any;

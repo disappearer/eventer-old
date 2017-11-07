@@ -2,51 +2,57 @@
   "events": [
     {
       "id": 0,
-      "creatorId": 0,
+      "creatorId": 123,
       "title": "Some Event 1",
       "description": "Some random event with id 0",
       "date": "2017-10-15T20:00:00.000Z",
-      "location": "Somewhere"
+      "location": "Somewhere",
+      "guestList": [123]
     },
     {
       "id": 1,
-      "creatorId": 0,
+      "creatorId": 123,
       "title": "Some Event 2",
       "description": "Some random event with id 1",
       "date": "2017-10-14T20:00:00.000Z",
-      "location": "Somewhere"
+      "location": "Somewhere",
+      "guestList": [123]
     },
     {
       "id": 2,
-      "creatorId": 0,
+      "creatorId": 123,
       "title": "Some Event 3",
       "description": "Some random event with id 2",
       "date": "2017-10-18T18:00:00.000Z",
-      "location": "Somewhere"
+      "location": "Somewhere",
+      "guestList": [123]
     },
     {
       "id": 3,
-      "creatorId": 0,
+      "creatorId": 123,
       "title": "Some Event 4",
       "description": "Some random event with id 3",
       "date": "2017-10-19T20:00:00.000Z",
-      "location": "Somewhere"
+      "location": "Somewhere",
+      "guestList": [123]
     },
     {
       "id": 4,
-      "creatorId": 0,
+      "creatorId": 246,
       "title": "Some Event 5",
       "description": "Some random event with id 4",
       "date": "2017-10-18T20:00:00.000Z",
-      "location": "Somewhere"
+      "location": "Somewhere",
+      "guestList": [246]
     },
     {
       "id": 5,
-      "creatorId": 0,
+      "creatorId": 246,
       "title": "Some Event 6",
       "description": "Some random event with id 5",
       "date": "2017-11-15T20:00:00.000Z",
-      "location": "Somewhere"
+      "location": "Somewhere",
+      "guestList": [246]
     }
   ]
 }
