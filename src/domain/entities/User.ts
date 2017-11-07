@@ -5,7 +5,7 @@ const randomstring = require('randomstring');
 export default class User {
   id: number;
   authenticationInfo: Array<AuthProviderInfo>;
-  eventsJoined: Array<Event>;
+  eventsJoined: Array<number>;
 
   constructor(id: number, authenticationInfo: Array<AuthProviderInfo>) {
     this.id = id;
@@ -70,13 +70,13 @@ export default class User {
 
   joinEvent(event: Event) {
     if (this.isJoined(event)) throw new Error('EventAlreadyJoinedException');
-    this.eventsJoined.push(event);
+    this.eventsJoined.push(event.id);
     return true;
   }
 
   isJoined(event: Event) {
-    return this.eventsJoined.find(function(joinedEvent) {
-      return joinedEvent.id == event.id;
+    return this.eventsJoined.find(function(joinedEventId) {
+      return joinedEventId == event.id;
     });
   }
 }

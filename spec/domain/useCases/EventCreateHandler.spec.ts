@@ -72,7 +72,7 @@ describe('Event Create Handler', () => {
         whenRepoEvent2
       ]).then(([repoEvent1, repoEvent2]) => {
         userRepository.getById(requestMessage.userId).then(creator => {
-          expect(creator.eventsJoined).toEqual([repoEvent1, repoEvent2]);
+          expect(creator.eventsJoined).toEqual([repoEvent1.id, repoEvent2.id]);
           done();
         });
       });

@@ -25,7 +25,7 @@ describe('Event Join Handler', () => {
         eventJoinRequestMessage.eventId
       );
       Promise.all([whenUser, whenEvent]).then(([user, event]) => {
-        expect(user.eventsJoined).toEqual([event]);
+        expect(user.eventsJoined).toEqual([event.id]);
         done();
       });
     });
@@ -38,7 +38,7 @@ describe('Event Join Handler', () => {
         eventJoinRequestMessage.eventId
       );
       Promise.all([whenUser, whenEvent]).then(([user, event]) => {
-        expect(event.guestList).toEqual([user]);
+        expect(event.guestList).toEqual([user.id]);
         done();
       });
     });

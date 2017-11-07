@@ -7,7 +7,7 @@ export default class Event {
   description: string;
   date: Date;
   location: string;
-  guestList: Array<User>;
+  guestList: Array<number>;
 
   constructor(
     id: number,
@@ -28,14 +28,14 @@ export default class Event {
   addToGuestList(user: User) {
     if (this.isInGuestList(user)) throw new Error('UserAlreadyAddedException');
     if (!this.guestList) this.guestList = [];
-    this.guestList.push(user);
+    this.guestList.push(user.id);
     return true;
   }
 
   isInGuestList(user: User) {
     if (!this.guestList) return false;
-    return this.guestList.find(function(guestListUser) {
-      return guestListUser.id == user.id;
+    return this.guestList.find(function(guestListUserId) {
+      return guestListUserId == user.id;
     });
   }
 }

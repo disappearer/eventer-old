@@ -28,7 +28,7 @@ describe('User', function() {
   it('can join events', function() {
     user.joinEvent(event);
     user.joinEvent(event2);
-    expect(user.eventsJoined).toEqual([event, event2]);
+    expect(user.eventsJoined).toEqual([event.id, event2.id]);
   });
 
   it('throws error if trying to join an already joined event', function() {
@@ -45,6 +45,6 @@ describe('User', function() {
       user.joinEvent(sameEventDifferentObject);
     }).toThrowError('EventAlreadyJoinedException');
 
-    expect(user.eventsJoined).toEqual([event]);
+    expect(user.eventsJoined).toEqual([event.id]);
   });
 });

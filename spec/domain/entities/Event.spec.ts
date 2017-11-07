@@ -31,7 +31,7 @@ describe('Event', function() {
   it('can add a user to the guest list', function() {
     event.addToGuestList(user);
     event.addToGuestList(user2);
-    expect(event.guestList).toEqual([user, user2]);
+    expect(event.guestList).toEqual([user.id, user2.id]);
   });
 
   it("throws error if trying to add user that's already in guest list", function() {
@@ -49,6 +49,6 @@ describe('Event', function() {
       event.addToGuestList(sameUserDifferentObject);
     }).toThrowError('UserAlreadyAddedException');
 
-    expect(event.guestList).toEqual([user]);
+    expect(event.guestList).toEqual([user.id]);
   });
 });
