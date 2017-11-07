@@ -1,34 +1,32 @@
 import Event from '../entities/Event';
 import User from '../entities/User';
-import Repository from '../repositories/Repository';
+import EventRepository from '../repositories/EventRepository';
+import UserRepository from '../repositories/UserRepository';
 
 export default class EventJoinHandler {
-  userRepository: Repository<User>;
-  eventRepository: Repository<Event>;
+  userRepository: UserRepository;
+  eventRepository: EventRepository;
   constructor(
-    userRepository: Repository<User>,
-    eventRepository: Repository<Event>
+    userRepository: UserRepository,
+    eventRepository: EventRepository
   ) {
     this.userRepository = userRepository;
     this.eventRepository = eventRepository;
   }
 
-  async handle(eventJoinRequestMessage: any) {
-    const user = await this.userRepository.getById(
-      eventJoinRequestMessage.userId
-    );
+  async handle(requestMessage: { userId: number; eventId: number }) {
+    const user = await this.userRepository.getById(requestMessage.userId);
     if (!user) throw new Error('UserNotFoundException');
-    const event = await this.eventRepository.getById(
-      eventJoinRequestMessage.eventId
-    );
+    const event = await this.eventRepository.getById(requestMessage.eventId);
     if (!event) throw new Error('EventNotFoundException');
-    this.join(user, event);
+    return await this.join(user, event);
   }
 
-  join(user: User, event: Event) {
+  async join(user: User, event: Event) {
     user.joinEvent(event);
     event.addToGuestList(user);
-    this.userRepository.update(user);
-    this.eventRepository.update(event);
+    user = await this.userRepository.update(user);
+    event = await this.eventRepository.update(event);
+    return { user: user, event: event };
   }
 }
