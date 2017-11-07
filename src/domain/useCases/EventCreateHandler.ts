@@ -1,19 +1,28 @@
 import Event from '../entities/Event';
 import User from '../entities/User';
-import Repository from '../repositories/Repository';
+import EventRepository from '../repositories/EventRepository';
+import UserRepository from '../repositories/UserRepository';
 
 export default class EventCreateHandler {
-  eventRepository: Repository<Event>;
-  userRepository: Repository<User>;
+  eventRepository: EventRepository;
+  userRepository: UserRepository;
   constructor(
-    eventRepository: Repository<Event>,
-    userRepository: Repository<User>
+    eventRepository: EventRepository,
+    userRepository: UserRepository
   ) {
     this.eventRepository = eventRepository;
     this.userRepository = userRepository;
   }
 
-  async handle(requestMessage: any) {
+  async handle(requestMessage: {
+    userId: number;
+    eventInfo: {
+      title: string;
+      description: string;
+      location: string;
+      date: Date;
+    };
+  }) {
     const creator = await this.getCreator(requestMessage.userId);
     const returnedEvent = await this.addEventToRepository(
       creator,

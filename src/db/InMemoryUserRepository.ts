@@ -110,3 +110,10 @@ export default class InMemoryUserRepository implements UserRepository {
 
 const userRepository = new InMemoryUserRepository();
 export { userRepository };
+
+/* read json and create Date fields */
+var jsonUsers = require('./users.json').users;
+jsonUsers.forEach((user: any) => {
+  const userCopy = Object.assign(Object.create(user), user);
+  userRepository.users[user.id] = userCopy;
+});

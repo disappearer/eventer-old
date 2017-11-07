@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 123,
+      "authenticationInfo": [
+        {
+          "provider": "google",
+          "id": 110110,
+          "name": "Aleksa Stojanovic",
+          "email": "aleksa47@gmail.com"
+        }
+      ],
+      "eventsJoined": []
+    },
+    {
+      "id": 246,
+      "authenticationInfo": [
+        {
+          "provider": "google",
+          "id": 11011011,
+          "name": "Nada Zelic",
+          "email": "nada.zelic@gmail.com"
+        }
+      ],
+      "eventsJoined": []
+    }
+  ]
+}
