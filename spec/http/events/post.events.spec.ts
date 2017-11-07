@@ -1,0 +1,66 @@
+import * as request from 'supertest';
+import InMemoryEventRepository from '../../../src/db/InMemoryEventRepository';
+import { userRepository } from '../../../src/db/InMemoryUserRepository';
+import Event from '../../../src/domain/entities/Event';
+import { server } from '../../../src/http/server';
+import MockPassportStrategy from '../authentication/MockPassportStrategy';
+
+var jsonEvents = require('../../../src/db/events.json').events;
+
+describe('POST /events', () => {
+  var agent = request.agent(server.app);
+  var failStrategy: any, passStrategy: any;
+
+  beforeAll(done => {
+    server.eventRepository = new InMemoryEventRepository();
+    server.userRepository = userRepository;
+    failStrategy = new MockPassportStrategy(
+      { passAuthentication: false, userId: 246 },
+      () => {}
+    );
+    passStrategy = new MockPassportStrategy(
+      { passAuthentication: true, userId: 246 },
+      (user: any, done: Function) => {
+        userRepository.getById(user.id).then(user => {
+          done(null, user);
+        });
+      }
+    );
+    done();
+  });
+
+  it('fails if not authorized', done => {
+    server.setPassportStrategy(failStrategy);
+    agent.get('/auth/mock').end(() => {
+      agent.post('/events/').then(response => {
+        expect(response.status).toEqual(401);
+        expect(response.body.error).toEqual('Error: User not authorized.');
+        done();
+      });
+    });
+  });
+
+  it('creates new event in repo, returns it as json, and returns 200', done => {
+    const eventInfo = {
+      title: 'Some Event',
+      date: new Date(),
+      location: 'In the middle of nowhere',
+      description: 'Some event in the middle of nowhere'
+    };
+    server.setPassportStrategy(passStrategy);
+    agent.get('/auth/mock').end(() => {
+      agent
+        .post('/events/')
+        .send(eventInfo)
+        .then(response => {
+          expect(response.status).toEqual(200);
+          const event = response.body.event;
+          expect(event.title).toEqual(eventInfo.title);
+          expect(event.date).toEqual(eventInfo.date.toJSON());
+          expect(event.location).toEqual(eventInfo.location);
+          expect(event.description).toEqual(eventInfo.description);
+          done();
+        });
+    });
+  });
+});

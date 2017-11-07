@@ -1,7 +1,7 @@
 import ListEventsHandler from '../../../src/domain/useCases/ListEventsHandler';
+import EventCreateHandler from '../../../src/domain/useCases/EventCreateHandler';
 import * as express from 'express';
 import { server } from '../server';
-// import { eventRepository } from '../../db/InMemoryEventRepository';
 
 export function list(req: express.Request, res: express.Response) {
   const requestMessage = { future: false };
@@ -15,5 +15,25 @@ export function list(req: express.Request, res: express.Response) {
   const listEventsHandler = new ListEventsHandler(server.eventRepository);
   listEventsHandler.handle(requestMessage).then(events => {
     res.status(200).json({ events: events });
+  });
+}
+
+export function create(req: express.Request, res: express.Response) {
+  const eventCreateHandler = new EventCreateHandler(
+    server.eventRepository,
+    server.userRepository
+  );
+  const requestMessage = {
+    userId: req.user.id,
+    eventInfo: {
+      title: req.body.title,
+      date: new Date(req.body.date),
+      location: req.body.location,
+      description: req.body.description
+    }
+  };
+  eventCreateHandler.handle(requestMessage).then(event => {
+    delete event.guestList; // avoid circular refs
+    res.status(200).json({ event: event });
   });
 }
