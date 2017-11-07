@@ -10,16 +10,17 @@ var jsonEvents = require('../../../src/db/events.json').events;
 describe('POST /events', () => {
   var agent = request.agent(server.app);
   var failStrategy: any, passStrategy: any;
+  const USERID = 246;
 
   beforeAll(done => {
     server.eventRepository = new InMemoryEventRepository();
     server.userRepository = userRepository;
     failStrategy = new MockPassportStrategy(
-      { passAuthentication: false, userId: 246 },
+      { passAuthentication: false, userId: USERID },
       () => {}
     );
     passStrategy = new MockPassportStrategy(
-      { passAuthentication: true, userId: 246 },
+      { passAuthentication: true, userId: USERID },
       (user: any, done: Function) => {
         userRepository.getById(user.id).then(user => {
           done(null, user);
@@ -55,10 +56,12 @@ describe('POST /events', () => {
         .then(response => {
           expect(response.status).toEqual(200);
           const event = response.body.event;
+          expect(event.creatorId).toEqual(USERID);
           expect(event.title).toEqual(eventInfo.title);
           expect(event.date).toEqual(eventInfo.date.toJSON());
           expect(event.location).toEqual(eventInfo.location);
           expect(event.description).toEqual(eventInfo.description);
+          expect(event.guestList).toEqual([USERID]);
           done();
         });
     });

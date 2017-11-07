@@ -33,7 +33,6 @@ export function create(req: express.Request, res: express.Response) {
     }
   };
   eventCreateHandler.handle(requestMessage).then(event => {
-    delete event.guestList; // avoid circular refs
     res.status(200).json({ event: event });
   });
 }
