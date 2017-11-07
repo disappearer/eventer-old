@@ -22,7 +22,7 @@ export default class InMemoryEventRepository implements EventRepository {
 
   getById(id: number): Promise<Event> {
     return new Promise(resolve => {
-      if (id in this.events) resolve(this.cloneEvent(this.events[id]));
+      if (id in this.events) return resolve(this.cloneEvent(this.events[id]));
       const event = this.createEvent(id);
       this.events[id] = event;
       resolve(this.cloneEvent(event));
@@ -123,7 +123,10 @@ export const eventRepository = new InMemoryEventRepository();
 /* read json and create Date fields */
 var jsonEvents = require('./events.json').events;
 eventRepository.events = jsonEvents.map((event: any) => {
-  const eventCopy = Object.assign(Object.create(event), event);
+  const eventCopy = Object.assign(
+    new Event(0, 0, '', '', new Date(), ''),
+    event
+  );
   eventCopy.date = new Date(event.date);
   return eventCopy;
 });

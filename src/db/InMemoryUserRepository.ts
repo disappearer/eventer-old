@@ -22,7 +22,7 @@ export default class InMemoryUserRepository implements UserRepository {
 
   getById(id: number): Promise<User> {
     return new Promise(resolve => {
-      if (id in this.users) resolve(this.cloneUser(this.users[id]));
+      if (id in this.users) return resolve(this.cloneUser(this.users[id]));
       const user = this.createUser(id);
       this.users[id] = user;
       resolve(this.cloneUser(user));
@@ -114,6 +114,6 @@ export { userRepository };
 /* read json and create Date fields */
 var jsonUsers = require('./users.json').users;
 jsonUsers.forEach((user: any) => {
-  const userCopy = Object.assign(Object.create(user), user);
+  const userCopy = Object.assign(new User(0, []), user);
   userRepository.users[user.id] = userCopy;
 });
