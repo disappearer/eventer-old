@@ -15,6 +15,7 @@ import { router as eventsRouter } from './events/events.routes';
 export default class Server {
   public app: express.Application;
   public eventRepository: EventRepository;
+  public userRepository: UserRepository;
 
   public static bootstrap(): Server {
     return new Server();
@@ -43,7 +44,16 @@ export default class Server {
 
     this.app.use(bodyParser.json());
 
+    this.app.use(
+      session({
+        secret: 'cave opener',
+        saveUninitialized: true,
+        resave: true
+      })
+    );
+
     this.app.use(passport.initialize());
+    this.app.use(passport.session());
 
     //catch 404 and forward to error handler
     this.app.use(function(

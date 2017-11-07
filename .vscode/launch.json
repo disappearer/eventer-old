@@ -10,6 +10,9 @@
       "request": "launch",
       "args": ["${workspaceFolder}/jasmine_debug.ts"],
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "env": {
+        "GOOGLE_CLIENT_ID": "x"
+      },
       "sourceMaps": true,
       "cwd": "${workspaceRoot}",
       "protocol": "inspector"

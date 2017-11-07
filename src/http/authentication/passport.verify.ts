@@ -9,7 +9,7 @@ async function verify(
     displayName: string;
     emails: Array<string>;
   },
-  callback: Function
+  done: Function
 ) {
   const requestMessage = {
     provider: profile.provider,
@@ -22,9 +22,9 @@ async function verify(
 
   try {
     const user = await userFindOrCreateHandler.handle(requestMessage);
-    callback(null, user);
+    done(null, user);
   } catch (error) {
-    callback(error.message, null);
+    done(error.message, null);
   }
 }
 
