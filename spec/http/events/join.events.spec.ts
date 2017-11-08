@@ -1,7 +1,6 @@
 import * as request from 'supertest';
 import { eventRepository } from '../../../src/db/InMemoryEventRepository';
 import { userRepository } from '../../../src/db/InMemoryUserRepository';
-import Event from '../../../src/domain/entities/Event';
 import { server } from '../../../src/http/server';
 import MockPassportStrategy from '../authentication/MockPassportStrategy';
 
@@ -44,9 +43,15 @@ describe('POST /events/:id/:action', () => {
 
   it('updates user and event when authorized', done => {
     server.setPassportStrategy(passStrategy);
-    agent.get('/auth/mock').end(() => {
-      agent.post(`/events/${EVENTID}/join`).then(response => {
+    agent
+      .get('/auth/mock')
+      .then(() => {
+        return agent.post(`/events/${EVENTID}/join`);
+      })
+      .then(response => {
         expect(response.status).toEqual(200);
+        expect(response.body.user.eventsJoined).toContain(EVENTID);
+        expect(response.body.event.guestList).toContain(USERID);
         userRepository
           .getById(USERID)
           .then(user => {
@@ -62,6 +67,5 @@ describe('POST /events/:id/:action', () => {
             done();
           });
       });
-    });
   });
 });
