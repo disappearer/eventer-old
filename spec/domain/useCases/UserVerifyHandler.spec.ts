@@ -1,6 +1,6 @@
 import UserLocalSignUpHandler from '../../../src/domain/useCases/UserLocalSignUpHandler';
 import UserVerifyHandler from '../../../src/domain/useCases/UserVerifyHandler';
-import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
+import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
 
 describe('User Verify Handler', () => {
   var userRepository: InMemoryUserRepository,

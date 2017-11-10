@@ -1,7 +1,7 @@
 import EventCreateHandler from '../../../src/domain/useCases/EventCreateHandler';
 import Event from '../../../src/domain/entities/Event';
-import InMemoryEventRepository from '../../../src/db/InMemoryEventRepository';
-import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
+import InMemoryEventRepository from '../../../src/db/memory/InMemoryEventRepository';
+import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
 import RepositoryError from '../../../src/domain/repositories/RepositoryError';
 
 describe('Event Create Handler', () => {

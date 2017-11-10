@@ -1,7 +1,7 @@
 import EventCreateHandler from '../../../src/domain/useCases/EventCreateHandler';
 import ListEventsHandler from '../../../src/domain/useCases/ListEventsHandler';
-import InMemoryEventRepository from '../../../src/db/InMemoryEventRepository';
-import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
+import InMemoryEventRepository from '../../../src/db/memory/InMemoryEventRepository';
+import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
 import Event from '../../../src/domain/entities/Event';
 const requestEventCreateMessages = require('./requestEventCreateMessages.json')
   .requestEventCreateMessages;

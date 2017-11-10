@@ -1,6 +1,6 @@
 import * as request from 'supertest';
-import InMemoryEventRepository from '../../../src/db/InMemoryEventRepository';
-import { userRepository } from '../../../src/db/InMemoryUserRepository';
+import InMemoryEventRepository from '../../../src/db/memory/InMemoryEventRepository';
+import { userRepository } from '../../../src/db/memory/InMemoryUserRepository';
 import Event from '../../../src/domain/entities/Event';
 import { server } from '../../../src/http/server';
 import MockPassportStrategy from '../authentication/MockPassportStrategy';

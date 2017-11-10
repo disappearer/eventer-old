@@ -1,5 +1,5 @@
 import verify from '../../../src/http/authentication/passport.verify';
-import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
+import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
 import User from '../../../src/domain/entities/User';
 
 describe('Function verify()', () => {

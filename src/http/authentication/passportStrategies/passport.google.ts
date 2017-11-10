@@ -1,5 +1,5 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { userRepository } from '../../../db/InMemoryUserRepository';
+import { userRepository } from '../../../db/memory/InMemoryUserRepository';
 import verify from '../passport.verify';
 
 export const googlePassportStrategy = new GoogleStrategy(

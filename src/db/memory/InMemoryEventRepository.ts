@@ -1,6 +1,6 @@
-import EventRepository from '../domain/repositories/EventRepository';
-import RepositoryError from '../domain/repositories/RepositoryError';
-import Event from '../domain/entities/Event';
+import EventRepository from '../../domain/repositories/EventRepository';
+import RepositoryError from '../../domain/repositories/RepositoryError';
+import Event from '../../domain/entities/Event';
 
 export default class InMemoryEventRepository implements EventRepository {
   events: Array<Event>;
@@ -121,7 +121,7 @@ export default class InMemoryEventRepository implements EventRepository {
 export const eventRepository = new InMemoryEventRepository();
 
 /* read json and create Date fields */
-var jsonEvents = require('./events.json').events;
+var jsonEvents = require('../events.json').events;
 eventRepository.events = jsonEvents.map((event: any) => {
   const eventCopy = Object.assign(
     new Event(0, 0, '', '', new Date(), ''),

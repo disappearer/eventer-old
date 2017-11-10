@@ -1,5 +1,5 @@
 import UserLocalSignUpHandler from '../../../src/domain/useCases/UserLocalSignUpHandler';
-import InMemoryUserRepository from '../../../src/db/InMemoryUserRepository';
+import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
 import User from '../../../src/domain/entities/User';
 import AuthLocalInfo from '../../../src/domain/contracts/AuthLocalInfo';
 

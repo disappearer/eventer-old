@@ -1,6 +1,6 @@
-import UserRepository from '../domain/repositories/UserRepository';
-import RepositoryError from '../domain/repositories/RepositoryError';
-import User from '../domain/entities/User';
+import UserRepository from '../../domain/repositories/UserRepository';
+import RepositoryError from '../../domain/repositories/RepositoryError';
+import User from '../../domain/entities/User';
 
 export default class InMemoryUserRepository implements UserRepository {
   users: Array<User>;
@@ -112,7 +112,7 @@ const userRepository = new InMemoryUserRepository();
 export { userRepository };
 
 /* read json and create Date fields */
-var jsonUsers = require('./users.json').users;
+var jsonUsers = require('../users.json').users;
 jsonUsers.forEach((user: any) => {
   const userCopy = Object.assign(new User(0, []), user);
   userRepository.users[user.id] = userCopy;

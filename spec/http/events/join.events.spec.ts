@@ -1,10 +1,8 @@
 import * as request from 'supertest';
-import { eventRepository } from '../../../src/db/InMemoryEventRepository';
-import { userRepository } from '../../../src/db/InMemoryUserRepository';
+import { eventRepository } from '../../../src/db/memory/InMemoryEventRepository';
+import { userRepository } from '../../../src/db/memory/InMemoryUserRepository';
 import { server } from '../../../src/http/server';
 import MockPassportStrategy from '../authentication/MockPassportStrategy';
-
-var jsonEvents = require('../../../src/db/events.json').events;
 
 describe('POST /events/:id/:action', () => {
   var agent = request.agent(server.app);
