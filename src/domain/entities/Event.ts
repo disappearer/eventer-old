@@ -10,12 +10,12 @@ export default class Event {
   guestList: Array<number>;
 
   constructor(
-    id: number,
-    creatorId: number,
-    title: string,
-    description: string,
-    date: Date,
-    location: string
+    id = 0,
+    creatorId = 0,
+    title = '',
+    description = '',
+    date = new Date(),
+    location = ''
   ) {
     this.id = id;
     this.creatorId = creatorId;
