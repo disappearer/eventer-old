@@ -58,7 +58,7 @@ export default class EventCreateHandler {
   async updateCreator(user: User, event: Event) {
     user.joinEvent(event);
     try {
-      await this.userRepository.update(user);
+      await this.userRepository.updateEventsJoined(user);
     } catch (e) {
       await this.eventRepository.delete(event);
       throw e;

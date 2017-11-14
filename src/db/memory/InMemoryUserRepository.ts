@@ -59,7 +59,7 @@ export default class InMemoryUserRepository implements UserRepository {
     });
   }
 
-  update(user: User): Promise<User> {
+  updateEventsJoined(user: User): Promise<User> {
     return new Promise((resolve, reject) => {
       if (!(user.id in this.users)) {
         reject(
@@ -71,8 +71,26 @@ export default class InMemoryUserRepository implements UserRepository {
         );
       }
 
-      this.users[user.id] = this.cloneUser(user);
-      resolve(user);
+      this.users[user.id].eventsJoined = user.eventsJoined;
+      resolve(this.cloneUser(this.users[user.id]));
+    });
+  }
+
+  updateVerified(user: User): Promise<User> {
+    return new Promise((resolve, reject) => {
+      if (!(user.id in this.users)) {
+        reject(
+          new RepositoryError(
+            'UpdatingNonExistingUserException',
+            user.id,
+            user.constructor.name
+          )
+        );
+      }
+      this.users[user.id].authenticationInfo.map(authInfo => {
+        if (authInfo.provider == 'local') authInfo.verified = user.verified;
+      });
+      resolve(this.cloneUser(this.users[user.id]));
     });
   }
 

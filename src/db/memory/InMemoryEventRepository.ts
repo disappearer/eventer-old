@@ -47,7 +47,7 @@ export default class InMemoryEventRepository implements EventRepository {
     });
   }
 
-  update(event: Event): Promise<Event> {
+  updateGuestList(event: Event): Promise<Event> {
     return new Promise((resolve, reject) => {
       if (!(event.id in this.events)) {
         reject(
@@ -59,8 +59,8 @@ export default class InMemoryEventRepository implements EventRepository {
         );
       }
 
-      this.events[event.id] = this.cloneEvent(event);
-      resolve(event);
+      this.events[event.id].guestList = event.guestList;
+      resolve(this.cloneEvent(this.events[event.id]));
     });
   }
 

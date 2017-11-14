@@ -11,7 +11,7 @@ export default class UserVerifyHandler {
   async handle(requestMessage: any) {
     var user = await this.getUser(requestMessage.userId);
     user.verified = true;
-    user = await this.userRepository.update(user);
+    user = await this.userRepository.updateVerified(user);
     return user;
   }
 

@@ -25,8 +25,8 @@ export default class EventJoinHandler {
   async join(user: User, event: Event) {
     user.joinEvent(event);
     event.addToGuestList(user);
-    user = await this.userRepository.update(user);
-    event = await this.eventRepository.update(event);
+    user = await this.userRepository.updateEventsJoined(user);
+    event = await this.eventRepository.updateGuestList(event);
     return { user: user, event: event };
   }
 }

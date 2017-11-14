@@ -81,7 +81,7 @@ describe('Event Create Handler', () => {
 
   it('rolls back the event repo if creator update fails', done => {
     var entityId: number, entityType: string;
-    spyOn(userRepository, 'update').and.callFake((entity: any) => {
+    spyOn(userRepository, 'updateEventsJoined').and.callFake((entity: any) => {
       entityId = entity.id;
       entityType = entity.constructor.name;
       return Promise.reject(
