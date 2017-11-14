@@ -14,12 +14,16 @@ export default class MongoEventRepository implements EventRepository {
   async add(event: Event): Promise<Event> {
     delete event.id;
     const insertResult = await this.events.insertOne(event);
-    return this.toDomainEvent(insertResult.ops[0]);
+    return toDomainEvent(insertResult.ops[0]);
   }
 
-  async update(event: Event): Promise<Event> {
-    const result = await this.events.replaceOne({ _id: event.id }, event);
-    return this.toDomainEvent(result.ops[0]);
+  async updateGuestList(event: Event): Promise<Event> {
+    const result = await this.events.findOneAndUpdate(
+      { _id: event.id },
+      { $set: { guestList: event.guestList } },
+      { returnOriginal: false }
+    );
+    return toDomainEvent(result.value);
   }
 
   async findOne(query: any) {
@@ -29,7 +33,7 @@ export default class MongoEventRepository implements EventRepository {
   async getById(id: Number) {
     const dbEvent = await this.events.findOne({ _id: id });
     if (!dbEvent) return null;
-    return this.toDomainEvent(dbEvent);
+    return toDomainEvent(dbEvent);
   }
 
   async getFuture() {
@@ -39,7 +43,7 @@ export default class MongoEventRepository implements EventRepository {
       .sort({ date: 1 })
       .toArray();
     return dbEvents.map(dbEvent => {
-      return this.toDomainEvent(dbEvent);
+      return toDomainEvent(dbEvent);
     });
   }
 
@@ -49,24 +53,15 @@ export default class MongoEventRepository implements EventRepository {
       .sort({ date: 1 })
       .toArray();
     return dbEvents.map(dbEvent => {
-      return this.toDomainEvent(dbEvent);
+      return toDomainEvent(dbEvent);
     });
   }
 
   async delete(event: Event) {}
-
-  toDbEvent(event: Event) {
-    const dbEvent: any = event;
-    delete dbEvent.id;
-    dbEvent._id = event.id;
-    return dbEvent;
-  }
-
-  toDomainEvent(dbEvent: any): Event {
-    dbEvent.id = dbEvent._id;
-    delete dbEvent._id;
-    return Object.assign(new Event(), dbEvent);
-  }
 }
 
-// export const eventRepository = new MongoEventRepository(db);
+export function toDomainEvent(dbEvent: any): Event {
+  dbEvent.id = dbEvent._id;
+  delete dbEvent._id;
+  return Object.assign(new Event(), dbEvent);
+}

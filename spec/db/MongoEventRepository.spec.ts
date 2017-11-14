@@ -1,12 +1,14 @@
 import { Db, Collection } from 'mongodb';
 import { whenConnected } from '../../src/db/mongodb/mongodb.config';
-import EventRepository from '../../src/db/mongodb/MongoEventRepository';
+import EventRepository, {
+  toDomainEvent
+} from '../../src/db/mongodb/MongoEventRepository';
 import Event from '../../src/domain/entities/Event';
 import User from '../../src/domain/entities/User';
 
 const jsonEvents = require('../../src/db/events.json');
 
-describe('Mongo Repository', () => {
+describe('Mongo Events Repository', () => {
   var db: Db,
     testEvents: Collection,
     repoEvents: Array<Event>,
@@ -36,16 +38,12 @@ describe('Mongo Repository', () => {
     });
   });
 
-  it('add() adds event to db', done => {
+  it('can adds events to db', done => {
     testEvents
       .find()
       .toArray()
       .then(dbEvents => {
-        dbEvents = dbEvents.map(e => {
-          e.id = e._id;
-          delete e._id;
-          return Object.assign(new Event(), e);
-        });
+        dbEvents = dbEvents.map(toDomainEvent);
         repoEvents.forEach(repoEvent => {
           expect(dbEvents.find(dbEvent => dbEvent == repoEvent)).not.toBeNull();
         });
@@ -53,7 +51,7 @@ describe('Mongo Repository', () => {
       });
   });
 
-  it('getById() gets event by id or returns null if not found', done => {
+  it('can get event by id or return null if not found', done => {
     eventRepository
       .getById(0)
       .then(event => {
@@ -66,14 +64,14 @@ describe('Mongo Repository', () => {
       });
   });
 
-  it('getAll() returns all events in chronological order', done => {
+  it('can get all events in chronological order', done => {
     eventRepository.getAll().then(events => {
       expect(events).toEqual(repoEvents);
       done();
     });
   });
 
-  it('getFuture() returns all future events in chronological order', done => {
+  it('can return all future events in chronological order', done => {
     jasmine.clock().mockDate(new Date(Date.UTC(2017, 9, 16, 18, 0)));
     const futureEvents = repoEvents.filter(event => event.date > new Date());
 
@@ -95,7 +93,7 @@ describe('Mongo Repository', () => {
       });
   });
 
-  it('update() updates event', done => {
+  it('can update event', done => {
     const user = new User(111, [
       { provider: 'google', id: 222, email: 'user@gmail.com', name: 'Nobody' }
     ]);
@@ -104,18 +102,20 @@ describe('Mongo Repository', () => {
       .then(event => {
         expect(event.guestList.indexOf(user.id)).toBe(-1);
         event.addToGuestList(user);
-        return eventRepository.update(event);
+        return eventRepository.updateGuestList(event);
       })
       .then(event => {
         expect(repoEvents[0]).not.toEqual(event);
         expect(event.guestList.indexOf(user.id)).toBeGreaterThanOrEqual(0);
-        done();
+        testEvents.findOne({ _id: event.id }).then(dbEvent => {
+          expect(event).toEqual(toDomainEvent(dbEvent));
+          done();
+        });
       });
   });
 
   afterAll(done => {
     testEvents.drop().then(() => {
-      db.close();
       done();
     });
   });
