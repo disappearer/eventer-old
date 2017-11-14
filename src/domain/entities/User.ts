@@ -7,7 +7,10 @@ export default class User {
   authenticationInfo: Array<AuthProviderInfo>;
   eventsJoined: Array<number>;
 
-  constructor(id: number, authenticationInfo: Array<AuthProviderInfo>) {
+  constructor(
+    id: number = 0,
+    authenticationInfo: Array<AuthProviderInfo> = []
+  ) {
     this.id = id;
     this.authenticationInfo = authenticationInfo;
     const localProvider = this.authenticationInfo.find(authInfo => {
