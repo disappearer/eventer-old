@@ -5,7 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "jasmine-ts"
+    "test": "jasmine-ts",
+    "coverage": "nyc jasmine-ts"
+  },
+  "nyc": {
+    "exclude": "spec/**",
+    "extension": [".ts"],
+    "reporter": ["html", "text-summary"]
   },
   "author": "Lexa",
   "license": "MIT",
@@ -32,6 +38,7 @@
     "gruntify-eslint": "^4.0.0",
     "jasmine-spec-reporter": "^4.2.1",
     "jasmine-ts": "^0.2.1",
+    "nyc": "^11.3.0",
     "passport-strategy": "^1.0.0",
     "supertest": "^3.0.0",
     "typescript": "^2.5.3"

@@ -14,7 +14,8 @@ module.exports = function(grunt) {
     },
 
     exec: {
-      jasmine_ts: 'npm test'
+      test: 'npm test',
+      cover: 'npm run-script coverage'
     },
 
     express: {
@@ -28,7 +29,7 @@ module.exports = function(grunt) {
     watch: {
       domain: {
         files: ['spec/**', 'src/**'],
-        tasks: ['env', 'exec:jasmine_ts']
+        tasks: ['env', 'exec:test']
       }
     }
   });
@@ -37,6 +38,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-exec');
+
+  grunt.registerTask('test', ['env', 'exec:test']);
+  grunt.registerTask('cover', ['env', 'exec:cover']);
 
   grunt.registerTask('default', ['env', 'watch:domain']);
 };
