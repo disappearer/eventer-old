@@ -1,7 +1,6 @@
 import EventRepository from '../../domain/repositories/EventRepository';
 import Event from '../../domain/entities/Event';
 
-import { db } from './mongodb.config';
 import { Collection } from 'mongodb';
 
 export default class MongoEventRepository implements EventRepository {

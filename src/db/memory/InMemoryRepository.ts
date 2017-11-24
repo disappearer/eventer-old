@@ -1,11 +1,11 @@
-import Repository from '../domain/repositories/Repository';
-import RepositoryError from '../domain/repositories/RepositoryError';
+import Repository from '../../domain/repositories/Repository';
+import RepositoryError from '../../domain/repositories/RepositoryError';
 
 export default class InMemoryRepository implements Repository<any> {
   entities: Array<any>;
   createEntity: Function;
 
-  constructor(createEntity) {
+  constructor(createEntity: Function) {
     this.entities = [];
     this.createEntity = createEntity;
   }
@@ -19,7 +19,7 @@ export default class InMemoryRepository implements Repository<any> {
     });
   }
 
-  findOne(query) {
+  findOne(query: any) {
     return new Promise(resolve => {
       const returnEntity = this.entities.find(entity => {
         return entity.email == query.email;
@@ -38,7 +38,7 @@ export default class InMemoryRepository implements Repository<any> {
     });
   }
 
-  add(entity) {
+  add(entity: any) {
     return new Promise(resolve => {
       var returnEntity = this.cloneEntity(entity);
       returnEntity.id = this.entities.length;
@@ -47,7 +47,7 @@ export default class InMemoryRepository implements Repository<any> {
     });
   }
 
-  update(entity) {
+  update(entity: any) {
     return new Promise((resolve, reject) => {
       if (!(entity.id in this.entities)) {
         reject(
@@ -64,7 +64,7 @@ export default class InMemoryRepository implements Repository<any> {
     });
   }
 
-  delete(entity) {
+  delete(entity: any) {
     return new Promise((resolve, reject) => {
       if (!(entity.id in this.entities))
         reject(
@@ -79,7 +79,7 @@ export default class InMemoryRepository implements Repository<any> {
     });
   }
 
-  cloneEntity(entity) {
+  cloneEntity(entity: any) {
     return Object.assign(Object.create(entity), entity);
   }
 }

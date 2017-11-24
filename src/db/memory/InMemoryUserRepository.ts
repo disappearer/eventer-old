@@ -32,6 +32,7 @@ export default class InMemoryUserRepository implements UserRepository {
   getByAuthProviderId(provider: string, id: number): Promise<User> {
     return new Promise(resolve => {
       const user = this.users.find(user => {
+        if (!user) return false;
         const authInfo = user.authenticationInfo.find(authInfo => {
           return authInfo.provider == provider && authInfo.id == id;
         });
