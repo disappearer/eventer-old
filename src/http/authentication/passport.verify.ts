@@ -7,7 +7,7 @@ async function verify(
     provider: string;
     id: number;
     displayName: string;
-    emails: Array<string>;
+    emails: Array<{ value: string; type: string }>;
   },
   done: Function
 ) {
@@ -15,7 +15,7 @@ async function verify(
     provider: profile.provider,
     id: profile.id,
     name: profile.displayName,
-    email: profile.emails[0]
+    email: profile.emails[0].value
   };
 
   const userFindOrCreateHandler = new UserFindOrCreateHandler(userRepository);

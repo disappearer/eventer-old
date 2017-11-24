@@ -8,7 +8,7 @@ describe('Function verify()', () => {
     provider: 'google',
     id: 123456,
     displayName: 'Non-unique Display Name',
-    emails: ['google.user123456@gmail.com']
+    emails: [{ value: 'google.user123456@gmail.com', type: 'account' }]
   };
 
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('Function verify()', () => {
         const authInfo = user.authenticationInfo.find(authInfo => {
           return authInfo.provider == profile.provider;
         });
-        expect(authInfo.email).toEqual(profile.emails[0]);
+        expect(authInfo.email).toEqual(profile.emails[0].value);
         expect(authInfo.name).toEqual(profile.displayName);
         done();
       });
