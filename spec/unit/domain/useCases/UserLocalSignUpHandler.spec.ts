@@ -1,7 +1,7 @@
-import UserLocalSignUpHandler from '../../../src/domain/useCases/UserLocalSignUpHandler';
-import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
-import User from '../../../src/domain/entities/User';
-import AuthLocalInfo from '../../../src/domain/contracts/AuthLocalInfo';
+import UserLocalSignUpHandler from '../../../../src/domain/useCases/UserLocalSignUpHandler';
+import InMemoryUserRepository from '../../../../src/db/memory/InMemoryUserRepository';
+import User from '../../../../src/domain/entities/User';
+import AuthLocalInfo from '../../../../src/domain/contracts/AuthLocalInfo';
 
 describe('User Sign Up Handler (local authentication provider)', () => {
   var userRepository: InMemoryUserRepository,

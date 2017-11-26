@@ -1,5 +1,5 @@
-import Event from '../../../src/domain/entities/Event';
-import User from '../../../src/domain/entities/User';
+import Event from '../../../../src/domain/entities/Event';
+import User from '../../../../src/domain/entities/User';
 
 describe('User', function() {
   var user: User, event: Event, event2: Event;

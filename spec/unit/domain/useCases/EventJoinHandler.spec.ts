@@ -1,6 +1,6 @@
-import EventJoinHandler from '../../../src/domain/useCases/EventJoinHandler';
-import InMemoryEventRepository from '../../../src/db/memory/InMemoryEventRepository';
-import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
+import EventJoinHandler from '../../../../src/domain/useCases/EventJoinHandler';
+import InMemoryEventRepository from '../../../../src/db/memory/InMemoryEventRepository';
+import InMemoryUserRepository from '../../../../src/db/memory/InMemoryUserRepository';
 
 describe('Event Join Handler', () => {
   var eventJoinHandler: EventJoinHandler,

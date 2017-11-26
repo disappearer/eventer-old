@@ -1,8 +1,8 @@
 import * as request from 'supertest';
-import { eventRepository } from '../../../src/db/memory/InMemoryEventRepository';
-import { userRepository } from '../../../src/db/memory/InMemoryUserRepository';
-import { server } from '../../../src/http/server';
-import MockPassportStrategy from '../authentication/MockPassportStrategy';
+import { eventRepository } from '../../../../src/db/memory/InMemoryEventRepository';
+import { userRepository } from '../../../../src/db/memory/InMemoryUserRepository';
+import { server } from '../../../../src/http/server';
+import MockPassportStrategy from '../../../../src/http/authentication/passportStrategies/MockPassportStrategy';
 
 describe('POST /events/:id/:action', () => {
   var agent = request.agent(server.app);

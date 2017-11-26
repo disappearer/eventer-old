@@ -1,6 +1,6 @@
-import UserFindOrCreateHandler from '../../../src/domain/useCases/UserFindOrCreateHandler';
-import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
-import User from '../../../src/domain/entities/User';
+import UserFindOrCreateHandler from '../../../../src/domain/useCases/UserFindOrCreateHandler';
+import InMemoryUserRepository from '../../../../src/db/memory/InMemoryUserRepository';
+import User from '../../../../src/domain/entities/User';
 
 describe('User Find Or Create Handler', () => {
   var userRepo: InMemoryUserRepository,

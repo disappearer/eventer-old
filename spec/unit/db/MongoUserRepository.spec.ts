@@ -1,12 +1,12 @@
 import { Db, Collection } from 'mongodb';
-import { whenConnected } from '../../src/db/mongodb/mongodb.config';
+import { whenConnected } from '../../../src/db/mongodb/mongodb.config';
 import UserRepository, {
   toDomainUser
-} from '../../src/db/mongodb/MongoUserRepository';
-import Event from '../../src/domain/entities/Event';
-import User from '../../src/domain/entities/User';
+} from '../../../src/db/mongodb/MongoUserRepository';
+import Event from '../../../src/domain/entities/Event';
+import User from '../../../src/domain/entities/User';
 
-const jsonUsers = require('../../src/db/users.json');
+const jsonUsers = require('../../../src/db/users.json');
 
 describe('Mongo Users Repository', () => {
   var db: Db,
@@ -29,11 +29,11 @@ describe('Mongo Users Repository', () => {
           userRepository = new UserRepository(testUsers, {
             google: testGoogleProvider
           });
-          const whenAdded: Array<
-            Promise<User>
-          > = jsonUsers.users.map((userInfo: any) => {
-            return userRepository.add(Object.assign(new User(), userInfo));
-          });
+          const whenAdded: Array<Promise<User>> = jsonUsers.users.map(
+            (userInfo: any) => {
+              return userRepository.add(Object.assign(new User(), userInfo));
+            }
+          );
           Promise.all(whenAdded).then(users => {
             repoUsers = users;
             done();

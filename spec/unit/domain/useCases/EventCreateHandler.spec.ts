@@ -1,8 +1,8 @@
-import EventCreateHandler from '../../../src/domain/useCases/EventCreateHandler';
-import Event from '../../../src/domain/entities/Event';
-import InMemoryEventRepository from '../../../src/db/memory/InMemoryEventRepository';
-import InMemoryUserRepository from '../../../src/db/memory/InMemoryUserRepository';
-import RepositoryError from '../../../src/domain/repositories/RepositoryError';
+import EventCreateHandler from '../../../../src/domain/useCases/EventCreateHandler';
+import Event from '../../../../src/domain/entities/Event';
+import InMemoryEventRepository from '../../../../src/db/memory/InMemoryEventRepository';
+import InMemoryUserRepository from '../../../../src/db/memory/InMemoryUserRepository';
+import RepositoryError from '../../../../src/domain/repositories/RepositoryError';
 
 describe('Event Create Handler', () => {
   var eventCreateHandler: EventCreateHandler,
@@ -46,13 +46,12 @@ describe('Event Create Handler', () => {
     const whenRepoEvent = whenHandledEvent.then(handledEvent => {
       return eventRepository.getById(handledEvent.id);
     });
-    Promise.all([
-      whenHandledEvent,
-      whenRepoEvent
-    ]).then(([handledEvent, repoEvent]) => {
-      expect(handledEvent).toEqual(repoEvent);
-      done();
-    });
+    Promise.all([whenHandledEvent, whenRepoEvent]).then(
+      ([handledEvent, repoEvent]) => {
+        expect(handledEvent).toEqual(repoEvent);
+        done();
+      }
+    );
   });
 
   it(
@@ -67,15 +66,17 @@ describe('Event Create Handler', () => {
       const whenRepoEvent2 = whenEvent2.then(event2 => {
         return eventRepository.getById(event2.id);
       });
-      Promise.all([
-        whenRepoEvent1,
-        whenRepoEvent2
-      ]).then(([repoEvent1, repoEvent2]) => {
-        userRepository.getById(requestMessage.userId).then(creator => {
-          expect(creator.eventsJoined).toEqual([repoEvent1.id, repoEvent2.id]);
-          done();
-        });
-      });
+      Promise.all([whenRepoEvent1, whenRepoEvent2]).then(
+        ([repoEvent1, repoEvent2]) => {
+          userRepository.getById(requestMessage.userId).then(creator => {
+            expect(creator.eventsJoined).toEqual([
+              repoEvent1.id,
+              repoEvent2.id
+            ]);
+            done();
+          });
+        }
+      );
     }
   );
 

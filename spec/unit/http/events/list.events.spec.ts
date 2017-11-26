@@ -1,7 +1,7 @@
 import * as request from 'supertest';
-import { eventRepository } from '../../../src/db/memory/InMemoryEventRepository';
-import Event from '../../../src/domain/entities/Event';
-import { server } from '../../../src/http/server';
+import { eventRepository } from '../../../../src/db/memory/InMemoryEventRepository';
+import Event from '../../../../src/domain/entities/Event';
+import { server } from '../../../../src/http/server';
 
 describe('GET /events', () => {
   beforeAll(done => {

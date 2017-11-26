@@ -1,12 +1,12 @@
 import { Db, Collection } from 'mongodb';
-import { whenConnected } from '../../src/db/mongodb/mongodb.config';
+import { whenConnected } from '../../../src/db/mongodb/mongodb.config';
 import EventRepository, {
   toDomainEvent
-} from '../../src/db/mongodb/MongoEventRepository';
-import Event from '../../src/domain/entities/Event';
-import User from '../../src/domain/entities/User';
+} from '../../../src/db/mongodb/MongoEventRepository';
+import Event from '../../../src/domain/entities/Event';
+import User from '../../../src/domain/entities/User';
 
-const jsonEvents = require('../../src/db/events.json');
+const jsonEvents = require('../../../src/db/events.json');
 
 describe('Mongo Events Repository', () => {
   var db: Db,
@@ -20,13 +20,13 @@ describe('Mongo Events Repository', () => {
       db.createCollection('testEvents').then(collection => {
         testEvents = collection;
         eventRepository = new EventRepository(collection);
-        const whenAdded: Array<
-          Promise<Event>
-        > = jsonEvents.events.map((eventInfo: any) => {
-          const tempEvent = Object.assign(new Event(), eventInfo);
-          tempEvent.date = new Date(eventInfo.date);
-          return eventRepository.add(tempEvent);
-        });
+        const whenAdded: Array<Promise<Event>> = jsonEvents.events.map(
+          (eventInfo: any) => {
+            const tempEvent = Object.assign(new Event(), eventInfo);
+            tempEvent.date = new Date(eventInfo.date);
+            return eventRepository.add(tempEvent);
+          }
+        );
         Promise.all(whenAdded).then(events => {
           repoEvents = events;
           repoEvents.sort((e1, e2) => {
