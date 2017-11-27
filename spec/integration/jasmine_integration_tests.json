@@ -1,5 +1,5 @@
 {
-  "spec_dir": "spec/unit",
+  "spec_dir": "spec/integration",
   "spec_files": ["**/*[sS]pec.ts"],
   "helpers": ["../helpers/**/*.ts"],
   "stopSpecOnExpectationFailure": false,

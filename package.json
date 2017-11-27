@@ -2,10 +2,12 @@
   "name": "eventer",
   "version": "1.0.0",
   "description": "Event management application",
-  "main": "index.js",
+  "main": "./bin/www",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "jasmine-ts",
+    "test": "jasmine-ts --config=./spec/unit/jasmine_unit_tests.json",
+    "integration-test":
+      "jasmine-ts --config=./spec/integration/jasmine_integration_tests.json",
     "coverage": "nyc jasmine-ts"
   },
   "nyc": {
@@ -34,12 +36,15 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-env": "^0.4.4",
     "grunt-exec": "^3.0.0",
+    "grunt-express-server": "^0.5.3",
     "grunt-jasmine-nodejs": "^1.6.0",
     "gruntify-eslint": "^4.0.0",
     "jasmine-spec-reporter": "^4.2.1",
     "jasmine-ts": "^0.2.1",
+    "nodemon": "^1.12.1",
     "nyc": "^11.3.0",
     "passport-strategy": "^1.0.0",
+    "superagent": "^3.8.1",
     "supertest": "^3.0.0",
     "typescript": "^2.5.3"
   },
@@ -47,6 +52,7 @@
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "debug": "^3.1.0",
+    "dotenv": "^4.0.0",
     "errorhandler": "^1.5.0",
     "eslint": "^4.9.0",
     "express": "^4.16.2",

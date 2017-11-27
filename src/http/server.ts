@@ -1,15 +1,23 @@
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
+
 import * as express from 'express';
 import * as session from 'express-session';
+
 import passport from './authentication/passport.config';
+import { googlePassportStrategy } from './authentication/passportStrategies/passport.google';
 import { router as passportRouter } from './authentication/passport.routes';
+
 import * as logger from 'morgan'; // dev
 import * as path from 'path';
 import errorHandler = require('errorhandler'); // dev
 import methodOverride = require('method-override');
+
 import UserRepository from '../domain/repositories/UserRepository';
 import EventRepository from '../domain/repositories/EventRepository';
+import { eventRepository as inMemEventRepo } from '../db/memory/InMemoryEventRepository';
+import { userRepository as inMemUserRepo } from '../db/memory/InMemoryUserRepository';
+import { whenCollections } from '../db/mongodb/mongodb.config';
 import { router as eventsRouter } from './events/events.routes';
 
 export default class Server {
@@ -40,7 +48,11 @@ export default class Server {
   }
 
   public config() {
-    // this.app.use(logger('dev'));
+    if (
+      process.env.NODE_ENV != 'unit-test' &&
+      process.env.NODE_ENV != 'integration-test'
+    )
+      this.app.use(logger('dev'));
 
     this.app.use(bodyParser.json());
 
@@ -52,6 +64,7 @@ export default class Server {
       })
     );
 
+    passport.use(googlePassportStrategy);
     this.app.use(passport.initialize());
     this.app.use(passport.session());
 
@@ -75,6 +88,7 @@ export default class Server {
     this.app.use(eventsRouter);
   }
 
+  // for setting mock passport
   public setPassportStrategy(strategy: passport.Strategy) {
     passport.use(strategy);
   }

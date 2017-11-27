@@ -10,6 +10,14 @@ router.get('/auth/:strategy', (req, res, next) => {
   );
 });
 
+router.get('/auth/mock', (req, res, next) => {
+  res
+    .status(200)
+    .send(
+      `Authentication success. User: ${req.user.authenticationInfo[0].name}`
+    );
+});
+
 router.get(
   '/auth/:strategy/callback',
   (req, res, next) => {
@@ -18,11 +26,15 @@ router.get(
   (req, res) => {
     if (!req.isAuthenticated())
       return res.status(401).send('Not authenticated.');
-    res.status(200).send('Authentication success.');
+    res
+      .status(200)
+      .send(
+        `Authentication success. User: ${req.user.authenticationInfo[0].name}`
+      );
   }
 );
 
 router.get('/signout', (req, res) => {
   req.logout();
-  return res.status(200).send('Signout successs.');
+  return res.status(200).send(`Signout successs. User: ${req.user}`);
 });
