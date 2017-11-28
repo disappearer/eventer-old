@@ -1,0 +1,12 @@
+node_modules/*
+!node_modules/@types
+node_modules/@types/*
+!node_modules/@types/passport-google-oauth20
+.*
+!.vscode
+TODO
+dist
+src/db/InMemoryRepository.ts
+data
+coverage
+!.gitignore
