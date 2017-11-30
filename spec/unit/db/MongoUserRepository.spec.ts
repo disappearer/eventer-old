@@ -1,5 +1,5 @@
 import { Db, Collection } from 'mongodb';
-import { whenConnected } from '../../../src/db/mongodb/mongodb.config';
+import { whenDb } from '../../../src/db/mongodb/mongodb.config';
 import UserRepository, {
   toDomainUser
 } from '../../../src/db/mongodb/MongoUserRepository';
@@ -16,7 +16,7 @@ describe('Mongo Users Repository', () => {
     userRepository: UserRepository;
 
   beforeAll(done => {
-    whenConnected.then(database => {
+    whenDb.then(database => {
       db = database;
       db
         .createCollection('testUsers')

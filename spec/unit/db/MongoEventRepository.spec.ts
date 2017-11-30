@@ -1,5 +1,5 @@
 import { Db, Collection } from 'mongodb';
-import { whenConnected } from '../../../src/db/mongodb/mongodb.config';
+import { whenDb } from '../../../src/db/mongodb/mongodb.config';
 import EventRepository, {
   toDomainEvent
 } from '../../../src/db/mongodb/MongoEventRepository';
@@ -15,7 +15,7 @@ describe('Mongo Events Repository', () => {
     eventRepository: EventRepository;
 
   beforeAll(done => {
-    whenConnected.then(database => {
+    whenDb.then(database => {
       db = database;
       db.createCollection('testEvents').then(collection => {
         testEvents = collection;

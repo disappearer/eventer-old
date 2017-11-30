@@ -14,9 +14,10 @@ import methodOverride = require('method-override');
 
 import UserRepository from '../domain/repositories/UserRepository';
 import EventRepository from '../domain/repositories/EventRepository';
-import { eventRepository as inMemEventRepo } from '../db/memory/InMemoryEventRepository';
-import { userRepository as inMemUserRepo } from '../db/memory/InMemoryUserRepository';
-import { whenCollections } from '../db/mongodb/mongodb.config';
+
+import { whenDb } from '../db/mongodb/mongodb.config';
+import * as connectMongo from 'connect-mongo';
+
 import { router as eventsRouter } from './events/events.routes';
 
 export default class Server {
@@ -50,18 +51,28 @@ export default class Server {
     if (
       process.env.NODE_ENV != 'unit-test' &&
       process.env.NODE_ENV != 'integration-test'
-    )
+    ) {
       this.app.use(logger('dev'));
+      const MongoStore = connectMongo(session);
+      this.app.use(
+        session({
+          secret: 'cave opener',
+          saveUninitialized: true,
+          resave: true,
+          store: new MongoStore({ dbPromise: whenDb })
+        })
+      );
+    } else {
+      this.app.use(
+        session({
+          secret: 'cave opener',
+          saveUninitialized: true,
+          resave: true
+        })
+      );
+    }
 
     this.app.use(bodyParser.json());
-
-    this.app.use(
-      session({
-        secret: 'cave opener',
-        saveUninitialized: true,
-        resave: true
-      })
-    );
 
     this.app.use(passport.initialize());
     this.app.use(passport.session());
