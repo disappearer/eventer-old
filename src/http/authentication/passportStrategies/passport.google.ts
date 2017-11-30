@@ -1,14 +1,14 @@
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { userRepository } from '../../../db/memory/InMemoryUserRepository';
+import { server } from '../../../http/server';
 import verify from '../passport.verify';
 
 export const googlePassportStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://eventer.lexlabs.tk:3000/auth/google/callback'
+    callbackURL: process.env.EVENTER_URL + '/auth/google/callback'
   },
   function(accessToken, refreshToken, profile, done) {
-    verify(userRepository, profile, done);
+    verify(server.userRepository, profile, done);
   }
 );

@@ -5,7 +5,6 @@ import * as express from 'express';
 import * as session from 'express-session';
 
 import passport from './authentication/passport.config';
-import { googlePassportStrategy } from './authentication/passportStrategies/passport.google';
 import { router as passportRouter } from './authentication/passport.routes';
 
 import * as logger from 'morgan'; // dev
@@ -64,7 +63,6 @@ export default class Server {
       })
     );
 
-    passport.use(googlePassportStrategy);
     this.app.use(passport.initialize());
     this.app.use(passport.session());
 

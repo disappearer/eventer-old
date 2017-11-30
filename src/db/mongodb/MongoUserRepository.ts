@@ -89,6 +89,7 @@ export default class MongoUserRepository implements UserRepository {
 
   async getByAuthProviderId(provider: string, id: number): Promise<User> {
     const authRecord = await this.authProviders[provider].findOne({ id: id });
+    if (!authRecord) return null;
     return await this.getById(authRecord.userId);
   }
 
