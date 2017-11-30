@@ -11,7 +11,8 @@ module.exports = function(grunt) {
       dev: {
         GOOGLE_CLIENT_ID: ' x ',
         GOOGLE_CLIENT_SECRET: ' x ',
-        DEBUG: 'eventer:log eventer:debug'
+        DEBUG: 'eventer:log eventer:debug',
+        PORT: 80
       },
       unit: {
         DB_URL: 'mongodb://localhost:27017/eventer_unit_test',
@@ -21,7 +22,7 @@ module.exports = function(grunt) {
         NODE_ENV: 'integration-test',
         DB: 'mongo',
         DEBUG: 'eventer:log eventer:debug',
-        EVENTER_URL: 'http://eventer.lexlabs.tk:3000',
+        EVENTER_URL: 'http://eventer.lexlabs.tk',
         DB_URL: 'mongodb://localhost:27017/eventer_integration_test'
       }
     },
@@ -46,7 +47,7 @@ module.exports = function(grunt) {
     watch: {
       domain: {
         files: ['spec/**', 'src/**'],
-        tasks: ['env:dev', 'exec:unit_test', 'exec:compile']
+        tasks: ['env:dev', 'env:unit', 'exec:unit_test', 'exec:compile']
       }
     }
   });

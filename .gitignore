@@ -10,3 +10,4 @@ src/db/InMemoryRepository.ts
 data
 coverage
 !.gitignore
+!.dockerignore

@@ -1,0 +1,8 @@
+.nyc_output
+.vscode
+coverage
+data
+node_modules
+!node_modules/@types/passport-google-oauth20
+TODO
+jasmine_debug.ts
