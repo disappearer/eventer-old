@@ -84,11 +84,8 @@ module.exports = function(grunt) {
   ]);
   grunt.registerTask('integration_test', [
     'env:dev',
-    'env:unit',
-    'mongod',
-    'exec:unit_test',
-    'exec:db_cleanup',
     'env:integration',
+    'mongod',
     'express:integration',
     'exec:integration_test',
     'exec:db_cleanup'

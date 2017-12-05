@@ -1,6 +1,7 @@
 import { Strategy } from 'passport-strategy';
 import User from '../../../domain/entities/User';
 import { server } from '../../server';
+import verify from '../passport.verify';
 
 export default class MockPassportStrategy extends Strategy {
   name: string;
@@ -8,7 +9,7 @@ export default class MockPassportStrategy extends Strategy {
   userId: number;
   verify: Function;
 
-  constructor(options: any, verify: Function) {
+  constructor(options: {passAuthentication:boolean, userId: number}, verify: Function) {
     super();
     this.name = 'mock';
     this.passAuthentication = options.passAuthentication && true;
@@ -35,13 +36,11 @@ export default class MockPassportStrategy extends Strategy {
   }
 }
 
-export function getPassStrategy(userid: number) {
+export function getPassStrategy(profile: any) {
   return new MockPassportStrategy(
-    { passAuthentication: true, userId: userid },
-    (user: User, done: Function) => {
-      server.userRepository.getById(user.id).then(user => {
-        done(null, user);
-      });
+    { passAuthentication: true, userId: 0 },
+    (user: any, done: Function) => {      
+      verify(server.userRepository, profile, done);
     }
   );
 }
