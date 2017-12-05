@@ -11,3 +11,4 @@ data
 coverage
 !.gitignore
 !.dockerignore
+!.travis.yml
