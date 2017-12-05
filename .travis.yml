@@ -8,5 +8,9 @@ install:
   - docker build -t disappearer/eventer .
   - docker run -d -p 127.0.0.1:80:80 --name eventer disappearer/eventer
 
+before_script:
+  - npm install -g grunt
+  
 script:
   - docker ps | grep eventer
+  - grunt integration_test
