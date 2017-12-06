@@ -9,7 +9,7 @@ install:
   - docker-compose build
 
 script:
-  - docker-compose up --exit-code-from integration-tester
+  - docker-compose up --abort-on-container-exit
 
 after_script:
   - docker-compose rm -f

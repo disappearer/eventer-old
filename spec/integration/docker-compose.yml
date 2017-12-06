@@ -11,8 +11,6 @@ services:
       - DB_URL=mongodb://db-eventer/eventer_integration_test
   
   eventer:
-    logging:
-      driver: "none"
     environment:
       - NODE_ENV=integration-test
       - DB_URL=mongodb://db-eventer/eventer_integration_test
@@ -28,8 +26,6 @@ services:
       - "3000"
 
   db-eventer:
-    logging:
-      driver: "none"
     image: mongo:jessie
     expose:
       - "27017"
