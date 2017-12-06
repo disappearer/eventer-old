@@ -2,6 +2,7 @@
 .vscode
 coverage
 data
+dist
 node_modules
 !node_modules/@types/passport-google-oauth20
 TODO

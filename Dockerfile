@@ -16,6 +16,9 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+# Compile typescript
+RUN npm run-script compile
+
 ENV PORT 3000
 EXPOSE $PORT
 CMD [ "npm", "start" ]

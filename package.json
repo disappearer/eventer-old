@@ -7,7 +7,8 @@
     "start": "node ./bin/www",
     "test": "jasmine-ts --config=./spec/unit/jasmine_unit_tests.json",
     "integration-test": "jasmine-ts --config=./spec/integration/jasmine_integration_tests.json",
-    "coverage": "nyc jasmine-ts"
+    "coverage": "nyc jasmine-ts",
+    "compile": "tsc"
   },
   "nyc": {
     "exclude": "spec/**",
