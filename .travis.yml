@@ -5,13 +5,11 @@ services:
   - docker
 
 install:
-  - docker build -t disappearer/eventer .
-  - docker run -d -p 127.0.0.1:80:80 --name eventer disappearer/eventer
-
-before_script:
-  - npm install
-  - npm install -g grunt
+  - cd spec/integration
+  - docker-compose build
 
 script:
-  - docker ps | grep eventer
-  - grunt integration_test
+  - docker-compose up --exit-code-from integration-tester
+
+after_script:
+  - docker-compose rm -f
