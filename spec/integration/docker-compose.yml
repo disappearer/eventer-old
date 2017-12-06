@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  integration-tester:
+    build: .
+    links:
+      - eventer
+      - db-eventer
+    environment:
+      - EVENTER_URL=http://eventer:3000
+      - DB_URL=mongodb://db-eventer/eventer_integration_test
+  
+  eventer:
+    logging:
+      driver: "none"
+    environment:
+      - NODE_ENV=integration-test
+      - DB_URL=mongodb://db-eventer/eventer_integration_test
+      - DB=mongo
+      - GOOGLE_CLIENT_ID=x
+      - GOOGLE_CLIENT_SECRET=x
+      - DEBUG=eventer:log eventer:debug
+    build: ../..
+    command: npm start
+    links:
+      - db-eventer
+    expose:
+      - "3000"
+
+  db-eventer:
+    logging:
+      driver: "none"
+    image: mongo:jessie
+    expose:
+      - "27017"

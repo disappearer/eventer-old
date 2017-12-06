@@ -12,6 +12,9 @@ describe('Mock Authentication', () => {
     MongoClient.connect(url).then(database => {
       db = database;
       done();
+    }).catch(error=>{
+      console.log(error);
+      done.fail();
     });
   });
   
@@ -31,7 +34,7 @@ describe('Mock Authentication', () => {
       })
       .catch(e => {
         console.log(e);
-        done();
+        done.fail();
       });
     });
     

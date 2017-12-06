@@ -1,7 +1,7 @@
 FROM node:carbon-alpine
 
 # Create app dir
-WORKDIR /usr/src/eventer
+WORKDIR /integration
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -14,8 +14,6 @@ RUN npm install
 # RUN npm install --only=production
 
 # Bundle app source
-COPY . .
+COPY . ./
 
-ENV PORT 3000
-EXPOSE $PORT
-CMD [ "npm", "start" ]
+CMD ["npm", "test"]
