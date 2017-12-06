@@ -29,7 +29,7 @@ describe('Mock Authentication', () => {
         expect(res.status).toEqual(200);
         usersCollection.find().toArray().then(users=>{
           expect(users.length).toEqual(1);
-          done.fail();
+          done();
         });
       })
       .catch(e => {

@@ -13,3 +13,6 @@ script:
 
 after_script:
   - docker-compose rm -f
+
+notifications:
+  email: false
