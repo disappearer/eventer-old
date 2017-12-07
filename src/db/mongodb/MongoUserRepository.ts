@@ -41,7 +41,7 @@ export default class MongoUserRepository implements UserRepository {
       })
     );
 
-    this.users.updateOne(
+    await this.users.updateOne(
       { _id: userId },
       { $set: { authentication: authentication } }
     );
