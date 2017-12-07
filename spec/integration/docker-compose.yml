@@ -25,6 +25,19 @@ services:
     expose:
       - "3000"
 
+  eventer-unit-test-image:
+    environment:
+      - NODE_ENV=unit-test
+      - DB_URL=mongodb://db-eventer/eventer_unit_test
+      - DB=mongo
+      - GOOGLE_CLIENT_ID=x
+      - GOOGLE_CLIENT_SECRET=x
+      - DEBUG=eventer:log eventer:debug
+    build: ../..
+    command: npm test
+    links:
+      - db-eventer
+
   db-eventer:
     image: mongo:jessie
     expose:
