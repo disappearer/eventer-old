@@ -29,6 +29,7 @@ services:
       - db-eventer
     expose:
       - "3000"
+    image:  disappearer/eventer
 
   eventer-unit-test-image:
     environment:

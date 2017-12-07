@@ -15,5 +15,11 @@ script:
 after_script:
   - docker-compose down
 
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker-compose push eventer;
+    fi
+
 notifications:
   email: false
