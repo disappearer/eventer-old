@@ -10,10 +10,10 @@ install:
 
 script:
   - docker-compose run eventer-unit-test-image
-  - docker-compose up --abort-on-container-exit
+  - docker-compose run integration-tester
 
 after_script:
-  - docker-compose rm -f
+  - docker-compose down
 
 notifications:
   email: false

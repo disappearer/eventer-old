@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 
 services:
   integration-tester:
@@ -8,8 +8,13 @@ services:
       - db-eventer
     environment:
       - EVENTER_URL=http://eventer:3000
-      - DB_URL=mongodb://db-eventer/eventer_integration_test
-  
+      - DB_URL=mongodb://db-eventer/eventer_integration_test 
+    volumes:
+      - type: bind
+        source: ../spec/integration/
+        target: /integration-tester/spec/integration/
+        readonly: true
+
   eventer:
     environment:
       - NODE_ENV=integration-test
@@ -18,7 +23,7 @@ services:
       - GOOGLE_CLIENT_ID=x
       - GOOGLE_CLIENT_SECRET=x
       - DEBUG=eventer:log eventer:debug
-    build: ../..
+    build: ..
     command: npm start
     links:
       - db-eventer
@@ -33,7 +38,7 @@ services:
       - GOOGLE_CLIENT_ID=x
       - GOOGLE_CLIENT_SECRET=x
       - DEBUG=eventer:log eventer:debug
-    build: ../..
+    build: ..
     command: npm test
     links:
       - db-eventer
