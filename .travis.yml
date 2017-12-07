@@ -5,7 +5,7 @@ services:
   - docker
 
 install:
-  - cd spec/integration
+  - cd integration_tester
   - docker-compose build
 
 script:
