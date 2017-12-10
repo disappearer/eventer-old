@@ -20,6 +20,8 @@ export function list(req: express.Request, res: express.Response) {
 }
 
 export function create(req: express.Request, res: express.Response) {
+  if(!req.body.title || !req.body.date || !req.body.location || !req.body.description)
+    return res.status(400).send('Missing required fields for event creation.');
   const eventCreateHandler = new EventCreateHandler(
     server.eventRepository,
     server.userRepository

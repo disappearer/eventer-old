@@ -28,6 +28,12 @@ describe('POST /events', () => {
     done();
   });
 
+  afterEach(done=>{
+    agent.get('/signout').then(()=>{
+      done();
+    });
+  });
+
   it('fails if not authorized', done => {
     server.setPassportStrategy(failStrategy);
     agent.get('/auth/mock').end(() => {
@@ -60,6 +66,26 @@ describe('POST /events', () => {
           expect(event.location).toEqual(eventInfo.location);
           expect(event.description).toEqual(eventInfo.description);
           expect(event.guestList).toEqual([USERID]);
+          done();
+        });
+    });
+  });
+
+  it('fails if a required field is missing', done => {
+    const eventInfo = {
+      // no title field
+      date: new Date(),
+      location: 'In the middle of nowhere',
+      description: 'Some event in the middle of nowhere'
+    };
+    server.setPassportStrategy(passStrategy);
+    agent.get('/auth/mock').end(() => {
+      agent
+        .post('/events/')
+        .send(eventInfo)
+        .then((res) => {
+          expect(res.status).toEqual(400);
+          expect(res.text).toEqual('Missing required fields for event creation.');
           done();
         });
     });
