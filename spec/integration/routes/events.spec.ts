@@ -36,9 +36,9 @@ describe('"/events" route', () => {
       .then(() => {
         return agent.post(baseUrl + '/events');
       })
-      .catch(error => {
-        expect(error.status).toEqual(400);
-        expect(error.response.error.text).toEqual(
+      .catch(result => {
+        expect(result.status).toEqual(400);
+        expect(result.response.body.message).toEqual(
           'Missing required fields for event creation.'
         );
         done();
