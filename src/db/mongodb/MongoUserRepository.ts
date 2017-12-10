@@ -1,7 +1,7 @@
 import UserRepository from '../../domain/repositories/UserRepository';
 import User from '../../domain/entities/User';
 
-import { Collection } from 'mongodb';
+import { Collection, ObjectID } from 'mongodb';
 
 interface authProviderCollections {
   [key: string]: Collection;
@@ -72,8 +72,8 @@ export default class MongoUserRepository implements UserRepository {
     return Promise.resolve(null);
   }
 
-  async getById(id: Number): Promise<User> {
-    const dbUser = await this.users.findOne({ _id: id });
+  async getById(id: number): Promise<User> {
+    const dbUser = await this.users.findOne({ _id: new ObjectID(id) });
     if (!dbUser) return null;
     const dbAuth = await Promise.all(
       dbUser.authentication.map(async (authDbInfo: any) => {
