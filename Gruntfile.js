@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         GOOGLE_CLIENT_ID: ' x ',
         GOOGLE_CLIENT_SECRET: ' x ',
         DEBUG: 'eventer:log eventer:debug',
-        PORT: 80
+        PORT: 3000
       },
       unit: {
         DB_URL: 'mongodb://localhost:27017/eventer_unit_test',
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         NODE_ENV: 'integration-test',
         DB: 'mongo',
         DEBUG: 'eventer:log eventer:debug',
-        EVENTER_URL: 'http://eventer.lexlabs.tk',
+        EVENTER_URL: 'http://eventer.lexlabs.com:3000',
         DB_URL: 'mongodb://localhost:27017/eventer_integration_test'
       }
     },
