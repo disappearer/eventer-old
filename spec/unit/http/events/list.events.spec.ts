@@ -44,7 +44,7 @@ describe('GET /events', () => {
       .get(`/events/asdf`)
       .then(response => {
         expect(response.status).toEqual(404);
-        expect(response.body.error).toEqual(
+        expect(response.body.message).toEqual(
           `Wrong path parameter: "asdf". Currently accepted are "all" and "future"`
         );
         done();
@@ -53,7 +53,7 @@ describe('GET /events', () => {
       .get(`/events/qwer`)
       .then(response => {
         expect(response.status).toEqual(404);
-        expect(response.body.error).toEqual(
+        expect(response.body.message).toEqual(
           `Wrong path parameter: "qwer". Currently accepted are "all" and "future"`
         );
         done();

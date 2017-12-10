@@ -33,7 +33,7 @@ describe('POST /events/:id/:action', () => {
     agent.get('/auth/mock').end(() => {
       agent.post('/events/1/join').then(response => {
         expect(response.status).toEqual(401);
-        expect(response.body.error).toEqual('Error: User not authorized.');
+        expect(response.body.message).toEqual('Error: User not authorized.');
         done();
       });
     });

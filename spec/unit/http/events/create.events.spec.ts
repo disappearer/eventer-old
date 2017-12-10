@@ -28,8 +28,8 @@ describe('POST /events', () => {
     done();
   });
 
-  afterEach(done=>{
-    agent.get('/signout').then(()=>{
+  afterEach(done => {
+    agent.get('/signout').then(() => {
       done();
     });
   });
@@ -39,7 +39,7 @@ describe('POST /events', () => {
     agent.get('/auth/mock').end(() => {
       agent.post('/events/').then(response => {
         expect(response.status).toEqual(401);
-        expect(response.body.error).toEqual('Error: User not authorized.');
+        expect(response.body.message).toEqual('Error: User not authorized.');
         done();
       });
     });
@@ -83,9 +83,11 @@ describe('POST /events', () => {
       agent
         .post('/events/')
         .send(eventInfo)
-        .then((res) => {
+        .then(res => {
           expect(res.status).toEqual(400);
-          expect(res.text).toEqual('Missing required fields for event creation.');
+          expect(res.body.message).toEqual(
+            'Missing required fields for event creation.'
+          );
           done();
         });
     });

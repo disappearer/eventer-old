@@ -9,8 +9,9 @@ export function list(req: express.Request, res: express.Response) {
   if (req.params.time == 'future') requestMessage.future = true;
   else if (req.params.time != 'all') {
     return res.status(404).json({
-      error: `Wrong path parameter: "${req.params
-        .time}". Currently accepted are "all" and "future"`
+      message: `Wrong path parameter: "${
+        req.params.time
+      }". Currently accepted are "all" and "future"`
     });
   }
   const listEventsHandler = new ListEventsHandler(server.eventRepository);
@@ -20,8 +21,15 @@ export function list(req: express.Request, res: express.Response) {
 }
 
 export function create(req: express.Request, res: express.Response) {
-  if(!req.body.title || !req.body.date || !req.body.location || !req.body.description)
-    return res.status(400).send('Missing required fields for event creation.');
+  if (
+    !req.body.title ||
+    !req.body.date ||
+    !req.body.location ||
+    !req.body.description
+  )
+    return res
+      .status(400)
+      .json({ message: 'Missing required fields for event creation.' });
   const eventCreateHandler = new EventCreateHandler(
     server.eventRepository,
     server.userRepository
