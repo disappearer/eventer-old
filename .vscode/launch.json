@@ -8,10 +8,17 @@
       "name": "Jamine TS Debug",
       "type": "node",
       "request": "launch",
-      "args": ["${workspaceFolder}/jasmine_debug.ts"],
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "args": [
+        "${workspaceFolder}/jasmine_debug.ts"
+      ],
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "ts-node/register"
+      ],
       "env": {
-        "GOOGLE_CLIENT_ID": "x"
+        "GOOGLE_CLIENT_ID": "x",
+        "DB_URL": "mongodb://localhost:27017/eventer_debug"
       },
       "sourceMaps": true,
       "cwd": "${workspaceRoot}",
