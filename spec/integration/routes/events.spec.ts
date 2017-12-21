@@ -15,7 +15,7 @@ describe('"/api/events" route', () => {
         done();
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.message);
         done.fail();
       });
   });

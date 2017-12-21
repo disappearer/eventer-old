@@ -15,7 +15,7 @@ describe('Mock Authentication', () => {
         done();
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.message);
         done.fail();
       });
   });
@@ -38,7 +38,7 @@ describe('Mock Authentication', () => {
         done();
       })
       .catch(e => {
-        console.log(e);
+        console.log(e.message);
         done.fail();
       });
   });
@@ -66,7 +66,7 @@ describe('Mock Authentication', () => {
         done();
       })
       .catch(e => {
-        console.log(e);
+        console.log(e.message);
         done.fail();
       });
   });
