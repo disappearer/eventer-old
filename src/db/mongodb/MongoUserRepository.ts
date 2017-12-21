@@ -48,6 +48,7 @@ export default class MongoUserRepository implements UserRepository {
 
     const domainUser = Object.assign(new User(), {
       id: userId,
+      accessToken: user.accessToken,
       authenticationInfo: authenticationInfo
     });
 
@@ -58,6 +59,16 @@ export default class MongoUserRepository implements UserRepository {
     const result = await this.users.findOneAndUpdate(
       { _id: user.id },
       { $set: { eventsJoined: user.eventsJoined } },
+      { returnOriginal: false }
+    );
+    if (!result.value) throw new Error('User update failed');
+    return toDomainUser(result.value, user.authenticationInfo);
+  }
+
+  async updateAccessToken(user: User): Promise<User> {
+    const result = await this.users.findOneAndUpdate(
+      { _id: user.id },
+      { $set: { accessToken: user.accessToken } },
       { returnOriginal: false }
     );
     if (!result.value) throw new Error('User update failed');

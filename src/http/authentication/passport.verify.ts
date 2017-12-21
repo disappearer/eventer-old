@@ -3,6 +3,7 @@ import UserRepository from '../../domain/repositories/UserRepository';
 
 async function verify(
   userRepository: UserRepository,
+  accessToken: string,
   profile: {
     provider: string;
     id: number;
@@ -12,10 +13,13 @@ async function verify(
   done: Function
 ) {
   const requestMessage = {
-    provider: profile.provider,
-    id: profile.id,
-    name: profile.displayName,
-    email: profile.emails[0].value
+    accessToken: accessToken,
+    profile: {
+      provider: profile.provider,
+      id: profile.id,
+      name: profile.displayName,
+      email: profile.emails[0].value
+    }
   };
 
   const userFindOrCreateHandler = new UserFindOrCreateHandler(userRepository);

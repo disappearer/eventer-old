@@ -6,6 +6,7 @@ export default class User {
   id: number;
   authenticationInfo: Array<AuthProviderInfo>;
   eventsJoined: Array<number>;
+  accessToken: string;
 
   constructor(
     id: number = 0,

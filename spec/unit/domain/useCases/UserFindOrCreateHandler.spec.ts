@@ -8,10 +8,13 @@ describe('User Find Or Create Handler', () => {
     existingUser: User;
 
   const requestMessage = {
-    name: 'Display Name',
-    provider: 'google',
-    email: 'user@gmail.com',
-    id: 1234
+    accessToken: 'randomString',
+    profile: {
+      name: 'Display Name',
+      provider: 'google',
+      email: 'user@gmail.com',
+      id: 1234
+    }
   };
 
   beforeEach(done => {
@@ -34,11 +37,18 @@ describe('User Find Or Create Handler', () => {
   it('creates user if not in repo', done => {
     userRepo.getById(existingUser.id).then(returnedUser => {
       const authInfo = returnedUser.authenticationInfo.find(authInfo => {
-        return authInfo.provider == requestMessage.provider;
+        return authInfo.provider == requestMessage.profile.provider;
       });
-      expect(authInfo.name).toEqual(requestMessage.name);
-      expect(authInfo.provider).toEqual(requestMessage.provider);
-      expect(authInfo.provider).toEqual(requestMessage.provider);
+      expect(authInfo.name).toEqual(requestMessage.profile.name);
+      expect(authInfo.provider).toEqual(requestMessage.profile.provider);
+      expect(authInfo.provider).toEqual(requestMessage.profile.provider);
+      done();
+    });
+  });
+
+  it('sets API access token for the user', done => {
+    userRepo.getById(existingUser.id).then(returnedUser => {
+      expect(returnedUser.accessToken).toEqual(requestMessage.accessToken);
       done();
     });
   });

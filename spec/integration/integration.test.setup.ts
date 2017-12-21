@@ -6,7 +6,7 @@ exports.integrationSetup = (server: any) => {
     provider: 'google',
     id: 111,
     displayName: 'Aleksa',
-    emails: [{value: 'aleksa47@gmail.com', type: 'account'}]
+    emails: [{ value: 'aleksa47@gmail.com', type: 'account' }]
   };
-  server.setPassportStrategy(getPassStrategy(profile));
+  server.setPassportStrategy(getPassStrategy('randomString', profile));
 };

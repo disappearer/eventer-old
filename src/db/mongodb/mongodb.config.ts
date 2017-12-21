@@ -1,8 +1,6 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 
-const url = process.env.DB_URL;
-
-const whenDb = MongoClient.connect(url);
+const whenDb = MongoClient.connect(process.env.DB_URL);
 
 const whenCollections = whenDb.then(db => {
   const whenEventCollection = db.createCollection('events');

@@ -1,5 +1,6 @@
 import UserRepository from '../repositories/UserRepository';
 import User from '../entities/User';
+import AuthProviderInfo from '../contracts/AuthProviderInfo';
 
 export default class UserFindOrCreateHandler {
   userRepository: UserRepository;
@@ -8,14 +9,22 @@ export default class UserFindOrCreateHandler {
     this.userRepository = userRepository;
   }
 
-  async handle(requestMessage: any) {
-    var user = await this.userRepository.getByAuthProviderId(
-      requestMessage.provider,
-      requestMessage.id
+  async handle(requestMessage: {
+    accessToken: string;
+    profile: AuthProviderInfo;
+  }) {
+    let user = await this.userRepository.getByAuthProviderId(
+      requestMessage.profile.provider,
+      requestMessage.profile.id
     );
-    if (user) return user;
-    user = new User(110, [requestMessage]);
-    user = await this.userRepository.add(user);
+    if (!user) {
+      user = new User(110, [requestMessage.profile]);
+      user.accessToken = requestMessage.accessToken;
+      user = await this.userRepository.add(user);
+    } else {
+      user.accessToken = requestMessage.accessToken;
+      user = await this.userRepository.updateAccessToken(user);
+    }
     return user;
   }
 }

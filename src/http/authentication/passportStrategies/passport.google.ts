@@ -9,6 +9,6 @@ export const googlePassportStrategy = new GoogleStrategy(
     callbackURL: process.env.EVENTER_URL + '/api/auth/google/callback'
   },
   function(accessToken, refreshToken, profile, done) {
-    verify(server.userRepository, profile, done);
+    verify(server.userRepository, accessToken, profile, done);
   }
 );

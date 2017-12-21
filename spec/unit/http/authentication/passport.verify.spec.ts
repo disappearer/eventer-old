@@ -4,6 +4,7 @@ import User from '../../../../src/domain/entities/User';
 
 describe('Function verify()', () => {
   var callback: Function, userRepo: InMemoryUserRepository;
+  const accessToken = 'randomString';
   const profile = {
     provider: 'google',
     id: 123456,
@@ -17,7 +18,7 @@ describe('Function verify()', () => {
   });
 
   it('creates user if not found', done => {
-    verify(userRepo, profile, callback).then(() => {
+    verify(userRepo, accessToken, profile, callback).then(() => {
       userRepo.getByAuthProviderId(profile.provider, profile.id).then(user => {
         const authInfo = user.authenticationInfo.find(authInfo => {
           return authInfo.provider == profile.provider;
@@ -30,9 +31,9 @@ describe('Function verify()', () => {
   });
 
   it('finds user if already registered', done => {
-    verify(userRepo, profile, callback).then(() => {
+    verify(userRepo, accessToken, profile, callback).then(() => {
       userRepo.getByAuthProviderId(profile.provider, profile.id).then(user => {
-        verify(userRepo, profile, callback).then(() => {
+        verify(userRepo, accessToken, profile, callback).then(() => {
           expect(callback).toHaveBeenCalledWith(null, user);
           done();
         });
@@ -41,7 +42,7 @@ describe('Function verify()', () => {
   });
 
   it('calls the callback with user', done => {
-    verify(userRepo, profile, callback).then(() => {
+    verify(userRepo, accessToken, profile, callback).then(() => {
       expect(callback).toHaveBeenCalledWith(null, jasmine.any(User));
       done();
     });
@@ -50,7 +51,7 @@ describe('Function verify()', () => {
   it('calls the callback with caught error message', done => {
     const errorMessage = 'Some Error Occurred!';
     spyOn(userRepo, 'getByAuthProviderId').and.throwError(errorMessage);
-    verify(userRepo, profile, callback).then(() => {
+    verify(userRepo, accessToken, profile, callback).then(() => {
       expect(callback).toHaveBeenCalledWith(errorMessage, null);
       done();
     });
