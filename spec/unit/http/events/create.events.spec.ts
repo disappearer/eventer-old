@@ -5,7 +5,7 @@ import Event from '../../../../src/domain/entities/Event';
 import { server } from '../../../../src/http/server';
 import MockPassportStrategy from '../../../../src/http/authentication/passportStrategies/MockPassportStrategy';
 
-describe('POST /events', () => {
+describe('POST /api/events', () => {
   var agent = request.agent(server.app);
   var failStrategy: any, passStrategy: any;
   const USERID = 246;
@@ -29,15 +29,15 @@ describe('POST /events', () => {
   });
 
   afterEach(done => {
-    agent.get('/signout').then(() => {
+    agent.get('/api/signout').then(() => {
       done();
     });
   });
 
   it('fails if not authorized', done => {
     server.setPassportStrategy(failStrategy);
-    agent.get('/auth/mock').end(() => {
-      agent.post('/events/').then(response => {
+    agent.get('/api/auth/mock').end(() => {
+      agent.post('/api/events/').then(response => {
         expect(response.status).toEqual(401);
         expect(response.body.message).toEqual('Error: User not authorized.');
         done();
@@ -53,9 +53,9 @@ describe('POST /events', () => {
       description: 'Some event in the middle of nowhere'
     };
     server.setPassportStrategy(passStrategy);
-    agent.get('/auth/mock').end(() => {
+    agent.get('/api/auth/mock').end(() => {
       agent
-        .post('/events/')
+        .post('/api/events/')
         .send(eventInfo)
         .then(response => {
           expect(response.status).toEqual(200);
@@ -79,9 +79,9 @@ describe('POST /events', () => {
       description: 'Some event in the middle of nowhere'
     };
     server.setPassportStrategy(passStrategy);
-    agent.get('/auth/mock').end(() => {
+    agent.get('/api/auth/mock').end(() => {
       agent
-        .post('/events/')
+        .post('/api/events/')
         .send(eventInfo)
         .then(res => {
           expect(res.status).toEqual(400);

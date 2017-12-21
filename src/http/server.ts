@@ -93,8 +93,8 @@ export default class Server {
   }
 
   public routes() {
-    this.app.use(passportRouter);
-    this.app.use(eventsRouter);
+    this.app.use('/api', passportRouter);
+    this.app.use('/api', eventsRouter);
   }
 
   // for setting mock passport

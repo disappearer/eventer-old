@@ -27,7 +27,7 @@ describe('Mock Authentication', () => {
       .toArray()
       .then(users => {
         expect(users).toEqual([]);
-        return agent.get(baseUrl + '/auth/mock/');
+        return agent.get(baseUrl + '/api/auth/mock/');
       })
       .then(res => {
         expect(res.status).toEqual(200);
@@ -50,7 +50,7 @@ describe('Mock Authentication', () => {
       .toArray()
       .then(users => {
         expect(users.length).toEqual(1);
-        return agent.get(baseUrl + '/auth/mock/');
+        return agent.get(baseUrl + '/api/auth/mock/');
       })
       .then(response => {
         expect(response.status).toEqual(200);
@@ -58,7 +58,7 @@ describe('Mock Authentication', () => {
       })
       .then(users => {
         expect(users.length).toEqual(1);
-        return agent.get(baseUrl + '/user');
+        return agent.get(baseUrl + '/api/user');
       })
       .then(response => {
         expect(response.status).toEqual(200);
@@ -72,7 +72,7 @@ describe('Mock Authentication', () => {
   });
 
   afterEach(done => {
-    agent.get(baseUrl + '/signout').then(() => {
+    agent.get(baseUrl + '/api/signout').then(() => {
       done();
     });
   });

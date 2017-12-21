@@ -6,7 +6,7 @@ export const googlePassportStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.EVENTER_URL + '/auth/google/callback'
+    callbackURL: process.env.EVENTER_URL + '/api/auth/google/callback'
   },
   function(accessToken, refreshToken, profile, done) {
     verify(server.userRepository, profile, done);
