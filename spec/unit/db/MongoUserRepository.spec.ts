@@ -1,12 +1,13 @@
 import { Db, Collection } from 'mongodb';
 import { whenDb } from '../../../src/db/mongodb/mongodb.config';
-import UserRepository, {
+import UserRepository from '../../../src/domain/repositories/UserRepository';
+import MongoUserRepository, {
   toDomainUser
 } from '../../../src/db/mongodb/MongoUserRepository';
 import Event from '../../../src/domain/entities/Event';
 import User from '../../../src/domain/entities/User';
 
-const jsonUsers = require('../../../src/db/users.json');
+const jsonUsers = require('./users.json');
 
 describe('Mongo Users Repository', () => {
   var db: Db,
@@ -26,7 +27,7 @@ describe('Mongo Users Repository', () => {
         })
         .then(collection => {
           testGoogleProvider = collection;
-          userRepository = new UserRepository(testUsers, {
+          userRepository = new MongoUserRepository(testUsers, {
             google: testGoogleProvider
           });
           const whenAdded: Array<Promise<User>> = jsonUsers.users.map(
@@ -108,6 +109,35 @@ describe('Mongo Users Repository', () => {
       .then(user => {
         expect(repoUsers[0]).not.toEqual(user);
         expect(user.eventsJoined.indexOf(event.id)).toBeGreaterThanOrEqual(0);
+        testUsers.findOne({ _id: user.id }).then(dbUser => {
+          Promise.all(
+            dbUser.authentication.map(async (authDbInfo: any) => {
+              const authInfo = await testGoogleProvider.findOne({
+                _id: authDbInfo.providerInfoId
+              });
+              authInfo.provider = authDbInfo.providerName;
+              return authInfo;
+            })
+          ).then(dbAuth => {
+            expect(toDomainUser(dbUser, dbAuth)).toEqual(user);
+            done();
+          });
+        });
+      });
+  });
+
+  it("can update user's API access token", done => {
+    const accessToken = 'randomString';
+    userRepository
+      .getById(repoUsers[0].id)
+      .then(user => {
+        expect(user.accessToken).toEqual('randomString1');
+        user.accessToken = accessToken;
+        return userRepository.updateAccessToken(user);
+      })
+      .then(user => {
+        expect(repoUsers[0]).not.toEqual(user);
+        expect(user.accessToken).toEqual(accessToken);
         testUsers.findOne({ _id: user.id }).then(dbUser => {
           Promise.all(
             dbUser.authentication.map(async (authDbInfo: any) => {

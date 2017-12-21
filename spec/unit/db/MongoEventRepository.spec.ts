@@ -6,7 +6,7 @@ import EventRepository, {
 import Event from '../../../src/domain/entities/Event';
 import User from '../../../src/domain/entities/User';
 
-const jsonEvents = require('../../../src/db/events.json');
+const jsonEvents = require('./events.json');
 
 describe('Mongo Events Repository', () => {
   var db: Db,
@@ -38,7 +38,7 @@ describe('Mongo Events Repository', () => {
     });
   });
 
-  it('can adds events to db', done => {
+  it('can add events to db', done => {
     testEvents
       .find()
       .toArray()

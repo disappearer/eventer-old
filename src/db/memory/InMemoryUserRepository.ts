@@ -77,6 +77,23 @@ export default class InMemoryUserRepository implements UserRepository {
     });
   }
 
+  updateAccessToken(user: User): Promise<User> {
+    return new Promise((resolve, reject) => {
+      if (!(user.id in this.users)) {
+        reject(
+          new RepositoryError(
+            'UpdatingNonExistingUserException',
+            user.id,
+            user.constructor.name
+          )
+        );
+      }
+
+      this.users[user.id].accessToken = user.accessToken;
+      resolve(this.cloneUser(this.users[user.id]));
+    });
+  }
+
   updateVerified(user: User): Promise<User> {
     return new Promise((resolve, reject) => {
       if (!(user.id in this.users)) {
@@ -131,7 +148,7 @@ const userRepository = new InMemoryUserRepository();
 export { userRepository };
 
 /* read json and create Date fields */
-var jsonUsers = require('../users.json').users;
+var jsonUsers = require('./users.json').users;
 jsonUsers.forEach((user: any) => {
   const userCopy = Object.assign(new User(0, []), user);
   userRepository.users[user.id] = userCopy;
