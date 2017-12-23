@@ -19,7 +19,6 @@ services:
     environment:
       - NODE_ENV=integration-test
       - DB_URL=mongodb://db-eventer/eventer_integration_test
-      - DB=mongo
       - GOOGLE_CLIENT_ID=x
       - GOOGLE_CLIENT_SECRET=x
       - DEBUG=eventer:log eventer:debug
@@ -35,7 +34,6 @@ services:
     environment:
       - NODE_ENV=unit-test
       - DB_URL=mongodb://db-eventer/eventer_unit_test
-      - DB=mongo
       - GOOGLE_CLIENT_ID=x
       - GOOGLE_CLIENT_SECRET=x
       - DEBUG=eventer:log eventer:debug

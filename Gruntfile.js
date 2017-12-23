@@ -20,7 +20,6 @@ module.exports = function(grunt) {
       },
       integration: {
         NODE_ENV: 'integration-test',
-        DB: 'mongo',
         DEBUG: 'eventer:log eventer:debug',
         EVENTER_URL: 'http://eventer.lexlabs.com:3000',
         DB_URL: 'mongodb://localhost:27017/eventer_integration_test'
@@ -83,6 +82,7 @@ module.exports = function(grunt) {
     'exec:db_cleanup'
   ]);
   grunt.registerTask('integration_test', [
+    'exec:compile',
     'env:dev',
     'env:integration',
     'mongod',
@@ -91,6 +91,7 @@ module.exports = function(grunt) {
     'exec:db_cleanup'
   ]);
   grunt.registerTask('integration_start', [
+    'exec:compile',
     'env:dev',
     'env:integration',
     'exec:start'

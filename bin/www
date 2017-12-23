@@ -13,40 +13,39 @@ const MongoUserRepository = require('../dist/src/db/mongodb/MongoUserRepository'
   .default;
 
 //Set app repositories.
-if (process.env.DB == 'mongo') {
-  log('Repositories set to MongoDB');
-  const whenCollections = require('../dist/src/db/mongodb/mongodb.config')
-    .whenCollections;
-  whenCollections
-    .then(collections => {
-      server.eventRepository = new MongoEventRepository(collections[0]);
-      server.userRepository = new MongoUserRepository(collections[1], {
-        google: collections[2]
-      });
-
-      // for integration testing of paths that require authorization
-      if (process.env.NODE_ENV == 'integration-test') {
-        require('../dist/spec/integration/integration.test.setup').integrationSetup(
-          server
-        );
-      }
-    })
-    .catch(error => {
-      debug(error);
-    });
-} else {
-  log('No repository set.');
-}
-
+const dbConnectionEstablished = require('../dist/src/db/mongodb/mongodb.config')
+  .connectionEstablished;
 const port = normalizePort(process.env.PORT || '3000');
 server.app.set('port', port);
 
 const http = require('http');
 const httpServer = http.createServer(server.app);
 
-httpServer.listen(port);
-httpServer.on('error', onError);
-httpServer.on('listening', onListening);
+dbConnectionEstablished
+  .then(collections => {
+    server.eventRepository = new MongoEventRepository(collections[0]);
+    server.userRepository = new MongoUserRepository(collections[1], {
+      google: collections[2]
+    });
+
+    // for integration testing of paths that require authorization
+    if (process.env.NODE_ENV == 'integration-test') {
+      require('../dist/spec/integration/integration.test.setup').integrationSetup(
+        server
+      );
+    }
+
+    startHTTPServer();
+  })
+  .catch(error => {
+    debug(error);
+  });
+
+function startHTTPServer() {
+  httpServer.listen(port);
+  httpServer.on('error', onError);
+  httpServer.on('listening', onListening);
+}
 
 /**
  * Normalize a port into a number, string, or false.

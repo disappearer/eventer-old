@@ -1,16 +1,30 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 
-const whenDb = MongoClient.connect(process.env.DB_URL);
+var whenDb = MongoClient.connect(process.env.DB_URL);
 
-const whenCollections = whenDb.then(db => {
-  const whenEventCollection = db.createCollection('events');
-  const whenUserCollection = db.createCollection('users');
-  const whenGoogleCollectin = db.createCollection('google');
-  return Promise.all([
-    whenEventCollection,
-    whenUserCollection,
-    whenGoogleCollectin
-  ]);
+var db: Db;
+
+const connectionEstablished = new Promise(resolve => {
+  connectWithRetry();
+
+  function connectWithRetry() {
+    whenDb
+      .then(database => {
+        console.log('Connected to the database.');
+        db = database;
+        const whenCollections = Promise.all([
+          db.createCollection('events'),
+          db.createCollection('users'),
+          db.createCollection('google')
+        ]);
+        resolve(whenCollections);
+      })
+      .catch(error => {
+        console.log(error.message, ' Reconnecting...');
+        whenDb = MongoClient.connect(process.env.DB_URL);
+        setTimeout(connectWithRetry, 1000);
+      });
+  }
 });
 
-export { whenDb, whenCollections };
+export { whenDb, connectionEstablished };
