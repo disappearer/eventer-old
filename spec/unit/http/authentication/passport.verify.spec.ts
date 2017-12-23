@@ -25,6 +25,7 @@ describe('Function verify()', () => {
         });
         expect(authInfo.email).toEqual(profile.emails[0].value);
         expect(authInfo.name).toEqual(profile.displayName);
+        expect(user.accessToken).toEqual(accessToken);
         done();
       });
     });
@@ -37,6 +38,20 @@ describe('Function verify()', () => {
           expect(callback).toHaveBeenCalledWith(null, user);
           done();
         });
+      });
+    });
+  });
+
+  it('forwards the new access token to the use case handler', done => {
+    verify(userRepo, accessToken, profile, callback).then(() => {
+      const differentAccessToken = 'differentRandomString';
+      verify(userRepo, differentAccessToken, profile, callback).then(() => {
+        userRepo
+          .getByAuthProviderId(profile.provider, profile.id)
+          .then(user => {
+            expect(user.accessToken).toEqual(differentAccessToken);
+            done();
+          });
       });
     });
   });

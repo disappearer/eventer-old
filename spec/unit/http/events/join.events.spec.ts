@@ -2,50 +2,29 @@ import * as request from 'supertest';
 import { eventRepository } from '../../../../src/db/memory/InMemoryEventRepository';
 import { userRepository } from '../../../../src/db/memory/InMemoryUserRepository';
 import { server } from '../../../../src/http/server';
-import MockPassportStrategy from '../../../../src/http/authentication/passportStrategies/MockPassportStrategy';
 
 describe('POST /api/events/:id/:action', () => {
   var agent = request.agent(server.app);
-  var failStrategy: any, passStrategy: any;
   const USERID = 246,
-    EVENTID = 1;
+    EVENTID = 1,
+    ACCESS_TOKEN = 'randomString2';
 
   beforeAll(done => {
     server.eventRepository = eventRepository;
     server.userRepository = userRepository;
-    failStrategy = new MockPassportStrategy(
-      { passAuthentication: false, userId: USERID },
-      () => {}
-    );
-    passStrategy = new MockPassportStrategy(
-      { passAuthentication: true, userId: USERID },
-      (user: any, done: Function) => {
-        userRepository.getById(user.id).then(user => {
-          done(null, user);
-        });
-      }
-    );
     done();
   });
 
   it('fails if not authorized', done => {
-    server.setPassportStrategy(failStrategy);
-    agent.get('/api/auth/mock').end(() => {
-      agent.post('/api/events/1/join').then(response => {
-        expect(response.status).toEqual(401);
-        expect(response.body.message).toEqual('Error: User not authorized.');
-        done();
-      });
+    agent.post('/api/events/1/join').then(response => {
+      expect(response.status).toEqual(401);
+      done();
     });
   });
 
   it('updates user and event when authorized', done => {
-    server.setPassportStrategy(passStrategy);
-    agent
-      .get('/api/auth/mock')
-      .then(() => {
-        return agent.post(`/api/events/${EVENTID}/join`);
-      })
+    return agent
+      .post(`/api/events/${EVENTID}/join?access_token=${ACCESS_TOKEN}`)
       .then(response => {
         expect(response.status).toEqual(200);
         expect(response.body.user.eventsJoined).toContain(EVENTID);
@@ -64,6 +43,15 @@ describe('POST /api/events/:id/:action', () => {
             );
             done();
           });
+      });
+  });
+
+  it('fails with 400 status code if trying to join already joined event', done => {
+    return agent
+      .post(`/api/events/${EVENTID}/join?access_token=${ACCESS_TOKEN}`)
+      .then(res => {
+        expect(res.status).toEqual(400);
+        done();
       });
   });
 });

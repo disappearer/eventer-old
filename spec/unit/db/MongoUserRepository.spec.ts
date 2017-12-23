@@ -90,6 +90,19 @@ describe('Mongo Users Repository', () => {
       });
   });
 
+  it('can get user by access token or return null if not found', done => {
+    userRepository
+      .getByAccessToken(repoUsers[0].accessToken)
+      .then(user => {
+        expect(user).toEqual(repoUsers[0]);
+        return userRepository.getByAccessToken('wrongToken');
+      })
+      .then(user => {
+        expect(user).toBeNull();
+        done();
+      });
+  });
+
   it("can update user's eventsJoined list", done => {
     const event = new Event(
       11,

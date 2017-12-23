@@ -42,6 +42,16 @@ export default class InMemoryUserRepository implements UserRepository {
     });
   }
 
+  getByAccessToken(accessToken: string): Promise<User> {
+    return new Promise(resolve => {
+      const user = this.users.find(
+        user => (user ? user.accessToken === accessToken : false)
+      );
+      if (user) resolve(this.cloneUser(user));
+      else resolve(null);
+    });
+  }
+
   findOne(query: any): Promise<User> {
     return new Promise(resolve => {
       const returnUser = this.users.find(user => {

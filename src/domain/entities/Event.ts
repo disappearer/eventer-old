@@ -35,7 +35,7 @@ export default class Event {
   isInGuestList(user: User) {
     if (!this.guestList) return false;
     return this.guestList.find(function(guestListUserId) {
-      return guestListUserId == user.id;
+      return guestListUserId.toString() === user.id.toString();
     });
   }
 }

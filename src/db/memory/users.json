@@ -2,6 +2,7 @@
   "users": [
     {
       "id": 123,
+      "accessToken": "randomString1",
       "authenticationInfo": [
         {
           "provider": "google",
@@ -14,6 +15,7 @@
     },
     {
       "id": 246,
+      "accessToken": "randomString2",
       "authenticationInfo": [
         {
           "provider": "google",

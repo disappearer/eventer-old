@@ -104,6 +104,21 @@ export default class MongoUserRepository implements UserRepository {
     return await this.getById(authRecord.userId);
   }
 
+  async getByAccessToken(accessToken: string): Promise<User> {
+    const dbUser = await this.users.findOne({ accessToken: accessToken });
+    if (!dbUser) return null;
+    const dbAuth = await Promise.all(
+      dbUser.authentication.map(async (authDbInfo: any) => {
+        const authInfo = await this.authProviders[
+          authDbInfo.providerName
+        ].findOne({ _id: authDbInfo.providerInfoId });
+        authInfo.provider = authDbInfo.providerName;
+        return authInfo;
+      })
+    );
+    return toDomainUser(dbUser, dbAuth);
+  }
+
   async delete(user: User) {}
 }
 

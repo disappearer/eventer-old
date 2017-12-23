@@ -80,7 +80,7 @@ export default class User {
 
   isJoined(event: Event) {
     return this.eventsJoined.find(function(joinedEventId) {
-      return joinedEventId == event.id;
+      return joinedEventId.toString() === event.id.toString();
     });
   }
 }

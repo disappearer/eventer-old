@@ -1,7 +1,7 @@
 import EventRepository from '../../domain/repositories/EventRepository';
 import Event from '../../domain/entities/Event';
 
-import { Collection } from 'mongodb';
+import { Collection, ObjectID } from 'mongodb';
 
 export default class MongoEventRepository implements EventRepository {
   events: Collection;
@@ -29,8 +29,8 @@ export default class MongoEventRepository implements EventRepository {
     return Promise.resolve(null);
   }
 
-  async getById(id: Number) {
-    const dbEvent = await this.events.findOne({ _id: id });
+  async getById(id: number) {
+    const dbEvent = await this.events.findOne({ _id: new ObjectID(id) });
     if (!dbEvent) return null;
     return toDomainEvent(dbEvent);
   }

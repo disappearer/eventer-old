@@ -1,5 +1,6 @@
 import * as request from 'superagent';
 import { MongoClient, Db } from 'mongodb';
+import { accessToken, profile } from '../integration.test.setup';
 
 const url = process.env.DB_URL;
 
@@ -7,6 +8,7 @@ describe('Mock Authentication', () => {
   const baseUrl = process.env.EVENTER_URL;
   const agent = request.agent();
   var db: Db;
+  var accessToken: string;
 
   beforeAll(done => {
     MongoClient.connect(url)
@@ -31,10 +33,12 @@ describe('Mock Authentication', () => {
       })
       .then(res => {
         expect(res.status).toEqual(200);
+        accessToken = res.body.accessToken;
         return usersCollection.find().toArray();
       })
       .then(users => {
         expect(users.length).toEqual(1);
+        expect(users[0].accessToken).toEqual(accessToken);
         done();
       })
       .catch(e => {
@@ -58,22 +62,11 @@ describe('Mock Authentication', () => {
       })
       .then(users => {
         expect(users.length).toEqual(1);
-        return agent.get(baseUrl + '/api/user');
-      })
-      .then(response => {
-        expect(response.status).toEqual(200);
-        expect(response.text).toContain('Authentication success');
         done();
       })
       .catch(e => {
         console.log(e.message);
         done.fail();
       });
-  });
-
-  afterEach(done => {
-    agent.get(baseUrl + '/api/signout').then(() => {
-      done();
-    });
   });
 });

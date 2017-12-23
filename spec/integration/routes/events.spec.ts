@@ -7,11 +7,16 @@ describe('"/api/events" route', () => {
   const baseUrl = process.env.EVENTER_URL;
   const agent = request.agent();
   var db: Db;
+  var accessToken: string;
 
   beforeAll(done => {
-    MongoClient.connect(url)
-      .then(database => {
-        db = database;
+    Promise.all([
+      MongoClient.connect(url),
+      agent.get(baseUrl + '/api/auth/mock')
+    ])
+      .then(results => {
+        db = results[0];
+        accessToken = results[1].body.accessToken;
         done();
       })
       .catch(error => {
@@ -23,19 +28,13 @@ describe('"/api/events" route', () => {
   it('POST fails if not authenticated', done => {
     agent.post(baseUrl + '/api/events').catch(result => {
       expect(result.status).toEqual(401);
-      expect(result.response.body.message).toEqual(
-        'Error: User not authorized.'
-      );
       done();
     });
   });
 
   it('POST fails if fields are missing', done => {
-    agent
-      .get(baseUrl + '/api/auth/mock')
-      .then(() => {
-        return agent.post(baseUrl + '/api/events');
-      })
+    return agent
+      .post(baseUrl + `/api/events?access_token=${accessToken}`)
       .catch(result => {
         expect(result.status).toEqual(400);
         expect(result.response.body.message).toEqual(
@@ -54,10 +53,8 @@ describe('"/api/events" route', () => {
       description: 'Some event in the middle of nowhere'
     };
     agent
-      .get(baseUrl + '/api/auth/mock')
-      .then(() => {
-        return agent.post(baseUrl + '/api/events').send(eventInfo);
-      })
+      .post(baseUrl + `/api/events?access_token=${accessToken}`)
+      .send(eventInfo)
       .then(response => {
         const event = response.body.event;
         eventId = event.id;
@@ -79,12 +76,6 @@ describe('"/api/events" route', () => {
         expect(events[0]._id).toEqual(new ObjectID(eventId));
         done();
       });
-  });
-
-  afterEach(done => {
-    agent.get(baseUrl + '/api/signout').then(() => {
-      done();
-    });
   });
 
   afterAll(done => {

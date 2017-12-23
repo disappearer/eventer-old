@@ -57,5 +57,8 @@ export function join(req: express.Request, res: express.Response) {
     .handle({ userId: req.user.id, eventId: req.params.id })
     .then(result => {
       res.status(200).json(result);
+    })
+    .catch(error => {
+      res.status(400).json({ message: error.message });
     });
 }
