@@ -9,7 +9,7 @@ install:
   - docker-compose build
 
 script:
-  - docker-compose run eventer-unit-test-image
+  - docker-compose run unit-tester
   - docker-compose run integration-tester
 
 after_script:

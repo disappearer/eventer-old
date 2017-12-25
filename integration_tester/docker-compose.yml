@@ -30,7 +30,7 @@ services:
       - "3000"
     image:  disappearer/eventer
 
-  eventer-unit-test-image:
+  unit-tester:
     environment:
       - NODE_ENV=unit-test
       - DB_URL=mongodb://db-eventer/eventer_unit_test

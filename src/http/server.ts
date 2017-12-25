@@ -51,6 +51,10 @@ export default class Server {
       this.app.use(logger('dev'));
     }
 
+    // view engine setup
+    this.app.set('views', path.join(__dirname, 'views'));
+    this.app.set('view engine', 'ejs');
+
     this.app.use(bodyParser.json());
 
     this.app.use(passport.initialize());
@@ -71,8 +75,8 @@ export default class Server {
   }
 
   public routes() {
-    this.app.use('/api', passportRouter);
-    this.app.use('/api', eventsRouter);
+    this.app.use(passportRouter);
+    this.app.use(eventsRouter);
   }
 
   // for setting mock passport
