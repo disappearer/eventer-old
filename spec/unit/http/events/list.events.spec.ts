@@ -3,7 +3,7 @@ import { eventRepository } from '../../../../src/db/memory/InMemoryEventReposito
 import Event from '../../../../src/domain/entities/Event';
 import { server } from '../../../../src/http/server';
 
-describe('GET /api/events', () => {
+describe('GET /events', () => {
   beforeAll(done => {
     server.eventRepository = eventRepository;
     done();
@@ -11,7 +11,7 @@ describe('GET /api/events', () => {
 
   it('"/all" gets a list of all events', done => {
     request(server.app)
-      .get('/api/events/all')
+      .get('/events/all')
       .then(response => {
         expect(response.status).toEqual(200);
         eventRepository.getAll().then(events => {
@@ -27,7 +27,7 @@ describe('GET /api/events', () => {
     jasmine.clock().mockDate(new Date(Date.UTC(2017, 9, 16, 18, 0)));
     const now = new Date();
     request(server.app)
-      .get('/api/events/future')
+      .get('/events/future')
       .then(response => {
         expect(response.status).toEqual(200);
         eventRepository.getFuture().then(events => {
@@ -41,7 +41,7 @@ describe('GET /api/events', () => {
 
   it('sends 404 if path param wrong', done => {
     request(server.app)
-      .get(`/api/events/asdf`)
+      .get(`/events/asdf`)
       .then(response => {
         expect(response.status).toEqual(404);
         expect(response.body.message).toEqual(
@@ -50,7 +50,7 @@ describe('GET /api/events', () => {
         done();
       });
     request(server.app)
-      .get(`/api/events/qwer`)
+      .get(`/events/qwer`)
       .then(response => {
         expect(response.status).toEqual(404);
         expect(response.body.message).toEqual(

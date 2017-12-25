@@ -29,7 +29,7 @@ describe('Mock Authentication', () => {
       .toArray()
       .then(users => {
         expect(users).toEqual([]);
-        return agent.get(baseUrl + '/api/auth/mock/');
+        return agent.get(baseUrl + '/auth/mock/');
       })
       .then(res => {
         expect(res.status).toEqual(200);
@@ -54,7 +54,7 @@ describe('Mock Authentication', () => {
       .toArray()
       .then(users => {
         expect(users.length).toEqual(1);
-        return agent.get(baseUrl + '/api/auth/mock/');
+        return agent.get(baseUrl + '/auth/mock/');
       })
       .then(response => {
         expect(response.status).toEqual(200);

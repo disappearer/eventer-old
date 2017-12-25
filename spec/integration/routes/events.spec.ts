@@ -3,17 +3,14 @@ import { MongoClient, Db, ObjectID } from 'mongodb';
 
 const url = process.env.DB_URL;
 
-describe('"/api/events" route', () => {
+describe('"/events" route', () => {
   const baseUrl = process.env.EVENTER_URL;
   const agent = request.agent();
   var db: Db;
   var accessToken: string;
 
   beforeAll(done => {
-    Promise.all([
-      MongoClient.connect(url),
-      agent.get(baseUrl + '/api/auth/mock')
-    ])
+    Promise.all([MongoClient.connect(url), agent.get(baseUrl + '/auth/mock')])
       .then(results => {
         db = results[0];
         accessToken = results[1].body.accessToken;
@@ -26,7 +23,7 @@ describe('"/api/events" route', () => {
   });
 
   it('POST fails if not authenticated', done => {
-    agent.post(baseUrl + '/api/events').catch(result => {
+    agent.post(baseUrl + '/events').catch(result => {
       expect(result.status).toEqual(401);
       done();
     });
@@ -34,7 +31,7 @@ describe('"/api/events" route', () => {
 
   it('POST fails if fields are missing', done => {
     return agent
-      .post(baseUrl + `/api/events?access_token=${accessToken}`)
+      .post(baseUrl + `/events?access_token=${accessToken}`)
       .catch(result => {
         expect(result.status).toEqual(400);
         expect(result.response.body.message).toEqual(
@@ -53,7 +50,7 @@ describe('"/api/events" route', () => {
       description: 'Some event in the middle of nowhere'
     };
     agent
-      .post(baseUrl + `/api/events?access_token=${accessToken}`)
+      .post(baseUrl + `/events?access_token=${accessToken}`)
       .send(eventInfo)
       .then(response => {
         const event = response.body.event;

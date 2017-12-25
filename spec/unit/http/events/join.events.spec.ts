@@ -3,7 +3,7 @@ import { eventRepository } from '../../../../src/db/memory/InMemoryEventReposito
 import { userRepository } from '../../../../src/db/memory/InMemoryUserRepository';
 import { server } from '../../../../src/http/server';
 
-describe('POST /api/events/:id/:action', () => {
+describe('POST /events/:id/:action', () => {
   var agent = request.agent(server.app);
   const USERID = 246,
     EVENTID = 1,
@@ -16,7 +16,7 @@ describe('POST /api/events/:id/:action', () => {
   });
 
   it('fails if not authorized', done => {
-    agent.post('/api/events/1/join').then(response => {
+    agent.post('/events/1/join').then(response => {
       expect(response.status).toEqual(401);
       done();
     });
@@ -24,7 +24,7 @@ describe('POST /api/events/:id/:action', () => {
 
   it('updates user and event when authorized', done => {
     return agent
-      .post(`/api/events/${EVENTID}/join?access_token=${ACCESS_TOKEN}`)
+      .post(`/events/${EVENTID}/join?access_token=${ACCESS_TOKEN}`)
       .then(response => {
         expect(response.status).toEqual(200);
         expect(response.body.user.eventsJoined).toContain(EVENTID);
@@ -48,7 +48,7 @@ describe('POST /api/events/:id/:action', () => {
 
   it('fails with 400 status code if trying to join already joined event', done => {
     return agent
-      .post(`/api/events/${EVENTID}/join?access_token=${ACCESS_TOKEN}`)
+      .post(`/events/${EVENTID}/join?access_token=${ACCESS_TOKEN}`)
       .then(res => {
         expect(res.status).toEqual(400);
         done();

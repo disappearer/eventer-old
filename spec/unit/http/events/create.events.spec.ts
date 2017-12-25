@@ -4,7 +4,7 @@ import { userRepository } from '../../../../src/db/memory/InMemoryUserRepository
 import Event from '../../../../src/domain/entities/Event';
 import { server } from '../../../../src/http/server';
 
-describe('POST /api/events', () => {
+describe('POST /events', () => {
   var agent = request.agent(server.app);
   const USERID = 246,
     ACCESS_TOKEN = 'randomString2';
@@ -16,7 +16,7 @@ describe('POST /api/events', () => {
   });
 
   it('fails if not authorized', done => {
-    agent.post('/api/events/').then(response => {
+    agent.post('/events/').then(response => {
       expect(response.status).toEqual(401);
       done();
     });
@@ -30,7 +30,7 @@ describe('POST /api/events', () => {
       description: 'Some event in the middle of nowhere'
     };
     agent
-      .post(`/api/events?access_token=${ACCESS_TOKEN}`)
+      .post(`/events?access_token=${ACCESS_TOKEN}`)
       .send(eventInfo)
       .then(response => {
         expect(response.status).toEqual(200);
@@ -53,7 +53,7 @@ describe('POST /api/events', () => {
       description: 'Some event in the middle of nowhere'
     };
     agent
-      .post(`/api/events?access_token=${ACCESS_TOKEN}`)
+      .post(`/events?access_token=${ACCESS_TOKEN}`)
       .send(eventInfo)
       .then(res => {
         expect(res.status).toEqual(400);
