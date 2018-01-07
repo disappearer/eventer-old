@@ -1,4 +1,17 @@
-<h3>User:
-  <%= user.name %>
-</h3>
-<script>window.opener.user = <%= user %>;</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Eventer login</title>
+</head>
+
+<body>
+  <!-- page content -->
+
+  <h4>Please wait.</h4>
+  <h4>Logging in...</h4>
+</body>
+<script>window.opener.accessToken = "<%= user.accessToken %>";</script>
+
+</html>

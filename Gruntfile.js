@@ -30,7 +30,7 @@ module.exports = function(grunt) {
       unit_test: 'npm test',
       integration_test: 'npm run-script integration-test',
       cover: 'npm run-script coverage',
-      compile: 'tsc',
+      compile: 'npm run compile',
       start: 'npm start',
       db_cleanup: 'ts-node spec/integration/db.cleanup.ts'
     },

@@ -6,19 +6,15 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "jasmine-ts --config=./spec/unit/jasmine_unit_tests.json",
-    "integration-test": "jasmine-ts --config=./spec/integration/jasmine_integration_tests.json",
+    "integration-test":
+      "jasmine-ts --config=./spec/integration/jasmine_integration_tests.json",
     "coverage": "nyc jasmine-ts",
-    "compile": "tsc"
+    "compile": "tsc & cp -r src/http/views dist/src/http"
   },
   "nyc": {
     "exclude": "spec/**",
-    "extension": [
-      ".ts"
-    ],
-    "reporter": [
-      "html",
-      "text-summary"
-    ]
+    "extension": [".ts"],
+    "reporter": ["html", "text-summary"]
   },
   "author": "Lexa",
   "license": "MIT",
