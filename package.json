@@ -9,7 +9,7 @@
     "integration-test":
       "jasmine-ts --config=./spec/integration/jasmine_integration_tests.json",
     "coverage": "nyc jasmine-ts",
-    "compile": "tsc & cp -r src/http/views dist/src/http"
+    "compile": "tsc && cp -r src/http/views dist/src/http"
   },
   "nyc": {
     "exclude": "spec/**",
